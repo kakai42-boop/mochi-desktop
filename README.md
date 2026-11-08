@@ -1,3 +1,5 @@
+> **Windows 11 x64 — préversion de portage** : un installateur et un lanceur autonomes sont fournis par cette branche. Aucun Python système requis. Lire [le guide Windows](docs/WINDOWS11.txt) et [le bilan de validation](docs/WINDOWS_VALIDATION.md). La qualification réelle Windows 11 reste à faire ; mises à jour automatiques, détection des onglets et présence sur tous les bureaux virtuels ne sont pas encore portées. Le texte Linux original ci-dessous reste la référence amont.
+
 <div align="center">
 
 # mochi 🌱
@@ -495,3 +497,7 @@ Growing together, one tiny interaction at a time. 🌱
 Mochi is released under the [MIT License](LICENSE).
 
 </div>
+
+### Windows qualification update (2026-11-09)
+
+The source archive now contains installation lifecycle checks. They have not run on Windows yet. The previously distributed installer is unchanged; see [validation status](docs/WINDOWS_VALIDATION.md).

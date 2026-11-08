@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import json
 import logging
 import os
+import sys
 from pathlib import Path
 from uuid import uuid4
 
@@ -27,7 +28,7 @@ class ConfigStore:
     DEFAULT_VOLUME = 0.6
 
     def __init__(self, path: Path | None = None) -> None:
-        config_home = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+        config_home = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming") if sys.platform == "win32" else os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
         self.path = path or config_home / "mochi" / "config.json"
         self._logger = logging.getLogger(__name__)
 

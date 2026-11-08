@@ -1,0 +1,57 @@
+MOCHI POUR WINDOWS 11 x64 — PREVERSION 0.4.1-win-preview1
+
+INSTALLATION
+Double-clique sur Mochi-Windows11-Setup.exe, puis suis l'assistant.
+Ensuite, lance Mochi depuis le bureau ou le menu Démarrer.
+Python, GTK et les bibliothèques audio sont inclus. Aucun terminal nécessaire.
+
+Si tu utilises l'archive portable : extrais TOUT le dossier, puis lance Mochi.exe.
+Garde les dossiers runtime, src et assets à côté de Mochi.exe.
+
+COMMANDES
+Clic gauche : réaction. Double clic : coeur. Trois clics : dialogue.
+Glisser : déplacer Mochi. Clic droit : menu complet.
+Ctrl+Alt+E : catalogue. Ctrl+Alt+Maj+M : Mochi Lab.
+Pour quitter : clic droit sur Mochi, puis Quit.
+Les raccourcis globaux peuvent être occupés par une autre application ; les menus restent disponibles.
+
+DONNEES
+Préférences et progression : %APPDATA%\mochi\config.json
+Pocket : %LOCALAPPDATA%\mochi-desktop\pocket
+Journaux : %LOCALAPPDATA%\mochi-desktop\mochi.log et startup.log
+La désinstallation conserve les données personnelles.
+Pour une mise à jour : ferme Mochi et lance le nouvel installateur Windows.
+
+ETAT DE CETTE PREVERSION
+Le code des animations, interactions, Bond, Focus, catalogue et Pocket vient
+du projet original ; des adaptateurs Windows remplacent les appels Linux.
+Cette version n'a pas été qualifiée sur une installation réelle de Windows 11.
+Ne pas la considérer comme une version finale certifiée sans ces essais.
+
+DIFFERENCES ET LIMITES CONNUES
+- Mise à jour Windows manuelle : aucun canal de publication automatique n'est configuré.
+- Réactions musique/vidéo : seulement pour les applications qui publient un type
+  de lecture dans Windows. Aucun titre, URL ou contenu média n'est lu.
+- Les changements d'onglet du navigateur ne sont pas détectés dans cette version.
+- La présence sur tous les bureaux virtuels Windows n'est pas implémentée.
+- Les mises à l'échelle mixtes, audio, Pocket/Explorer, veille et raccourcis
+  nécessitent encore une validation sur Windows 11 réel.
+- L'installateur n'est pas signé avec un certificat de publication.
+- Windows ARM64 n'est pas une cible qualifiée ; le paquet est x64.
+
+CONFIDENTIALITE
+La frappe est réduite à des impulsions anonymes ; aucune touche ni aucun texte
+n'est lu ou enregistré. Les catégories d'applications sont déduites uniquement
+du nom de leur programme. Pas de lecture des titres de fenêtre ou du presse-papiers.
+Les contenus que tu déposes volontairement dans Pocket restent locaux.
+
+AGENT COMPANION (facultatif)
+Les hooks existants peuvent appeler :
+"chemin\Mochi.exe" --agent-signal working --source codex
+Les événements et les jetons opaques passent par une messagerie locale Windows.
+
+LICENCE ET CREDITS
+Projet original : https://github.com/miflow13/mochi-desktop
+Illustrations, sons et code original : auteurs de Mochi, licence MIT (fichier LICENSE).
+Les composants embarqués gardent leurs licences dans runtime\share\licenses.
+Leurs versions et sites sources sont listés dans runtime\runtime-lock.json.

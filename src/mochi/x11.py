@@ -446,3 +446,13 @@ def _open_x11() -> tuple[ctypes.CDLL, int | None]:
     x11.XFlush.argtypes = [ctypes.c_void_p]
     x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
     return x11, x11.XOpenDisplay(None)
+
+
+# Keep one placement contract for the existing buddy, bubbles and menus.
+# No X11 library is loaded on Windows.
+import sys as _sys
+if _sys.platform == "win32":
+    from mochi.windows.windowing import (
+        apply_sticky_dock_properties, disable_frame_sync, get_pointer_position,
+        get_window_position, move_window, primary_button_pressed, request_keep_above,
+    )

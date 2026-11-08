@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import logging
+import sys
 
 
 class GnomeShellDeveloperShortcutBackend:
@@ -105,6 +106,9 @@ class DeveloperShortcutMonitor:
     ) -> None:
         self._on_requested = on_requested
         self._logger = logger or logging.getLogger(__name__)
+        if backend is None and sys.platform == "win32":
+            from mochi.windows.activity import WindowsInputBackend
+            backend = WindowsInputBackend(hotkey=(0x0001 | 0x0002 | 0x0004, ord("M")))
         self._backend = backend or GnomeShellDeveloperShortcutBackend()
         self.available = False
 

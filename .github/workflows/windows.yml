@@ -1,0 +1,44 @@
+name: Windows 11 package and smoke test
+on:
+  workflow_dispatch:
+  push:
+    branches: [windows11-port]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install cross-build tools
+        run: sudo apt-get update && sudo apt-get install -y gcc-mingw-w64-x86-64 zstd nsis
+      - name: Build locked self-contained packages
+        run: bash packaging/windows/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Mochi-Windows11-preview
+          path: |
+            dist/windows/Mochi-Windows11-Setup.exe
+            dist/windows/Mochi-Windows11-Portable.zip
+          compression-level: 0
+  native-smoke:
+    needs: build
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: Mochi-Windows11-preview
+          path: packages
+      - name: Test portable, installation, reinstallation and uninstall
+        shell: pwsh
+        run: ./packaging/windows/test-package.ps1 -Packages packages
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-smoke-diagnostics
+          path: windows-qa-results/
+          if-no-files-found: warn

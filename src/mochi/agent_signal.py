@@ -56,6 +56,9 @@ def parse_args(argv: Sequence[str]) -> tuple[str, str] | None:
 
 def read_payload(stream, *, deadline_seconds: float) -> bytes:
     """Drain the hook payload without ever blocking past the deadline."""
+    if sys.platform == "win32":
+        from mochi.windows.agent_ipc import read_windows_payload
+        return read_windows_payload(stream, deadline_seconds, MAX_STDIN_BYTES)
     try:
         if stream is None or stream.isatty():
             return b""
@@ -142,6 +145,10 @@ def main(
             deadline_seconds=stdin_deadline_seconds,
         )
         token = session_token(payload, source)
+        if sys.platform == "win32":
+            from mochi.windows.agent_ipc import send_event
+            send_event(event, token)
+            return 0
         gdbus = which("gdbus")
         if gdbus is None:
             return 0

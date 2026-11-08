@@ -6,6 +6,13 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+### Windows 11 port preview
+
+- Add native Win32 placement/work-area handling, anonymous typing, hotkeys, session/app/power signals, local agent messages, Windows media playback observation and bundled GStreamer audio.
+- Store configuration in APPDATA and Pocket in LOCALAPPDATA; preserve Linux adapters and the shared behavior engine.
+- Add a self-contained native launcher, locked Windows runtime, French per-user installer, build recipe and Windows smoke-test workflow.
+- Windows updates are manual in this preview. Browser-tab pulses and all-virtual-desktop pinning are not implemented. Real Windows 11 validation is pending; this is not a full-parity release.
+
 ### Added
 
 - Mochi can keep you company while a coding agent works. Point Claude Code's
@@ -205,3 +212,8 @@ Feature summary for the earlier alpha line.
 ## 0.1 — Exists
 
 Initial desktop-companion foundation: core windowing, sprite animation, movement, interactions, and the first persistent character behaviors.
+
+### Windows qualification — 2026-11-09
+
+- Reject stale native smoke reports; add install/reinstall/uninstall CI checks.
+- Fail silent setup/uninstall explicitly when Mochi is open. Native Windows execution remains pending.

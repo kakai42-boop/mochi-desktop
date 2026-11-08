@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import threading
 
 from gi.repository import GLib, Gtk
@@ -35,7 +36,7 @@ class UpdateControlsMixin:
         self._update_announced_commits: set[str] = set()
         super().__init__(*args, **kwargs)
 
-        if self._preview_mode:
+        if self._preview_mode or sys.platform == "win32":
             return
 
         self._update_install_store = InstallMetadataStore()
@@ -49,7 +50,7 @@ class UpdateControlsMixin:
     def _build_context_menu(self):
         menu = super()._build_context_menu()
         button, self._update_menu_label = self._make_menu_button(
-            "Check for updates",
+            "Windows updates" if sys.platform == "win32" else "Check for updates",
             "software-update-available-symbolic",
             self._on_update_menu_clicked,
         )
@@ -183,6 +184,18 @@ class UpdateControlsMixin:
         return target
 
     def _handle_update_menu_action(self) -> None:
+        if sys.platform == "win32":
+            dialog = Gtk.MessageDialog(
+                transient_for=self._window, modal=True,
+                buttons=Gtk.ButtonsType.CLOSE,
+                text="Mises à jour de Mochi pour Windows",
+                secondary_text=("Ferme Mochi, puis lance le nouvel installateur Windows. "
+                                "Ta progression, tes préférences et ta Pocket sont conservées. "
+                                "Les mises à jour automatiques ne sont pas disponibles dans cette version."),
+            )
+            dialog.connect("response", lambda window, response: window.destroy())
+            dialog.present()
+            return
         target = self._current_update_target()
         if target is None:
             self._start_update_check(manual=True)

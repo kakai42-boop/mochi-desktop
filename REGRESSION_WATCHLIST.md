@@ -257,3 +257,22 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] README, changelog, wiki, and regression docs match shipped behavior
 - [ ] Live Fedora/GNOME/Wayland/XWayland smoke/torture test passes
 - [ ] Known issues are documented rather than silently claimed fixed
+
+## Windows 11 x64 preview release gate
+
+- [ ] Clean Windows 11 install, no Python/MSYS2/GTK on PATH: install and launch by double-click
+- [ ] Transparency, no focus stealing, right-click menus, drag/drop and recovery
+- [ ] 100/125/150/200% scale, mixed DPI, negative monitor origin, taskbar work area, unplug/reconnect display
+- [ ] All emotes, feeding, Bond, unlocks, Focus rounds/pause/resume and independent audio volumes
+- [ ] Explorer drag/drop into Pocket; Unicode paths and unavailable files; persistence after restart
+- [ ] Anonymous typing, shortcut conflict, lock/unlock, suspend/resume, battery and network edges
+- [ ] Supported Windows media players: music/video start, pause, stop and missing playback type
+- [ ] Agent events through Mochi.exe --agent-signal; malformed/oversized events ignored
+- [ ] Stop releases timers, hooks, mailslot, theme and media helper; relaunch does not duplicate instances
+- [ ] Installer upgrade refuses a running copy; uninstall retains Bond/Pocket/config
+- [ ] Native packaged smoke test passes and Windows diagnostics are archived
+- [ ] Remaining parity gaps are documented before any stable/full-compatibility claim
+
+- [ ] Fresh smoke identity verified for portable, installed and reinstalled builds
+- [ ] Silent uninstall removes program and registration while retaining preference/Pocket sentinel files
+- [ ] Windows 11 interactive checks performed separately from Windows Server CI

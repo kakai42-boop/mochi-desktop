@@ -56,7 +56,10 @@ def configure_display_backend(environment: MutableMapping[str, str]) -> bool:
 
 def enable_debug_stack_dumps() -> None:
     """`kill -USR1 <pid>` prints every Python thread's stack to stderr."""
-    faulthandler.register(signal.SIGUSR1, all_threads=True)
+    if hasattr(signal, "SIGUSR1") and hasattr(faulthandler, "register"):
+        faulthandler.register(signal.SIGUSR1, all_threads=True)
+    else:
+        faulthandler.enable(all_threads=True)
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import sys
 
 import gi
 
@@ -93,6 +94,10 @@ class WindowPlacement:
 
         ``MOCHI_X11_FRAME_SYNC=1`` keeps GTK's default, for comparing builds.
         """
+        if sys.platform == "win32":
+            from mochi.windows.windowing import apply_sticky_dock_properties
+            apply_sticky_dock_properties(window)
+            return
         if os.environ.get("MOCHI_X11_FRAME_SYNC") == "1":
             self._logger.info("Keeping GTK's X11 compositor frame sync (MOCHI_X11_FRAME_SYNC=1)")
             return
@@ -162,6 +167,14 @@ class WindowPlacement:
         return self.position
 
     def clamp_position(self, x: int, y: int) -> Position:
+        if sys.platform == "win32":
+            from mochi.windows.native import desktop, clamp_to_work_area
+            scale = self._x11_coordinate_scale()
+            width, height = self.window.get_default_size()
+            area = desktop().work_area(x + width * scale / 2, y + height * scale / 2)
+            if area is not None:
+                return Position(*clamp_to_work_area(x, y, width * scale, height * scale, area))
+            return Position(round(x), round(y))
         monitor = self._monitor_for_position(x, y)
         edge_padding = self.EDGE_PADDING_PX
         bottom_padding = self.BOTTOM_PADDING_PX

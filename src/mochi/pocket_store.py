@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import sys
 from pathlib import Path
 import time
 from typing import Iterable
@@ -30,7 +31,7 @@ class PocketStore:
         images_dir: Path | None = None,
     ) -> None:
         data_home = Path(
-            os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")
+            os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local") if sys.platform == "win32" else os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")
         )
         root = data_home / "mochi-desktop" / "pocket"
         self.path = path or root / "pocket.json"

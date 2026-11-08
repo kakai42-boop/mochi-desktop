@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable
 import logging
+import sys
 import time
 from urllib.parse import unquote, urlparse
 
@@ -228,6 +229,9 @@ class MusicActivityMonitor:
         self._on_music_started = on_music_started
         self._on_music_stopped = on_music_stopped
         self._logger = logger or logging.getLogger(__name__)
+        if backend is None and sys.platform == "win32":
+            from mochi.windows.media import WindowsMediaBackend
+            backend = WindowsMediaBackend()
         self._backend = backend or MprisMusicBackend()
         self._clock = clock
         self._source_id: int | None = None

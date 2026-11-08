@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import sys
 from pathlib import Path
 
 import gi
@@ -12,6 +13,8 @@ from gi.repository import Gio, GLib, Gtk  # noqa: E402
 
 from mochi.agent_activity import AGENT_EVENTS, AGENT_TOKEN_PATTERN
 from mochi.color_scheme import SystemColorSchemeSync
+if sys.platform == "win32":
+    from mochi.windows.theme import WindowsColorSchemeSync as SystemColorSchemeSync
 from mochi.config import ConfigStore
 from mochi.presence.click_dialogue import PresenceBuddy, PresenceX11Buddy
 from mochi.sound import SoundEvent, SoundManager
@@ -43,8 +46,9 @@ class MochiApplication(Gtk.Application):
                 if preview_animations
                 else "io.github.mochi_desktop.Mochi"
             ),
-            flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
+            flags=(Gio.ApplicationFlags.NON_UNIQUE if sys.platform == "win32" else Gio.ApplicationFlags.DEFAULT_FLAGS),
         )
+        self._windows_agent_receiver = None
         self.config = config
         self.preview_animations = preview_animations
         self.update_ready_file = update_ready_file
@@ -106,6 +110,14 @@ class MochiApplication(Gtk.Application):
             preview_mode=self.preview_animations,
         )
         self._buddy = buddy
+        if sys.platform == "win32" and not self.preview_animations:
+            from mochi.windows.agent_ipc import AgentReceiver
+            self._windows_agent_receiver = AgentReceiver(buddy.receive_agent_event)
+            try:
+                self._windows_agent_receiver.start()
+            except OSError:
+                self._windows_agent_receiver.stop()
+                self._logger.exception("Windows agent bridge unavailable")
         window.set_child(buddy)
 
         css = Gtk.CssProvider()
@@ -274,11 +286,20 @@ class MochiApplication(Gtk.Application):
             self.sound.play(SoundEvent.SPAWN)
 
     def do_shutdown(self) -> None:
+        stop_theme = getattr(self._color_scheme_sync, "stop", None)
+        if callable(stop_theme):
+            stop_theme()
+        if self._windows_agent_receiver is not None:
+            self._windows_agent_receiver.stop()
+            self._windows_agent_receiver = None
         if self._buddy is not None:
             self._buddy.shutdown_presence()
             self._buddy = None
         if not self.preview_animations:
             self.sound.play(SoundEvent.EXIT)
+        close_audio = getattr(self.sound.backend, "close", None)
+        if callable(close_audio):
+            close_audio()
         Gtk.Application.do_shutdown(self)
 
     def _configure_mapped_window(

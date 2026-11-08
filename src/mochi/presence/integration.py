@@ -18,6 +18,15 @@ from .phrases import INTRO_MARKUP
 from .signals import AppCategorySignalAdapter, SystemSignalMonitor
 from .session import SessionSignalMonitor
 
+import sys
+if sys.platform == "win32":
+    from mochi.windows.activity import (
+        WindowsAppCategoryMonitor as AppCategorySignalAdapter,
+        WindowsSystemMonitor as SystemSignalMonitor,
+        WindowsSessionMonitor as SessionSignalMonitor,
+    )
+
+
 
 class PresenceBuddyMixin:
     """Add AmbiSense without changing Buddy's proven interaction code."""

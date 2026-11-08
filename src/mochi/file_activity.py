@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import logging
+import sys
 from pathlib import Path
 import time
 
@@ -218,6 +219,9 @@ class FileActivityMonitor:
         self._on_file_activity_started = on_file_activity_started
         self._on_file_activity_stopped = on_file_activity_stopped
         self._logger = logger or logging.getLogger(__name__)
+        if file_context_backend is None and sys.platform == "win32":
+            from mochi.windows.activity import WindowsFileContextBackend
+            file_context_backend = WindowsFileContextBackend()
         self._file_context_backend = file_context_backend or GnomeShellFileContextBackend()
         self._downloads_backend = downloads_backend or DownloadsActivityBackend()
         self._clock = clock
