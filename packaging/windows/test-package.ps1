@@ -74,7 +74,7 @@ try {
 } finally {
     $logs = Join-Path $env:LOCALAPPDATA 'mochi-desktop'
     if (Test-Path $logs) {
-        Get-ChildItem $logs -Filter '*.log' | Copy-Item -Destination $reportDir
+        Get-ChildItem $logs -File | Where-Object { $_.Extension -in '.log', '.json' } | Copy-Item -Destination $reportDir
     }
     $env:LOCALAPPDATA = $oldLocal
     $env:APPDATA = $oldRoaming

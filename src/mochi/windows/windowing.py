@@ -1,4 +1,7 @@
 """GDK Win32 surfaces connected to native placement, in device pixels."""
+import ctypes
+from functools import lru_cache
+
 from mochi.windows.native import desktop
 
 
@@ -11,7 +14,28 @@ def handle(window):
     from gi.repository import GdkWin32
     if not isinstance(surface, GdkWin32.Win32Surface):
         return None
-    return surface.get_handle()
+    return native_surface_handle(surface)
+
+
+@lru_cache(maxsize=1)
+def _gtk_handle_function():
+    # HWND is not introspectable in the bundled GI typelib. Call GTK's public
+    # C ABI with the GObject pointer; never truncate pointers through c_int.
+    gtk = ctypes.CDLL('libgtk-4-1.dll')
+    function = gtk.gdk_win32_surface_get_handle
+    function.argtypes = [ctypes.c_void_p]
+    function.restype = ctypes.c_void_p
+    return function
+
+
+def native_surface_handle(surface, function=None):
+    capsule_pointer = ctypes.pythonapi.PyCapsule_GetPointer
+    capsule_pointer.argtypes = [ctypes.py_object, ctypes.c_char_p]
+    capsule_pointer.restype = ctypes.c_void_p
+    pointer = capsule_pointer(surface.__gpointer__, None)
+    if not pointer:
+        return None
+    return (function or _gtk_handle_function())(pointer)
 
 
 def move_window(window, x, y):

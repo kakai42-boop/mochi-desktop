@@ -217,3 +217,5 @@ Initial desktop-companion foundation: core windowing, sprite animation, movement
 
 - Reject stale native smoke reports; add install/reinstall/uninstall CI checks.
 - Fail silent setup/uninstall explicitly when Mochi is open. Native Windows execution remains pending.
+
+- Fix the packaged GTK Win32 handle bridge using the typed C ABI; native CI exposed a missing introspected method.

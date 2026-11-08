@@ -1,3 +1,16 @@
+## Exécution GitHub du 9 novembre 2026
+
+La branche windows11-port et la PR #1 sont publiées sur kakai42-boop/mochi-desktop.
+La CI Linux a réussi : 1394 passed, 4 skipped, 4 warnings, 48 subtests passed in 32.17s.
+La construction du paquet Windows a réussi. Le premier démarrage natif a échoué :
+GdkWin32Toplevel ne publie pas get_handle dans les bindings Python embarqués.
+Le pont utilise désormais gdk_win32_surface_get_handle via ctypes et la capsule
+GObject, avec types pointeurs explicites. Deux tests de régression supplémentaires
+passent (31 tests ciblés au total). Nouvelle exécution native requise.
+
+Ce constat remplace les limites d'accès GitHub et de tests Linux indiquées dans
+l'historique ci-dessous. La validation interactive Windows 11 reste à effectuer.
+
 # Avancement du 9 novembre 2026 — qualification en cours
 
 **Sources mises à jour ; l'installateur livré le 29 octobre reste inchangé.**
