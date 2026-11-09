@@ -41,6 +41,8 @@ function Test-Mochi([string]$Root, [string]$Label) {
     Copy-Item $report (Join-Path $reportDir "$Label.json")
 }
 
+. (Join-Path $PSScriptRoot "test-update.ps1")
+
 try {
     Expand-Archive (Join-Path $Packages 'Mochi-Windows11-Portable.zip') (Join-Path $work 'Portable')
     Test-Mochi (Join-Path $work 'Portable\Mochi') 'portable'
@@ -64,6 +66,14 @@ try {
         New-Item -ItemType Directory -Force (Split-Path $file) | Out-Null
         Set-Content -LiteralPath $file -Value 'preserve-this-data' -NoNewline
     }
+    $normalConfig = Join-Path $env:APPDATA 'mochi\config.json'
+    Set-Content -LiteralPath $normalConfig -Value '{"update_checks_enabled":false}'
+    $unmanaged = Join-Path $installed 'qa unrelated.txt'
+    Set-Content -LiteralPath $unmanaged -Value 'keep-unmanaged'
+    Test-UpdateTransaction $installed (Join-Path $work 'Portable\Mochi') $false
+    Test-UpdateTransaction $installed (Join-Path $work 'Portable\Mochi') $true
+    if ((Get-Content -LiteralPath $unmanaged) -ne 'keep-unmanaged') { throw 'Update changed an unmanaged file.' }
+    Remove-Item -LiteralPath $unmanaged
     Invoke-Bounded $setup ("/S /D=" + $installed) 300
     Test-Mochi $installed 'reinstalled'
     # _?= avoids NSIS spawning an untracked temporary uninstaller process.

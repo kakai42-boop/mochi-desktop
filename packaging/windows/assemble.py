@@ -2,6 +2,8 @@
 import argparse
 import hashlib
 import json
+import os
+import subprocess
 from pathlib import Path
 import shutil
 
@@ -22,8 +24,17 @@ def assemble(destination):
     files = {}
     for path in sorted((destination / 'src').rglob('*.py')):
         files[path.relative_to(destination).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
-    info = {'version': '0.4.1-win-preview1', 'upstream_commit': '471342631206c40d56bbba016578926e16ca8d0b',
-            'target': 'Windows 11 x64', 'windows11_manual_qa': False, 'source_sha256': files}
+    source_commit = os.environ.get('GITHUB_SHA')
+    if not source_commit and (root / '.git').exists():
+        source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+    info = {
+        'source_commit': source_commit,
+        'version': '0.4.1-win-preview1',
+        'upstream_commit': '471342631206c40d56bbba016578926e16ca8d0b',
+        'target': 'Windows 11 x64',
+        'windows11_manual_qa': False,
+        'source_sha256': files,
+    }
     (destination / 'build-info.json').write_text(json.dumps(info, indent=2), encoding='utf-8')
 
 

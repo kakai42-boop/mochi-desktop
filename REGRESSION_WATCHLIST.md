@@ -289,3 +289,7 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] Grow and shrink Mochi while Mochi Lab is open; check mixed display scaling separately.
 - [ ] After a topmost demotion, restore the Windows companion above other windows without taking focus.
 - [ ] From Pocket, open a file's folder in Explorer, including spaces and accents in the path.
+
+- [ ] Check the stable and preview Windows release channels with matching, verified Windows assets.
+- [ ] Apply a Windows update, then force a startup failure and verify rollback and relaunch.
+- [ ] Preserve preferences, Pocket, uninstaller and unrelated install-folder entries across the swap.

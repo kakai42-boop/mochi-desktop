@@ -1,4 +1,4 @@
-> **Windows 11 x64 — préversion de portage** : un installateur et un lanceur autonomes sont fournis par cette branche. Aucun Python système requis. Lire [le guide Windows](docs/WINDOWS11.txt) et [le bilan de validation](docs/WINDOWS_VALIDATION.md). La qualification réelle Windows 11 reste à faire ; mises à jour automatiques, détection des onglets et présence sur tous les bureaux virtuels ne sont pas encore portées. Le texte Linux original ci-dessous reste la référence amont.
+> **Windows 11 x64 — préversion de portage** : cette branche fournit un installateur autonome avec Python et GTK inclus. Consulte [le guide Windows](docs/WINDOWS11.txt), [les fonctions à vérifier](docs/WINDOWS_FEATURE_PARITY.md) et [les canaux de mise à jour](docs/WINDOWS_RELEASES.md). Les essais interactifs sur Windows 11 restent distincts de la qualification automatisée.
 
 <div align="center">
 

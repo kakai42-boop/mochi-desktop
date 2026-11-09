@@ -26,7 +26,7 @@ prouve son ouverture, pas la disponibilité de toutes ses fonctions.
 | Guide, catalogue et Mochi Lab | Fenêtres natives vérifiées. | Tester les raccourcis et les actions du catalogue et du Lab. |
 | Agent Companion | Récepteur local Windows créé en mode normal. | Envoyer des événements d'agent et vérifier animations et fin de session. |
 | Installation et données | Installation, réinstallation et désinstallation silencieuses vérifiées en CI avec chemins accentués et fichiers témoins préservés. | Installer avec l'assistant sous un compte Windows 11 standard et démarrer par le raccourci. |
-| Mise à jour et retour arrière | Installation manuelle disponible. | Fournir et qualifier le canal Windows, la mise à jour intégrée et le retour arrière. |
+| Mise à jour et retour arrière | Découverte par canal, vérification et transaction intégrées. | Publier un paquet Windows vérifié puis essayer la mise à jour depuis une version antérieure sur Windows 11. |
 | Bureaux virtuels | Le suivi utilise une fenêtre au premier plan et, à défaut, l’identifiant du bureau actif quand l’Explorateur le fournit. Tests de décision et nettoyage COM couverts. | Basculer entre deux bureaux, puis vérifier le comportement sur un bureau vide. L'épinglage dans la Vue des tâches reste un comportement distinct. |
 
 La suite Linux de cette révision donne 1 420 tests réussis, 5 ignorés et deux avertissements GTK.

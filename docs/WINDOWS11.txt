@@ -20,7 +20,9 @@ Préférences et progression : %APPDATA%\mochi\config.json
 Pocket : %LOCALAPPDATA%\mochi-desktop\pocket
 Journaux : %LOCALAPPDATA%\mochi-desktop\mochi.log et startup.log
 La désinstallation conserve les données personnelles.
-Pour une mise à jour : ferme Mochi et lance le nouvel installateur Windows.
+Pour passer d'une ancienne préversion à cette version : ferme Mochi puis lance
+le nouvel installateur par-dessus. Ensuite, le menu « Check for updates » peut
+proposer un paquet publié sur le canal Windows sélectionné.
 
 ETAT DE CETTE PREVERSION
 Le code des animations, interactions, Bond, Focus, catalogue et Pocket vient
@@ -29,7 +31,9 @@ Les tests automatisés couvrent le lancement et le cycle d'installation sous
 Windows Server. Les essais interactifs sous Windows 11 restent à terminer.
 
 DIFFERENCES ET LIMITES CONNUES
-- Mise à jour Windows manuelle : aucun canal de publication automatique n'est configuré.
+- Le menu de mise à jour nécessite un paquet Windows publié sur le canal choisi.
+  Après « Update & Restart », Mochi vérifie le paquet avant de redémarrer et tente
+  de restaurer les anciens fichiers si le nouveau lancement échoue.
 - Réactions musique/vidéo : seulement pour les applications qui publient un type
   de lecture dans Windows. Aucun titre, URL ou contenu média n'est lu.
 - Le navigateur doit émettre une notification Windows lors du changement de page
