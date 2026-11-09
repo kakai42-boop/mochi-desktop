@@ -96,8 +96,12 @@ class NativeDesktop:
             return False
         width = client_width + (outer.right - outer.left) - (client.right - client.left)
         height = client_height + (outer.bottom - outer.top) - (client.bottom - client.top)
+        # GDK's previous fixed-size constraints can still be active until the
+        # next frame. Skip WM_WINDOWPOSCHANGING so it cannot clamp this explicit
+        # size request back to the old size. WM_WINDOWPOSCHANGED still reaches GDK.
+        flags = 0x04 | 0x10 | 0x0400  # NOZORDER, NOACTIVATE, NOSENDCHANGING
         return bool(self.user32.SetWindowPos(hwnd, None, round(x), round(y),
-                                           round(width), round(height), 0x04 | 0x10))
+                                           round(width), round(height), flags))
 
     def repair_overlay(self, hwnd, foreground, foreground_changed):
         style = self.user32.GetWindowLongPtrW(hwnd, -20)
