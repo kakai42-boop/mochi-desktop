@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 import threading
+import time
 import tempfile
 import traceback
 from types import SimpleNamespace
@@ -223,7 +224,9 @@ def run(data):
                 rect = RECT()
                 assert menu.get_visible() and user32.GetWindowRect(handle(menu.window), c.byref(rect))
                 assert area[0] <= rect.left < rect.right <= area[2], 'Menu extends outside the monitor'
-                assert area[1] <= rect.top < rect.bottom <= area[3], 'Menu overlaps the taskbar or monitor edge'
+                assert area[1] <= rect.top < rect.bottom <= area[3], (
+                    f'Menu overlaps the taskbar or monitor edge: {rect.top}:{rect.bottom} outside {area}'
+                )
                 menu.popdown()
                 result['checks'].append('native_edge_menu_work_area')
                 exercise_pocket_folder()
@@ -273,9 +276,21 @@ def run(data):
 
         def exercise_mood_bridge():
             import io
+            from mochi.windows.browser_mood import Countdown
 
             app.set_browser_mood(True, 1)
             assert config.load_browser_mood() == (True, 1)
+            controller = app._windows_mood
+            foreground = desktop().user32.GetForegroundWindow()
+            assert foreground, 'No foreground window for passive warning test'
+            now = time.monotonic()
+            controller.mood.countdown = Countdown('test', (foreground, 'chrome'), now + 10)
+            controller._show_warning(now)
+            assert controller.warning.get_mapped(), 'Countdown did not map'
+            assert desktop().user32.GetForegroundWindow() == foreground, 'Countdown took focus'
+            controller.reset()
+            assert not controller.warning.get_visible(), 'Countdown did not hide'
+            result['checks'].append('browser_mood_passive_countdown')
 
             def request(expected, complete):
                 def run_host():
@@ -346,9 +361,11 @@ def run(data):
                 buddy = app._buddy
                 assert buddy is not None, 'Normal-mode initialization failed'
                 required = {'header', 'sleep', 'close', 'focus', 'feed', 'bond', 'pocket',
-                            'status', 'stay-put', 'edge-roam', 'quick-start', 'update', 'windows_settings'}
+                            'status', 'stay-put', 'edge-roam', 'quick-start', 'update'}
                 missing = required.difference(buddy._context_menu_rows)
                 assert not missing, 'Missing Linux menu entries: ' + repr(missing)
+                gear = buddy._context_menu_rows['header'].get_last_child()
+                assert gear.get_tooltip_text() == 'Windows settings'
                 result['menu_rows'] = list(buddy._context_menu_row_order)
                 result['virtual_desktop_manager_available'] = app._windows_desktop_follower.manager is not None
                 assert buddy._typing_monitor.available, 'Typing hook not active'
@@ -387,6 +404,6 @@ def run(data):
             result['errors'].append(traceback.format_exc())
         finally:
             sys.excepthook = old_hook
-            result['passed'] = not result['errors'] and len(result['checks']) == 18
+            result['passed'] = not result['errors'] and len(result['checks']) == 19
             report.write_text(json.dumps(result, indent=2), encoding='utf-8')
     return 0 if result['passed'] else 1

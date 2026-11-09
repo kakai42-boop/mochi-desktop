@@ -138,6 +138,12 @@ class NativeDesktop:
         self.user32.SetWindowLongPtrW(hwnd, -20, style)
         return bool(self.user32.SetWindowPos(hwnd, -1, 0, 0, 0, 0, 0x01 | 0x02 | 0x10 | 0x20))
 
+    def show_passive(self, hwnd, x, y):
+        flags = 0x01 | 0x10 | 0x40  # NOSIZE, NOACTIVATE, SHOWWINDOW
+        return self.keep_above(hwnd, passive=True) and bool(
+            self.user32.SetWindowPos(hwnd, -1, round(x), round(y), 0, 0, flags)
+        )
+
     def work_area(self, x, y):
         monitor = self.user32.MonitorFromPoint(POINT(round(x), round(y)), 2)
         return self.monitor_work_area(monitor)

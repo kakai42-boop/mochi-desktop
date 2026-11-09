@@ -9,7 +9,7 @@ from gi.repository import GLib, Gtk
 from mochi.windows.browser_mood import BrowserMood
 from mochi.windows.browser_mood_transport import MoodBridge, register_host
 from mochi.windows.native import desktop
-from mochi.windows.windowing import apply_sticky_dock_properties, move_window
+from mochi.windows.windowing import handle
 
 
 BROWSERS = {'chrome.exe': 'chrome', 'msedge.exe': 'edge'}
@@ -149,13 +149,16 @@ class BrowserMoodController:
         if not self.warning.get_visible():
             monitor = self.api.monitor_for_window(countdown.foreground[0])
             area = self.api.monitor_work_area(monitor)
-            if area is None or not apply_sticky_dock_properties(self.warning):
+            hwnd = handle(self.warning)
+            if area is None or not hwnd or not self.api.show_passive(hwnd, area[0] + 24, area[1] + 24):
                 self.mood.reset()
                 return
-            if not move_window(self.warning, area[0] + 24, area[1] + 24):
-                self.mood.reset()
-                return
+            # Show without activation before mapping GTK. GDK Win32 skips
+            # ShowWindow(SW_SHOWNORMAL) for an already visible native surface.
             self.warning.set_visible(True)
+            if self.api.user32.GetForegroundWindow() != countdown.foreground[0]:
+                self.mood.reset()
+                self.warning.set_visible(False)
 
     def reset(self):
         self.mood.reset()

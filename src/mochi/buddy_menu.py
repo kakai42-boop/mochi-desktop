@@ -156,6 +156,13 @@ class BuddyMenuController:
         header_text.append(title)
         header_text.append(subtitle)
         header.append(header_text)
+        if sys.platform == "win32" and not self._buddy._preview_mode:
+            header_text.set_hexpand(True)
+            settings = Gtk.Button.new_from_icon_name("preferences-system-symbolic")
+            settings.add_css_class("flat")
+            settings.set_tooltip_text("Windows settings")
+            settings.connect("clicked", self._show_windows_settings)
+            header.append(settings)
         self._buddy._initialize_context_menu_layout(popover, card)
         self._buddy._register_context_menu_row("header", header, animated=False)
 
@@ -176,12 +183,6 @@ class BuddyMenuController:
         )
         close_button.add_css_class("mochi-menu-secondary")
         self._buddy._register_context_menu_row("close", close_button)
-
-        if sys.platform == "win32" and not self._buddy._preview_mode:
-            settings, _ = self._buddy._make_menu_button(
-                "Windows settings", "preferences-system-symbolic", self._show_windows_settings,
-            )
-            self._buddy._register_context_menu_row("windows_settings", settings, before="close")
 
         popover.set_child(card)
         return popover

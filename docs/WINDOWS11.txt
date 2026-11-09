@@ -15,15 +15,15 @@ Ctrl+Alt+E : catalogue. Ctrl+Alt+Maj+M : Mochi Lab.
 Pour quitter : clic droit sur Mochi, puis Close.
 
 PARAMETRES WINDOWS
-Clic droit sur Mochi, puis Windows settings.
+Clic droit sur Mochi, puis clique sur l’engrenage « Windows settings ».
 « Suivre l’écran actif » déplace Mochi vers l’écran de la fenêtre active.
 Désactive « Stay put » pour laisser Mochi changer d’écran automatiquement.
 « Humeur taquine » est désactivée par défaut. Elle demande l’extension
 Mochi Browser Mood pour Chrome ou Edge. Dans chrome://extensions ou
 edge://extensions, active le mode développeur, puis « Charger l’extension
 non empaquetée ». Sélectionne le dossier indiqué dans les réglages de Mochi.
-Coche l’option dans Mochi et enregistre le délai souhaité. Le contrôle du
-navigateur peut commencer jusqu’à 30 secondes après le délai configuré.
+Coche l’option dans Mochi et enregistre le délai souhaité. Le navigateur
+vérifie périodiquement si le délai configuré est écoulé.
 Le compte à rebours de 10 secondes peut être annulé. L’onglet doit rester
 actif, hors plein écran, non épinglé et dans une fenêtre normale avec au
 moins deux onglets. Une saisie non enregistrée peut être perdue.
