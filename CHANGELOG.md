@@ -6,6 +6,9 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Make the documented double-click heart available through the shared Linux and Windows click path.
+
+
 ### Windows 11 port preview
 
 - Add native Win32 placement/work-area handling, anonymous typing, hotkeys, session/app/power signals, local agent messages, Windows media playback observation and bundled GStreamer audio.

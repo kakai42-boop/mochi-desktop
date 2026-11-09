@@ -8,3 +8,8 @@
 6. Record actual evidence and remaining Windows 11 interactive checks.
 
 The user has authorized implementation; no additional design approval is needed.
+
+Follow-up from the Quick Start screenshot: exercise the right-click menu through
+Win32 input on the disposable runner. Cover single/double-click reactions and the
+Focus start/pause/resume/cancel path. Restore the documented double-click heart
+through the shared click handling, preserving drag release and Fedora click counts.

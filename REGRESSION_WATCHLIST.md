@@ -280,3 +280,7 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] Browser tab/navigation pulses require the focused browser and recent input; no title/text reads
 - [ ] Native normal-mode test opens context/developer menus and Focus/Pocket/help/emote windows
 - [ ] Browsers: test keyboard and mouse tab switches, background updates and idle suppression
+
+- [ ] Windows native input opens the right-click menu, starts a left-click reaction and plays the double-click heart.
+- [ ] A native drag moves the HWND and clears the held state on release.
+- [ ] Focus starts, pauses, resumes and cancels from the normal Windows application.
