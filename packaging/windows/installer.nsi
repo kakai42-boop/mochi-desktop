@@ -91,5 +91,9 @@ Section "Uninstall"
   RMDir "$INSTDIR"
   DeleteRegKey HKCU "Software\MochiDesktopWindows"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\MochiDesktopWindows"
+  DeleteRegKey HKCU "Software\Google\Chrome\NativeMessagingHosts\com.mochidesktop.browser_mood"
+  DeleteRegKey HKCU "Software\Microsoft\Edge\NativeMessagingHosts\com.mochidesktop.browser_mood"
+  Delete "$LOCALAPPDATA\mochi-desktop\browser-mood-host.json"
+  Delete "$LOCALAPPDATA\mochi-desktop\browser-mood-endpoint.json"
   ; User configuration, Bond and Pocket are deliberately retained outside INSTDIR.
 SectionEnd

@@ -100,6 +100,10 @@ def smoke_test():
 
 def main():
     try:
+        if len(sys.argv) > 1 and sys.argv[1].startswith('chrome-extension://'):
+            sys.path.insert(0, str(ROOT / 'src'))
+            from mochi.windows.browser_mood_transport import host_main
+            return host_main(sys.argv[1])
         if '--agent-signal' in sys.argv:
             sys.path.insert(0, str(ROOT / 'src'))
             from mochi.agent_signal import main as agent_main

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import time
+import sys
 
 import gi
 
@@ -176,8 +177,17 @@ class BuddyMenuController:
         close_button.add_css_class("mochi-menu-secondary")
         self._buddy._register_context_menu_row("close", close_button)
 
+        if sys.platform == "win32" and not self._buddy._preview_mode:
+            settings, _ = self._buddy._make_menu_button(
+                "Windows settings", "preferences-system-symbolic", self._show_windows_settings,
+            )
+            self._buddy._register_context_menu_row("windows_settings", settings, before="close")
+
         popover.set_child(card)
         return popover
+
+    def _show_windows_settings(self, _button) -> None:
+        self._buddy._close_context_menu_then(self._buddy._window.get_application().show_windows_settings)
 
     def _build_developer_menu(self) -> MenuWindow:
         """Developer-only controls opened by Mochi's private global shortcut."""

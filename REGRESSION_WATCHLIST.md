@@ -293,3 +293,8 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] Check the stable and preview Windows release channels with matching, verified Windows assets.
 - [ ] Apply a Windows update, then force a startup failure and verify rollback and relaunch.
 - [ ] Preserve preferences, Pocket, uninstaller and unrelated install-folder entries across the swap.
+
+- [ ] Windows settings toggles active-screen following, respects Stay put and ignores the mouse crossing by itself.
+- [ ] With two physical monitors, switch foreground apps, drag Mochi and test mixed scaling without focus theft.
+- [ ] Chrome/Edge mood warns for ten seconds, targets the same tab and cancels on switch, fullscreen, attention or disconnect.
+- [ ] Enable and disable mood in Windows settings and verify the native host only connects while enabled.

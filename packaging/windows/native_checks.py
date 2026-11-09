@@ -6,7 +6,9 @@ import ctypes as c
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
+import threading
 import tempfile
 import traceback
 from types import SimpleNamespace
@@ -47,6 +49,7 @@ def run(data):
     from mochi.pocket import make_local_file_item
     from mochi.pocket_window import PocketWindow
     from mochi.state import MochiState
+    from mochi.windows.browser_mood_transport import ORIGIN, read_message, write_message
     from mochi.windows.native import desktop, RECT
     from mochi.windows.windowing import handle
 
@@ -268,6 +271,55 @@ def run(data):
                 return fail()
             return False
 
+        def exercise_mood_bridge():
+            import io
+
+            app.set_browser_mood(True, 1)
+            assert config.load_browser_mood() == (True, 1)
+
+            def request(expected, complete):
+                def run_host():
+                    error = None
+                    try:
+                        payload = io.BytesIO()
+                        write_message(payload, {'op': 'status'})
+                        exe = Path(__file__).with_name('Mochi.exe')
+                        host = subprocess.run(
+                            [str(exe), ORIGIN, '--parent-window=0'], input=payload.getvalue(),
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True,
+                            timeout=8, creationflags=subprocess.CREATE_NO_WINDOW,
+                        )
+                        response = read_message(io.BytesIO(host.stdout))
+                        assert response == expected, f'Unexpected mood host response: {response}'
+                    except Exception:
+                        error = traceback.format_exc()
+
+                    def on_complete():
+                        if error:
+                            result['errors'].append(error)
+                            app.quit()
+                        else:
+                            try:
+                                complete()
+                            except Exception:
+                                return fail()
+                        return False
+
+                    GLib.idle_add(on_complete)
+
+                threading.Thread(target=run_host, daemon=True).start()
+
+            def disabled():
+                result['checks'].append('browser_mood_host_roundtrip')
+                later(750, begin_clicks)
+
+            def connected():
+                app.set_browser_mood(False, 1)
+                assert config.load_browser_mood() == (False, 1)
+                request({}, disabled)
+
+            request({'connected': True}, connected)
+
         def next_step():
             try:
                 if not steps:
@@ -279,7 +331,7 @@ def run(data):
                     assert config.load_stay_put() is before
                     result['checks'].append('preference_roundtrip')
                     exercise_focus()
-                    later(750, begin_clicks)
+                    exercise_mood_bridge()
                     return False
                 name, show, get_window, close = steps.pop(0)
                 show()
@@ -294,7 +346,7 @@ def run(data):
                 buddy = app._buddy
                 assert buddy is not None, 'Normal-mode initialization failed'
                 required = {'header', 'sleep', 'close', 'focus', 'feed', 'bond', 'pocket',
-                            'status', 'stay-put', 'edge-roam', 'quick-start', 'update'}
+                            'status', 'stay-put', 'edge-roam', 'quick-start', 'update', 'windows_settings'}
                 missing = required.difference(buddy._context_menu_rows)
                 assert not missing, 'Missing Linux menu entries: ' + repr(missing)
                 result['menu_rows'] = list(buddy._context_menu_row_order)
@@ -315,6 +367,14 @@ def run(data):
                                   lambda obj=obj: obj().popdown() if hasattr(obj(), 'popdown') else obj().window.hide()))
                 steps.append(('pocket_window', buddy._show_pocket_window,
                               lambda: buddy._pocket_window, lambda: buddy._pocket_window.hide()))
+                settings = None
+
+                def show_settings():
+                    nonlocal settings
+                    settings = app.show_windows_settings()
+
+                steps.append(('windows_settings', show_settings, lambda: settings,
+                              lambda: settings.close()))
                 next_step()
             except Exception:
                 return fail()
@@ -327,6 +387,6 @@ def run(data):
             result['errors'].append(traceback.format_exc())
         finally:
             sys.excepthook = old_hook
-            result['passed'] = not result['errors'] and len(result['checks']) == 16
+            result['passed'] = not result['errors'] and len(result['checks']) == 18
             report.write_text(json.dumps(result, indent=2), encoding='utf-8')
     return 0 if result['passed'] else 1

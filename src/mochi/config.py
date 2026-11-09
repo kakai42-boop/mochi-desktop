@@ -105,6 +105,27 @@ class ConfigStore:
         self._save(data)
         self._logger.debug("Stay put: %s", bool(enabled))
 
+    def load_follow_active_screen(self) -> bool:
+        return self._load_or_empty().get("follow_active_screen") is True
+
+    def save_follow_active_screen(self, enabled: bool) -> None:
+        data = self._load_or_empty()
+        data["follow_active_screen"] = bool(enabled)
+        self._save(data)
+
+    def load_browser_mood(self) -> tuple[bool, int]:
+        data = self._load_or_empty()
+        minutes = data.get("browser_mood_minutes")
+        if type(minutes) is not int or not 1 <= minutes <= 240:
+            minutes = 60
+        return data.get("browser_mood_enabled") is True, minutes
+
+    def save_browser_mood(self, enabled: bool, minutes: int) -> None:
+        data = self._load_or_empty()
+        data["browser_mood_enabled"] = bool(enabled)
+        data["browser_mood_minutes"] = max(1, min(240, minutes))
+        self._save(data)
+
     def load_edge_roam(self) -> bool:
         """Return whether autonomous wandering should stay on screen edges."""
         try:

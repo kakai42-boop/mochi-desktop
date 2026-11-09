@@ -6,6 +6,8 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Add an optional Windows active-screen follower and an opt-in browser mood countdown for Chrome and Edge.
+
 - Add Windows release discovery, verified package preparation and startup rollback through the shared update menu.
 
 - Resize the Windows companion in both directions, recover its topmost placement without taking focus, and open Pocket folders in Explorer.

@@ -1,4 +1,5 @@
 > **Windows 11 x64 — préversion de portage** : cette branche fournit un installateur autonome avec Python et GTK inclus. Consulte [le guide Windows](docs/WINDOWS11.txt), [les fonctions à vérifier](docs/WINDOWS_FEATURE_PARITY.md) et [les canaux de mise à jour](docs/WINDOWS_RELEASES.md). Les essais interactifs sur Windows 11 restent distincts de la qualification automatisée.
+> Le menu « Windows settings » propose le suivi de l’écran actif et une humeur taquine optionnelle pour Chrome et Edge.
 
 <div align="center">
 

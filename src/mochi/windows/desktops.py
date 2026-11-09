@@ -84,13 +84,14 @@ class DesktopFollower:
     """Move Mochi's window after an active-desktop switch, with no activation."""
 
     def __init__(self, window, foreground, *, manager, scheduler, repair_overlay=None,
-                 desktop_hint=None):
+                 desktop_hint=None, monitor_follower=None):
         self.window = window
         self.foreground = foreground
         self.manager = manager
         self.scheduler = scheduler
         self.repair_overlay = repair_overlay
         self.desktop_hint = desktop_hint
+        self.monitor_follower = monitor_follower
         self._foreground = None
         self.source = scheduler.timeout_add(750, self.sample)
 
@@ -117,6 +118,8 @@ class DesktopFollower:
             self.repair_overlay(hwnd, foreground if on_current else None,
                                 on_current and foreground != self._foreground)
         self._foreground = foreground if on_current else None
+        if self.monitor_follower is not None:
+            self.monitor_follower.sample(hwnd, self._foreground)
         return True
 
     def stop(self):

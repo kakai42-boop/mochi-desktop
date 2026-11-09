@@ -73,6 +73,9 @@ class NativeDesktop:
         bind(u, 'GetWindowLongPtrW', c.c_ssize_t, HANDLE, c.c_int)
         bind(u, 'SetWindowLongPtrW', c.c_ssize_t, HANDLE, c.c_int, c.c_ssize_t)
         bind(u, 'MonitorFromPoint', HANDLE, POINT, DWORD)
+        bind(u, 'MonitorFromWindow', HANDLE, HANDLE, DWORD)
+        bind(u, 'GetShellWindow', HANDLE)
+        bind(u, 'GetClassNameW', c.c_int, HANDLE, c.c_wchar_p, c.c_int)
         bind(u, 'GetMonitorInfoW', BOOL, HANDLE, c.POINTER(MONITORINFO))
         bind(u, 'GetLastInputInfo', BOOL, c.POINTER(LASTINPUTINFO))
         bind(u, 'GetForegroundWindow', HANDLE)
@@ -137,12 +140,44 @@ class NativeDesktop:
 
     def work_area(self, x, y):
         monitor = self.user32.MonitorFromPoint(POINT(round(x), round(y)), 2)
+        return self.monitor_work_area(monitor)
+
+    def same_thread(self, first, second):
+        return (self.user32.GetWindowThreadProcessId(first, None)
+                == self.user32.GetWindowThreadProcessId(second, None))
+
+    def shell_window(self, hwnd):
+        name = c.create_unicode_buffer(64)
+        self.user32.GetClassNameW(hwnd, name, len(name))
+        return hwnd == self.user32.GetShellWindow() or name.value in {
+            'Progman', 'WorkerW', 'Shell_TrayWnd', 'Shell_SecondaryTrayWnd',
+        }
+
+    def monitor_for_window(self, hwnd):
+        return self.user32.MonitorFromWindow(hwnd, 0)
+
+    def _monitor_info(self, monitor):
         info = MONITORINFO()
         info.cbSize = c.sizeof(info)
         if not monitor or not self.user32.GetMonitorInfoW(monitor, c.byref(info)):
             return None
+        return info
+
+    def monitor_work_area(self, monitor):
+        info = self._monitor_info(monitor)
+        if info is None:
+            return None
         r = info.rcWork
         return r.left, r.top, r.right, r.bottom
+
+    def fullscreen(self, hwnd):
+        info = self._monitor_info(self.monitor_for_window(hwnd))
+        rect = RECT()
+        if info is None or not self.user32.GetWindowRect(hwnd, c.byref(rect)):
+            return None
+        screen = info.rcMonitor
+        return (rect.left <= screen.left and rect.top <= screen.top
+                and rect.right >= screen.right and rect.bottom >= screen.bottom)
 
     def idle_seconds(self):
         info = LASTINPUTINFO(c.sizeof(LASTINPUTINFO), 0)
@@ -152,18 +187,22 @@ class NativeDesktop:
 
     def foreground(self):
         hwnd = self.user32.GetForegroundWindow()
+        path = self.executable(hwnd)
+        return hwnd, classify_executable(path), PureWindowsPath(path).name.casefold() == 'explorer.exe'
+
+    def executable(self, hwnd):
         pid = DWORD()
         self.user32.GetWindowThreadProcessId(hwnd, c.byref(pid))
         process = self.kernel32.OpenProcess(0x1000, False, pid.value)
         if not process:
-            return hwnd, 'unknown', False
+            return ''
         try:
             buffer = c.create_unicode_buffer(32768)
             size = DWORD(len(buffer))
             if not self.kernel32.QueryFullProcessImageNameW(process, 0, buffer, c.byref(size)):
-                return hwnd, 'unknown', False
+                return ''
             # Discard the executable path immediately; never inspect window titles.
-            return hwnd, classify_executable(buffer.value), PureWindowsPath(buffer.value).name.casefold() == 'explorer.exe'
+            return buffer.value
         finally:
             self.kernel32.CloseHandle(process)
 

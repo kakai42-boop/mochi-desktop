@@ -42,6 +42,9 @@ jobs:
         run: xvfb-run -a python3 -m pytest -q
 
 
+      - name: Check browser mood extension safeguards
+        run: node --test tests/test_windows_browser_extension.mjs
+
       - name: Compile Python sources
         env:
           PYTHONPATH: src

@@ -18,6 +18,7 @@ if sys.platform == "win32":
 from mochi.config import ConfigStore
 from mochi.presence.click_dialogue import PresenceBuddy, PresenceX11Buddy
 from mochi.sound import SoundEvent, SoundManager
+from mochi.state import MochiState, PresentationState
 from mochi.windowing import WindowPlacement
 from mochi.x11 import request_keep_above
 
@@ -50,6 +51,8 @@ class MochiApplication(Gtk.Application):
         )
         self._windows_agent_receiver = None
         self._windows_desktop_follower = None
+        self._windows_mood = None
+        self._follow_active_screen = sys.platform == "win32" and config.load_follow_active_screen()
         self.config = config
         self.preview_animations = preview_animations
         self.update_ready_file = update_ready_file
@@ -283,6 +286,12 @@ class MochiApplication(Gtk.Application):
         window.present()
         if sys.platform == "win32" and not self.preview_animations:
             self._start_windows_desktop_follower(window)
+            mood_enabled, minutes = self.config.load_browser_mood()
+            if mood_enabled:
+                try:
+                    self._start_windows_mood(minutes)
+                except OSError as error:
+                    self._logger.warning("Browser mood unavailable: %s", error)
         if self.update_ready_file is not None:
             signal_update_ready(self.update_ready_file)
         if not self.preview_animations:
@@ -290,6 +299,7 @@ class MochiApplication(Gtk.Application):
 
     def _start_windows_desktop_follower(self, window) -> None:
         from mochi.windows.desktops import DesktopFollower, VirtualDesktopManager, shell_desktop_hint
+        from mochi.windows.monitor_follow import MonitorFollower
         from mochi.windows.native import desktop
         from mochi.windows.windowing import handle
 
@@ -302,9 +312,84 @@ class MochiApplication(Gtk.Application):
             lambda: handle(window), desktop().user32.GetForegroundWindow,
             manager=manager, scheduler=GLib, repair_overlay=desktop().repair_overlay,
             desktop_hint=shell_desktop_hint,
+            monitor_follower=MonitorFollower(
+                desktop(), self._buddy._placement, allowed=self._can_follow_active_screen,
+            ),
         )
 
+    def _can_follow_active_screen(self) -> bool:
+        buddy = self._buddy
+        return (
+            self._follow_active_screen and buddy is not None and not buddy._stay_put
+            and not self._windows_interaction_busy()
+            and buddy.state.current is not MochiState.WALKING
+        )
+
+    def _windows_interaction_busy(self) -> bool:
+        buddy = self._buddy
+        return (
+            buddy is None or buddy._presence_shutting_down
+            or buddy._press is not None or buddy._drag_started
+            or buddy._context_menu_open or buddy._developer_menu.get_visible()
+            or buddy._session_blocked()
+            or buddy.state.presentation is not PresentationState.NORMAL
+            or buddy.state.current in (
+                MochiState.SLEEPING, MochiState.WAKING, MochiState.PICKUP,
+                MochiState.DRAGGED, MochiState.DROPPING,
+            )
+        )
+
+    def set_follow_active_screen(self, enabled: bool) -> None:
+        self.config.save_follow_active_screen(enabled)
+        self._follow_active_screen = enabled
+
+    def show_windows_settings(self) -> Gtk.Window:
+        from mochi.windows.browser_mood_ui import show_settings
+
+        return show_settings(self, self._buddy._window)
+
+    def _can_arm_browser_mood(self) -> bool:
+        if self._windows_interaction_busy():
+            return False
+        buddy = self._buddy
+        focus = buddy._focus_session
+        return not buddy._ambient_presence_engine.tuning.quiet_mode and not (
+            focus is not None and focus.active
+        )
+
+    def _start_windows_mood(self, minutes: int) -> None:
+        from mochi.windows.browser_mood_ui import BrowserMoodController
+
+        self._windows_mood = BrowserMoodController(
+            self._buddy._window, self._can_arm_browser_mood, minutes,
+        )
+
+    def set_browser_mood(self, enabled: bool, minutes: int) -> None:
+        if self._windows_mood is not None:
+            self._windows_mood.close()
+            self._windows_mood = None
+        self.config.save_browser_mood(False, minutes)
+        if not enabled:
+            from mochi.windows.browser_mood_transport import unregister_host
+
+            unregister_host()
+            return
+        self._start_windows_mood(minutes)
+        try:
+            self.config.save_browser_mood(True, minutes)
+        except OSError:
+            self._windows_mood.close()
+            self._windows_mood = None
+            raise
+
+    def note_windows_attention(self) -> None:
+        if self._windows_mood is not None:
+            self._windows_mood.reset()
+
     def do_shutdown(self) -> None:
+        if self._windows_mood is not None:
+            self._windows_mood.close()
+            self._windows_mood = None
         if self._windows_desktop_follower is not None:
             self._windows_desktop_follower.stop()
             self._windows_desktop_follower = None
