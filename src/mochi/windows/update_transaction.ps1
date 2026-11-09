@@ -27,12 +27,31 @@ function Write-Outcome($Result) {
     Move-Item -LiteralPath ($path + '.tmp') -Destination $path -Force
 }
 
-function Wait-ForExit([int]$Id, [string]$ExpectedPath) {
+function Wait-ForExit([int]$Id) {
     if ($Id -le 0) { return }
     $process = Get-Process -Id $Id -ErrorAction SilentlyContinue
-    if ($process -and $process.Path -eq $ExpectedPath -and -not $process.WaitForExit(30000)) {
+    if ($process -and -not $process.WaitForExit(30000)) {
         throw 'Mochi did not close for the update.'
     }
+}
+
+function Move-Entry([string]$Source, [string]$Destination) {
+    # Directory.Move is a single same-volume rename. Move-Item can fall back
+    # to recursively moving the children, leaving a partially moved directory.
+    $directory = [IO.Directory]::Exists($Source)
+    $deadline = [DateTime]::UtcNow.AddSeconds(15)
+    do {
+        try {
+            if ($directory) { [IO.Directory]::Move($Source, $Destination) }
+            else { [IO.File]::Move($Source, $Destination) }
+            return
+        } catch {
+            if ([DateTime]::UtcNow -ge $deadline -or -not (Test-Path -LiteralPath $Source)) {
+                throw
+            }
+            Start-Sleep -Milliseconds 250
+        }
+    } while ($true)
 }
 
 try {
@@ -42,20 +61,20 @@ try {
         throw 'The Windows update paths are invalid.'
     }
     $lock = [IO.File]::Open((Join-Path $root '.mochi-update.lock'), 'OpenOrCreate', 'ReadWrite', 'None')
-    Wait-ForExit $request.pid (Join-Path $root 'runtime\bin\pythonw.exe')
-    Wait-ForExit $request.launcher_pid $exe
+    Wait-ForExit $request.pid
+    Wait-ForExit $request.launcher_pid
     New-Item -ItemType Directory -Path $backup | Out-Null
 
     # Remove the old launcher first and publish the new launcher last.
     foreach ($name in (@('Mochi.exe') + @($managed | Where-Object { $_ -ne 'Mochi.exe' }))) {
         $entry = Join-Path $root $name
         if (Test-Path -LiteralPath $entry) {
-            Move-Item -LiteralPath $entry -Destination (Join-Path $backup $name)
+            Move-Entry $entry (Join-Path $backup $name)
             $oldMoved.Add($name)
         }
     }
     foreach ($name in $managed) {
-        Move-Item -LiteralPath (Join-Path $candidate $name) -Destination (Join-Path $root $name)
+        Move-Entry (Join-Path $candidate $name) (Join-Path $root $name)
         $newMoved.Add($name)
     }
     $child = Start-Process -FilePath $exe -ArgumentList ('--update-ready-file "' + $ready + '"') -PassThru
@@ -76,11 +95,11 @@ try {
             if (-not $child.WaitForExit(10000)) { throw 'Updated process is still running.' }
         }
         foreach ($name in $newMoved) {
-            Move-Item -LiteralPath (Join-Path $root $name) -Destination (Join-Path $candidate $name)
+            Move-Entry (Join-Path $root $name) (Join-Path $candidate $name)
         }
         foreach ($name in $managed) {
             if ($oldMoved.Contains($name)) {
-                Move-Item -LiteralPath (Join-Path $backup $name) -Destination (Join-Path $root $name)
+                Move-Entry (Join-Path $backup $name) (Join-Path $root $name)
             }
         }
         $restored = $oldMoved.Count -gt 0
