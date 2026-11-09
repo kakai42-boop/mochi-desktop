@@ -5,6 +5,7 @@ import ctypes as c
 import logging
 import threading
 import time
+from types import SimpleNamespace
 from collections import deque
 
 from mochi.windows.native import BOOL, DWORD, HANDLE, POINT, bind, desktop
@@ -296,15 +297,19 @@ class WindowsSessionMonitor(PollMonitor):
 
 class WindowsSystemMonitor(PollMonitor):
     def __init__(self, *, on_battery_low, on_charging_started,
-                 on_network_lost, on_network_restored, **kwargs):
+                 on_network_lost, on_network_restored, network_available=None, **kwargs):
         super().__init__(**kwargs)
         self.low, self.charging = on_battery_low, on_charging_started
         self.lost, self.restored = on_network_lost, on_network_restored
         self._battery = None
         self._network = None
+        self.battery = SimpleNamespace(percent=None, charging=None)
+        self.network = SimpleNamespace(connected=None)
+        self._network_available = network_available
 
     def sample(self):
         battery = self.api.battery()
+        self.battery.percent, self.battery.charging = battery if battery is not None else (None, None)
         if battery is not None and self._battery is not None:
             percentage, ac = battery
             old_percentage, old_ac = self._battery
@@ -315,8 +320,12 @@ class WindowsSystemMonitor(PollMonitor):
         if battery is not None:
             self._battery = battery
         # Gio's Windows network monitor observes local OS connectivity only.
-        from gi.repository import Gio
-        connected = Gio.NetworkMonitor.get_default().get_network_available()
+        if self._network_available is None:
+            from gi.repository import Gio
+            connected = Gio.NetworkMonitor.get_default().get_network_available()
+        else:
+            connected = self._network_available()
+        self.network.connected = connected
         if self._network is not None and connected != self._network:
             (self.restored if connected else self.lost)()
         self._network = connected

@@ -30,6 +30,7 @@ def run(data):
     sys.excepthook = record_error
     with tempfile.TemporaryDirectory(prefix='mochi-features-') as temporary:
         config = ConfigStore(Path(temporary) / 'config.json')
+        config.save_update_checks_enabled(False)
         config.save_muted(True)  # Audio-device QA is a separate test.
         app = MochiApplication(config, preview_animations=False)
         steps = []
@@ -87,7 +88,7 @@ def run(data):
                 assert app._windows_agent_receiver is not None
                 result['checks'].append('normal_mode_backends')
                 for name, show, obj in [
-                    ('context_menu', buddy._show_context_menu, lambda: buddy._context_menu),
+                    ('context_menu', lambda: buddy._show_context_menu(None, 1, 0, 0), lambda: buddy._context_menu),
                     ('developer_menu', buddy._show_developer_menu, lambda: buddy._developer_menu),
                     ('focus_window', buddy._show_focus_window, lambda: buddy._focus_window),
                     ('quick_start', buddy._show_quick_start, lambda: buddy._quick_start_window),
