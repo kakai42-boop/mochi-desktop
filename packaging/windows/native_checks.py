@@ -205,7 +205,7 @@ def run(data):
                 result['checks'].append('native_topmost_recovery')
                 exercise_edge_menu()
 
-            later(1000, repaired)
+            later(1600, repaired)
 
         def exercise_edge_menu():
             user32 = desktop().user32

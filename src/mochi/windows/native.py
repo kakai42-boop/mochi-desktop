@@ -113,8 +113,6 @@ class NativeDesktop:
             self.user32.GetWindowThreadProcessId(foreground, None)
             != self.user32.GetWindowThreadProcessId(hwnd, None)
         )
-        if foreground and foreground != hwnd and not other_window:
-            return  # Leave our own menu or dialog in front of its owner.
         if lost_style:
             self.keep_above(hwnd, passive=True)
         elif foreground_changed and other_window:

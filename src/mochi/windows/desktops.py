@@ -99,7 +99,8 @@ class DesktopFollower:
         if not hwnd:
             return True
         foreground = self.foreground()
-        if self.manager is not None and self.manager.current(hwnd) is False:
+        on_current = self.manager is None or self.manager.current(hwnd) is not False
+        if not on_current:
             target = None
             if foreground and foreground != hwnd and self.manager.current(foreground):
                 target = self.manager.desktop_id(foreground)
@@ -107,12 +108,15 @@ class DesktopFollower:
                 target = self.desktop_hint()
                 origin = self.manager.desktop_id(hwnd)
                 if origin is not None and target is not None and bytes(origin) == bytes(target):
-                    return True
-            if target is None or not self.manager.move(hwnd, target):
-                return True
+                    target = None
+            if target is not None:
+                on_current = self.manager.move(hwnd, target)
         if self.repair_overlay is not None:
-            self.repair_overlay(hwnd, foreground, foreground != self._foreground)
-        self._foreground = foreground
+            # Reapply dropped window flags even if Explorer can't identify
+            # the desktop. Only reorder against foreground apps on this desktop.
+            self.repair_overlay(hwnd, foreground if on_current else None,
+                                on_current and foreground != self._foreground)
+        self._foreground = foreground if on_current else None
         return True
 
     def stop(self):

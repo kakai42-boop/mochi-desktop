@@ -126,3 +126,14 @@ def test_debug_without_posix_signal(monkeypatch):
     monkeypatch.setattr(main, 'faulthandler', SimpleNamespace(enable=lambda **kw: calls.append(kw)))
     main.enable_debug_stack_dumps()
     assert calls == [{'all_threads': True}]
+
+
+def test_overlay_recovers_dropped_topmost_flag_while_own_popup_has_focus():
+    from unittest.mock import Mock
+
+    api = SimpleNamespace(GetWindowLongPtrW=lambda *_: 0x08000080,
+                          GetWindowThreadProcessId=lambda *_: 42)
+    desktop = NativeDesktop(user32=api)
+    desktop.keep_above = Mock()
+    desktop.repair_overlay(10, 11, True)
+    desktop.keep_above.assert_called_once_with(10, passive=True)
