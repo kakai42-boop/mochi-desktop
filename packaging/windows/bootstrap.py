@@ -110,11 +110,14 @@ def main():
         configure()
         if '--smoke-test' in sys.argv:
             return smoke_test()
+        if '--integration-test' in sys.argv:
+            import runpy
+            return runpy.run_path(str(ROOT / 'native_checks.py'))['run'](DATA)
         from mochi.main import main as mochi_main
         return mochi_main(sys.argv[1:])
     except Exception:
         logging.exception('Mochi startup failed')
-        if '--agent-signal' not in sys.argv and '--smoke-test' not in sys.argv:
+        if '--agent-signal' not in sys.argv and '--smoke-test' not in sys.argv and '--integration-test' not in sys.argv:
             ctypes.windll.user32.MessageBoxW(None, f'Mochi ne peut pas démarrer.\nJournal : {DATA / "mochi.log"}', 'Mochi', 0x10)
         return 1
 

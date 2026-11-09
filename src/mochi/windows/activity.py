@@ -212,14 +212,42 @@ class WindowsFileContextBackend(PollMonitor):
 
 class WindowsAppCategoryMonitor(PollMonitor):
     def __init__(self, *, on_category_changed, on_category_snapshot=None,
-                 on_focus_changed=None, on_tab_changed=None, **kwargs):
+                 on_focus_changed=None, on_tab_changed=None, tab_backend=None, **kwargs):
         super().__init__(**kwargs)
         self.changed = on_category_changed
         self.snapshot = on_category_snapshot
         self.focus = on_focus_changed
+        self.tab_changed = on_tab_changed
+        self._tab_backend = tab_backend
+        self._last_tab = float('-inf')
         self.category = 'unknown'
         self._window = None
         self._baseline = False
+
+    def start(self):
+        if not super().start():
+            return False
+        if self.tab_changed is not None:
+            if self._tab_backend is None:
+                from mochi.windows.browser_activity import BrowserChangeBackend
+                self._tab_backend = BrowserChangeBackend()
+            if not self._tab_backend.start(self._on_tab_hint):
+                self._logger.debug('Browser changes unavailable: %s', self._tab_backend.last_error)
+        return True
+
+    def _on_tab_hint(self, hwnd, age):
+        from mochi.windows.browser_activity import tab_hint_allowed
+        foreground, category, _ = self.api.foreground()
+        if foreground != self._window:
+            return  # A focus switch is already handled by the focus signal.
+        if not tab_hint_allowed(hwnd, foreground, category, self.api.idle_seconds(), age):
+            return
+        now = time.monotonic()
+        if now - self._last_tab < 0.5:
+            return
+        self._last_tab = now
+        if self.tab_changed:
+            self.tab_changed()
 
     def sample(self):
         hwnd, category, _ = self.api.foreground()
@@ -238,6 +266,9 @@ class WindowsAppCategoryMonitor(PollMonitor):
             self.changed(category)
 
     def stop(self):
+        if self._tab_backend is not None:
+            self._tab_backend.stop()
+        self._last_tab = float('-inf')
         super().stop()
         self._baseline = False
         self._window = None

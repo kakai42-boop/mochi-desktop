@@ -276,3 +276,7 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] Fresh smoke identity verified for portable, installed and reinstalled builds
 - [ ] Silent uninstall removes program and registration while retaining preference/Pocket sentinel files
 - [ ] Windows 11 interactive checks performed separately from Windows Server CI
+
+- [ ] Browser tab/navigation pulses require the focused browser and recent input; no title/text reads
+- [ ] Native normal-mode test opens context/developer menus and Focus/Pocket/help/emote windows
+- [ ] Browsers: test keyboard and mouse tab switches, background updates and idle suppression

@@ -219,3 +219,6 @@ Initial desktop-companion foundation: core windowing, sprite animation, movement
 - Fail silent setup/uninstall explicitly when Mochi is open. Native Windows execution remains pending.
 
 - Fix the packaged GTK Win32 handle bridge using the typed C ABI; native CI exposed a missing introspected method.
+
+- Windows browser-change awareness now receives content-free WinEvent notifications with foreground, recent-input and debounce gates.
+- Added normal-mode Windows GUI qualification for shared menus, Focus, Pocket, Quick Start, emote catalogue, hook startup and preference persistence.

@@ -50,6 +50,13 @@ try {
     if (-not (Test-Path (Join-Path $installed 'Uninstall.exe'))) { throw 'Missing uninstaller.' }
     if ((Get-ItemProperty $registration).InstallDir -ne $installed) { throw 'Wrong registered install location.' }
     Test-Mochi $installed 'installed'
+    $env:MOCHI_SMOKE_RUN_ID = [guid]::NewGuid().ToString()
+    Invoke-Bounded (Join-Path $installed 'Mochi.exe') '--integration-test' 120
+    $integration = Get-Content (Join-Path $env:LOCALAPPDATA 'mochi-desktop\integration-test.json') -Raw | ConvertFrom-Json
+    if (-not $integration.passed -or $integration.run_id -ne $env:MOCHI_SMOKE_RUN_ID) {
+        throw 'Normal-mode feature checks failed or returned a stale report.'
+    }
+
 
     $preferences = Join-Path $env:APPDATA 'mochi\qa-preserve.txt'
     $pocket = Join-Path $env:LOCALAPPDATA 'mochi-desktop\pocket\qa-preserve.txt'

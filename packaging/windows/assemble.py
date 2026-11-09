@@ -15,6 +15,7 @@ def assemble(destination):
     for name in ('src', 'assets'):
         shutil.copytree(root / name, destination / name, dirs_exist_ok=True,
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc', '*.egg-info'))
+    shutil.copy2(Path(__file__).with_name('native_checks.py'), destination / 'native_checks.py')
     shutil.copy2(root / 'LICENSE', destination / 'LICENSE')
     shutil.copy2(Path(__file__).with_name('bootstrap.py'), destination / 'bootstrap.py')
     shutil.copy2(root / 'docs/WINDOWS11.txt', destination / 'LISEZ-MOI.txt')

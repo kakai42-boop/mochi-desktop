@@ -501,3 +501,5 @@ Mochi is released under the [MIT License](LICENSE).
 ### Windows qualification update (2026-11-09)
 
 The source archive now contains installation lifecycle checks. They have not run on Windows yet. The previously distributed installer is unchanged; see [validation status](docs/WINDOWS_VALIDATION.md).
+
+Windows parity work now includes content-free browser-change detection and normal-mode native checks for the original Linux menus and feature windows. These checks do not replace interactive mouse, audio or DPI testing.
