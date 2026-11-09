@@ -36,7 +36,8 @@ DIFFERENCES ET LIMITES CONNUES
   ou d'onglet. Mochi la traite uniquement pour le navigateur au premier plan
   après une interaction récente, sans lire le titre.
 - Mochi essaie de suivre le bureau virtuel actif via la fenêtre au premier
-  plan. Le changement vers un bureau vide et la Vue des tâches restent à valider.
+  plan ou, sur un bureau vide, via les informations fournies par l’Explorateur.
+  Le changement vers un bureau vide et la Vue des tâches restent à vérifier.
 - Les mises à l'échelle mixtes, audio, Pocket/Explorer, veille et raccourcis
   nécessitent encore une validation sur Windows 11 réel.
 - L'installateur n'est pas signé avec un certificat de publication.

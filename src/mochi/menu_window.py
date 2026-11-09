@@ -10,6 +10,7 @@ multi-monitor path.
 from __future__ import annotations
 
 import logging
+import sys
 from collections.abc import Callable
 
 import gi
@@ -65,6 +66,7 @@ def menu_position_for_anchor(
     padding: int = 12,
     coordinate_scale: float = 1.0,
     anchor_width: int = 0,
+    device_work_area: tuple[int, int, int, int] | None = None,
 ) -> tuple[int, int]:
     """Place a menu beside an X11-root anchor and clamp it to the nearest monitor.
 
@@ -72,23 +74,24 @@ def menu_position_for_anchor(
     Menu sizes, monitor geometries, gap, and padding are GTK application pixels.
     """
     scale = coordinate_scale if coordinate_scale > 0 else 1.0
-    if not geometries:
-        return (anchor_x + round(gap * scale), anchor_y)
-
-    application_anchor_x = anchor_x / scale
-    application_anchor_y = anchor_y / scale
-    monitor = min(
-        geometries,
-        key=lambda geometry: _distance_to_geometry(
-            application_anchor_x,
-            application_anchor_y,
-            geometry,
-        ),
-    )
-    left = round((monitor.x + padding) * scale)
-    top = round((monitor.y + padding) * scale)
-    right = round((monitor.x + monitor.width - padding) * scale)
-    bottom = round((monitor.y + monitor.height - padding) * scale)
+    if device_work_area is not None:
+        work_left, work_top, work_right, work_bottom = device_work_area
+        inset = round(padding * scale)
+        left, top = work_left + inset, work_top + inset
+        right, bottom = work_right - inset, work_bottom - inset
+    else:
+        if not geometries:
+            return (anchor_x + round(gap * scale), anchor_y)
+        monitor = min(
+            geometries,
+            key=lambda geometry: _distance_to_geometry(
+                anchor_x / scale, anchor_y / scale, geometry,
+            ),
+        )
+        left = round((monitor.x + padding) * scale)
+        top = round((monitor.y + padding) * scale)
+        right = round((monitor.x + monitor.width - padding) * scale)
+        bottom = round((monitor.y + monitor.height - padding) * scale)
 
     device_menu_width = max(1, round(menu_width * scale))
     device_menu_height = max(1, round(menu_height * scale))
@@ -344,11 +347,17 @@ class MenuWindow:
         if height <= 1:
             height = self._preferred_height
 
-        monitor_list = self._owner.get_display().get_monitors()
-        geometries = [
-            monitor_list.get_item(index).get_geometry()
-            for index in range(monitor_list.get_n_items())
-        ]
+        work_area = None
+        if sys.platform == "win32":
+            from mochi.windows.native import desktop
+            work_area = desktop().work_area(anchor_x, anchor_y)
+        geometries = []
+        if work_area is None:
+            monitor_list = self._owner.get_display().get_monitors()
+            geometries = [
+                monitor_list.get_item(index).get_geometry()
+                for index in range(monitor_list.get_n_items())
+            ]
         x, y = menu_position_for_anchor(
             anchor_x,
             anchor_y,
@@ -357,6 +366,7 @@ class MenuWindow:
             geometries,
             coordinate_scale=scale,
             anchor_width=self._anchor_width,
+            device_work_area=work_area,
         )
         moved = move_window(self.window, x, y)
         if not quiet:

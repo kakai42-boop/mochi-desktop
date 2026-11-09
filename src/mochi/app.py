@@ -289,7 +289,7 @@ class MochiApplication(Gtk.Application):
             self.sound.play(SoundEvent.SPAWN)
 
     def _start_windows_desktop_follower(self, window) -> None:
-        from mochi.windows.desktops import DesktopFollower, VirtualDesktopManager
+        from mochi.windows.desktops import DesktopFollower, VirtualDesktopManager, shell_desktop_hint
         from mochi.windows.native import desktop
         from mochi.windows.windowing import handle
 
@@ -297,10 +297,11 @@ class MochiApplication(Gtk.Application):
             manager = VirtualDesktopManager()
         except OSError as error:
             self._logger.debug("Virtual desktop following unavailable: %s", error)
-            return
+            manager = None
         self._windows_desktop_follower = DesktopFollower(
             lambda: handle(window), desktop().user32.GetForegroundWindow,
-            manager=manager, scheduler=GLib,
+            manager=manager, scheduler=GLib, repair_overlay=desktop().repair_overlay,
+            desktop_hint=shell_desktop_hint,
         )
 
     def do_shutdown(self) -> None:

@@ -36,3 +36,16 @@ def test_monitor_debounces_tab_hints_and_owns_hook(monkeypatch):
     assert events == ['tab']
     monitor.stop()
     assert events == ['tab', 'stopped']
+
+
+def test_new_foreground_browser_can_report_a_change_before_polling():
+    state = SimpleNamespace(window=10, category='editor')
+    api = SimpleNamespace(foreground=lambda: (state.window, state.category, False),
+                          idle_seconds=lambda: 0.1)
+    calls = []
+    monitor = WindowsAppCategoryMonitor(api=api, on_category_changed=lambda _: None,
+                                       on_tab_changed=lambda: calls.append('tab'))
+    monitor.sample()
+    state.window, state.category = 11, 'browser'
+    monitor._on_tab_hint(11, 0.1)
+    assert calls == ['tab']

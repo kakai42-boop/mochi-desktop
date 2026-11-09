@@ -6,6 +6,10 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Resize the Windows companion in both directions, recover its topmost placement without taking focus, and open Pocket folders in Explorer.
+- Use the Windows monitor work area for menus and consult Explorer’s active desktop hint when a new desktop has no foreground app.
+- Accept browser-change hints from the current foreground browser before the periodic focus poll catches up.
+
 - Follow the active Windows virtual desktop through the public Shell API when a foreground window identifies it.
 - Make the documented double-click heart available through the shared Linux and Windows click path.
 

@@ -285,3 +285,7 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] A native drag moves the HWND and clears the held state on release.
 - [ ] Focus starts, pauses, resumes and cancels from the normal Windows application.
 - [ ] Switch Windows virtual desktops with a foreground window, then switch to an empty desktop.
+
+- [ ] Grow and shrink Mochi while Mochi Lab is open; check mixed display scaling separately.
+- [ ] After a topmost demotion, restore the Windows companion above other windows without taking focus.
+- [ ] From Pocket, open a file's folder in Explorer, including spaces and accents in the path.

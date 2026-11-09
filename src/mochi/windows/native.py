@@ -67,6 +67,7 @@ class NativeDesktop:
         self.kernel32 = k = c.WinDLL('kernel32', use_last_error=True)
         bind(u, 'SetWindowPos', BOOL, HANDLE, HANDLE, c.c_int, c.c_int, c.c_int, c.c_int, c.c_uint)
         bind(u, 'GetWindowRect', BOOL, HANDLE, c.POINTER(RECT))
+        bind(u, 'GetClientRect', BOOL, HANDLE, c.POINTER(RECT))
         bind(u, 'GetCursorPos', BOOL, c.POINTER(POINT))
         bind(u, 'GetAsyncKeyState', c.c_short, c.c_int)
         bind(u, 'GetWindowLongPtrW', c.c_ssize_t, HANDLE, c.c_int)
@@ -87,6 +88,29 @@ class NativeDesktop:
 
     def move(self, hwnd, x, y):
         return bool(self.user32.SetWindowPos(hwnd, None, round(x), round(y), 0, 0, 0x01 | 0x04 | 0x10))
+
+    def resize(self, hwnd, x, y, client_width, client_height):
+        outer, client = RECT(), RECT()
+        if not (self.user32.GetWindowRect(hwnd, c.byref(outer))
+                and self.user32.GetClientRect(hwnd, c.byref(client))):
+            return False
+        width = client_width + (outer.right - outer.left) - (client.right - client.left)
+        height = client_height + (outer.bottom - outer.top) - (client.bottom - client.top)
+        return bool(self.user32.SetWindowPos(hwnd, None, round(x), round(y),
+                                           round(width), round(height), 0x04 | 0x10))
+
+    def repair_overlay(self, hwnd, foreground, foreground_changed):
+        style = self.user32.GetWindowLongPtrW(hwnd, -20)
+        overlay_style = 0x00000008 | 0x00000080 | 0x08000000  # TOPMOST, TOOLWINDOW, NOACTIVATE
+        lost_style = (style & overlay_style) != overlay_style or bool(style & 0x00040000)
+        # Another topmost program can get ahead even when our flags are intact.
+        # Keep Mochi below its own transient windows and never activate it.
+        other_window = foreground and foreground != hwnd and (
+            self.user32.GetWindowThreadProcessId(foreground, None)
+            != self.user32.GetWindowThreadProcessId(hwnd, None)
+        )
+        if lost_style or (foreground_changed and other_window):
+            self.keep_above(hwnd, passive=True)
 
     def position(self, hwnd):
         rect = RECT()

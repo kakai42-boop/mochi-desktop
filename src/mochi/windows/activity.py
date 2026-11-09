@@ -239,8 +239,6 @@ class WindowsAppCategoryMonitor(PollMonitor):
     def _on_tab_hint(self, hwnd, age):
         from mochi.windows.browser_activity import tab_hint_allowed
         foreground, category, _ = self.api.foreground()
-        if foreground != self._window:
-            return  # A focus switch is already handled by the focus signal.
         if not tab_hint_allowed(hwnd, foreground, category, self.api.idle_seconds(), age):
             return
         now = time.monotonic()
@@ -248,6 +246,7 @@ class WindowsAppCategoryMonitor(PollMonitor):
             return
         self._last_tab = now
         if self.tab_changed:
+            self._logger.debug("Received content-free browser change from foreground window")
             self.tab_changed()
 
     def sample(self):

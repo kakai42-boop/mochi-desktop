@@ -9,6 +9,7 @@ from pathlib import Path
 import sys
 import tempfile
 import traceback
+from types import SimpleNamespace
 
 
 class MouseInput(c.Structure):
@@ -43,6 +44,8 @@ def run(data):
     from mochi.app import MochiApplication
     from mochi.config import ConfigStore
     from mochi.focus import FocusPlan
+    from mochi.pocket import make_local_file_item
+    from mochi.pocket_window import PocketWindow
     from mochi.state import MochiState
     from mochi.windows.native import desktop, RECT
     from mochi.windows.windowing import handle
@@ -155,6 +158,87 @@ def run(data):
         def drag_complete():
             assert not buddy._drag_started, 'Mochi stayed held after release'
             result['checks'].append('drag_and_release')
+            exercise_resize()
+
+        def exercise_resize():
+            hwnd = handle(buddy._window)
+            user32 = desktop().user32
+
+            def client_size():
+                rect = RECT()
+                assert user32.GetClientRect(hwnd, c.byref(rect))
+                return rect.right - rect.left, rect.bottom - rect.top
+
+            def set_size(size):
+                buddy._change_size(SimpleNamespace(get_value=lambda: size))
+
+            before = client_size()
+            set_size(ConfigStore.MAX_SIZE)
+
+            def grown():
+                largest = client_size()
+                assert largest[0] > before[0] and largest[1] > before[1], (before, largest)
+                set_size(ConfigStore.MIN_SIZE)
+
+                def shrunk():
+                    smallest = client_size()
+                    assert smallest[0] < before[0] and smallest[1] < before[1], (before, largest, smallest)
+                    assert config.load_size() == ConfigStore.MIN_SIZE
+                    result['checks'].append('native_grow_and_shrink')
+                    exercise_topmost(hwnd)
+
+                later(450, shrunk)
+
+            later(450, grown)
+
+        def exercise_topmost(hwnd):
+            user32 = desktop().user32
+            foreground = user32.GetForegroundWindow()
+            # Simulate the demotion a GTK re-presentation can cause.
+            assert user32.SetWindowPos(hwnd, -2, 0, 0, 0, 0, 0x01 | 0x02 | 0x10)
+            assert not user32.GetWindowLongPtrW(hwnd, -20) & 0x08
+
+            def repaired():
+                assert user32.GetWindowLongPtrW(hwnd, -20) & 0x08, 'Mochi stayed demoted'
+                if foreground != hwnd:
+                    assert user32.GetForegroundWindow() != hwnd, 'Overlay repair stole focus'
+                result['checks'].append('native_topmost_recovery')
+                exercise_edge_menu()
+
+            later(1000, repaired)
+
+        def exercise_edge_menu():
+            user32 = desktop().user32
+            x, y = desktop().position(handle(buddy._window))
+            area = desktop().work_area(x, y)
+            assert area is not None
+            buddy._placement.move_to(area[2] - 65, area[3] - 65)
+            right_click()
+
+            def positioned():
+                menu = buddy._context_menu
+                rect = RECT()
+                assert menu.get_visible() and user32.GetWindowRect(handle(menu.window), c.byref(rect))
+                assert area[0] <= rect.left < rect.right <= area[2], 'Menu extends outside the monitor'
+                assert area[1] <= rect.top < rect.bottom <= area[3], 'Menu overlaps the taskbar or monitor edge'
+                menu.popdown()
+                result['checks'].append('native_edge_menu_work_area')
+                exercise_pocket_folder()
+
+            later(600, positioned)
+
+        def exercise_pocket_folder():
+            folder = data / 'QA dossier été & projets'
+            folder.mkdir(exist_ok=True)
+            sample = folder / 'note témoin.txt'
+            sample.write_text('Pocket smoke test', encoding='utf-8')
+            item = make_local_file_item(sample)
+            pocket = PocketWindow(SimpleNamespace(items=(item,)))
+            try:
+                assert pocket.open_containing_folder(item.id), 'Windows could not open the Pocket folder'
+            finally:
+                pocket.destroy()
+            result['checks'].append('pocket_shell_folder')
             app.quit()
 
         def exercise_focus():
@@ -212,7 +296,7 @@ def run(data):
                 missing = required.difference(buddy._context_menu_rows)
                 assert not missing, 'Missing Linux menu entries: ' + repr(missing)
                 result['menu_rows'] = list(buddy._context_menu_row_order)
-                result['virtual_desktop_manager_available'] = app._windows_desktop_follower is not None
+                result['virtual_desktop_manager_available'] = app._windows_desktop_follower.manager is not None
                 assert buddy._typing_monitor.available, 'Typing hook not active'
                 assert buddy._developer_shortcut_monitor.available, 'Developer shortcut not active'
                 assert buddy._app_category_monitor._tab_backend.active, 'Browser hook not active'
@@ -241,6 +325,6 @@ def run(data):
             result['errors'].append(traceback.format_exc())
         finally:
             sys.excepthook = old_hook
-            result['passed'] = not result['errors'] and len(result['checks']) == 12
+            result['passed'] = not result['errors'] and len(result['checks']) == 16
             report.write_text(json.dumps(result, indent=2), encoding='utf-8')
     return 0 if result['passed'] else 1

@@ -27,7 +27,7 @@ prouve son ouverture, pas la disponibilité de toutes ses fonctions.
 | Agent Companion | Récepteur local Windows créé en mode normal. | Envoyer des événements d'agent et vérifier animations et fin de session. |
 | Installation et données | Installation, réinstallation et désinstallation silencieuses vérifiées en CI avec chemins accentués et fichiers témoins préservés. | Installer avec l'assistant sous un compte Windows 11 standard et démarrer par le raccourci. |
 | Mise à jour et retour arrière | Installation manuelle disponible. | Fournir et qualifier le canal Windows, la mise à jour intégrée et le retour arrière. |
-| Bureaux virtuels | Adaptateur Windows qui suit le bureau actif lorsqu'il trouve une fenêtre de premier plan. Tests de décision et nettoyage COM couverts. | Basculer entre deux bureaux, puis vérifier le comportement sur un bureau vide. L'épinglage dans la Vue des tâches reste un comportement distinct. |
+| Bureaux virtuels | Le suivi utilise une fenêtre au premier plan et, à défaut, l’identifiant du bureau actif quand l’Explorateur le fournit. Tests de décision et nettoyage COM couverts. | Basculer entre deux bureaux, puis vérifier le comportement sur un bureau vide. L'épinglage dans la Vue des tâches reste un comportement distinct. |
 
 La suite Linux de cette révision donne 1 420 tests réussis, 5 ignorés et deux avertissements GTK.
 Le premier essai Win32 a confirmé le clic droit, le clic gauche et les commandes de Focus.
@@ -37,3 +37,9 @@ Le runner Windows Server valide les composants Win32 et GTK sur lesquels ces
 scénarios s'exécutent. Le résultat de Windows 11 interactif reste un jalon distinct.
 
 [Première qualification des menus et du mode normal](https://github.com/kakai42-boop/mochi-desktop/actions/runs/42538729337)
+
+## Retour du premier essai Windows 11
+
+L'utilisateur a confirmé l'installation, le démarrage, la position mémorisée, les clics et menus, les sons, le catalogue, le sommeil et le réveil, la nourriture, le volume, le mode silencieux, la frappe, la musique, Focus, le dépôt dans Pocket et la réaction à l'Explorateur. Il a signalé que la taille restait bloquée après agrandissement, que Chrome ou Spotify masquaient Mochi, que l'ouverture du dossier Pocket échouait, et que les changements d'onglet et de bureau étaient difficiles à observer.
+
+Le test de qualification vérifie maintenant l'agrandissement et le rétrécissement d'un vrai HWND, le rétablissement du statut topmost sans activation, le menu près de la barre des tâches et l'ouverture d'un dossier de test accentué dans l'Explorateur. Le changement d'onglet dépend toujours d'une notification Windows émise par le navigateur. Le passage sur un bureau virtuel vide et le changement d'écran à DPI mixte restent des essais Windows 11.

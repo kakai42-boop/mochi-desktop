@@ -13,3 +13,8 @@ Follow-up from the Quick Start screenshot: exercise the right-click menu through
 Win32 input on the disposable runner. Cover single/double-click reactions and the
 Focus start/pause/resume/cancel path. Restore the documented double-click heart
 through the shared click handling, preserving drag release and Fedora click counts.
+
+Windows 11 feedback: exercise grow/shrink of the mapped companion, recover
+its no-activate topmost style after native demotion, and open Pocket's local
+folder via the Windows shell. Keep the existing browser signal content-free.
+Check window sizing in device pixels and retain the existing work-area clamp.

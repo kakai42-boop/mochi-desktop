@@ -443,9 +443,8 @@ class BuddyMenuController:
         self._buddy._size = size
         self._buddy.set_content_width(size)
         self._buddy.set_content_height(size)
-        self._buddy._window.set_default_size(size, size)
+        self._buddy._placement.resize(size, size)
         self._buddy._config.save_size(size)
-        self._buddy._placement.move_to(self._buddy._placement.position.x, self._buddy._placement.position.y)
         self._buddy.queue_draw()
 
     def _change_volume(self, scale: Gtk.Scale) -> None:

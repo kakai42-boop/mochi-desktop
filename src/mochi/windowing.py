@@ -166,6 +166,23 @@ class WindowPlacement:
         move_window(self.window, self.position.x, self.position.y)
         return self.position
 
+    def resize(self, width: int, height: int) -> None:
+        self.window.set_default_size(width, height)
+        if sys.platform == "win32":
+            from mochi.windows.native import desktop
+            from mochi.windows.windowing import handle
+
+            hwnd = handle(self.window)
+            if hwnd:
+                scale = self._x11_coordinate_scale()
+                position = self.clamp_position(self.position.x, self.position.y)
+                # Submit size and position together. A move-only notification
+                # can make GDK retain the previous, larger configured size.
+                if desktop().resize(hwnd, position.x, position.y, width * scale, height * scale):
+                    self.position = position
+                return
+        self.restore()
+
     def clamp_position(self, x: int, y: int) -> Position:
         if sys.platform == "win32":
             from mochi.windows.native import desktop, clamp_to_work_area
