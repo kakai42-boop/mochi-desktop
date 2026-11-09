@@ -12,7 +12,7 @@ COMMANDES
 Clic gauche : réaction. Double clic : coeur. Trois clics : dialogue.
 Glisser : déplacer Mochi. Clic droit : menu complet.
 Ctrl+Alt+E : catalogue. Ctrl+Alt+Maj+M : Mochi Lab.
-Pour quitter : clic droit sur Mochi, puis Quit.
+Pour quitter : clic droit sur Mochi, puis Close.
 Les raccourcis globaux peuvent être occupés par une autre application ; les menus restent disponibles.
 
 DONNEES
@@ -25,15 +25,18 @@ Pour une mise à jour : ferme Mochi et lance le nouvel installateur Windows.
 ETAT DE CETTE PREVERSION
 Le code des animations, interactions, Bond, Focus, catalogue et Pocket vient
 du projet original ; des adaptateurs Windows remplacent les appels Linux.
-Cette version n'a pas été qualifiée sur une installation réelle de Windows 11.
-Ne pas la considérer comme une version finale certifiée sans ces essais.
+Les tests automatisés couvrent le lancement et le cycle d'installation sous
+Windows Server. Les essais interactifs sous Windows 11 restent à terminer.
 
 DIFFERENCES ET LIMITES CONNUES
 - Mise à jour Windows manuelle : aucun canal de publication automatique n'est configuré.
 - Réactions musique/vidéo : seulement pour les applications qui publient un type
   de lecture dans Windows. Aucun titre, URL ou contenu média n'est lu.
-- Les changements d'onglet du navigateur ne sont pas détectés dans cette version.
-- La présence sur tous les bureaux virtuels Windows n'est pas implémentée.
+- Le navigateur doit émettre une notification Windows lors du changement de page
+  ou d'onglet. Mochi la traite uniquement pour le navigateur au premier plan
+  après une interaction récente, sans lire le titre.
+- Mochi essaie de suivre le bureau virtuel actif via la fenêtre au premier
+  plan. Le changement vers un bureau vide et la Vue des tâches restent à valider.
 - Les mises à l'échelle mixtes, audio, Pocket/Explorer, veille et raccourcis
   nécessitent encore une validation sur Windows 11 réel.
 - L'installateur n'est pas signé avec un certificat de publication.

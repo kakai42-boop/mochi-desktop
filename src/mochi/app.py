@@ -49,6 +49,7 @@ class MochiApplication(Gtk.Application):
             flags=(Gio.ApplicationFlags.NON_UNIQUE if sys.platform == "win32" else Gio.ApplicationFlags.DEFAULT_FLAGS),
         )
         self._windows_agent_receiver = None
+        self._windows_desktop_follower = None
         self.config = config
         self.preview_animations = preview_animations
         self.update_ready_file = update_ready_file
@@ -280,12 +281,32 @@ class MochiApplication(Gtk.Application):
         )
 
         window.present()
+        if sys.platform == "win32" and not self.preview_animations:
+            self._start_windows_desktop_follower(window)
         if self.update_ready_file is not None:
             signal_update_ready(self.update_ready_file)
         if not self.preview_animations:
             self.sound.play(SoundEvent.SPAWN)
 
+    def _start_windows_desktop_follower(self, window) -> None:
+        from mochi.windows.desktops import DesktopFollower, VirtualDesktopManager
+        from mochi.windows.native import desktop
+        from mochi.windows.windowing import handle
+
+        try:
+            manager = VirtualDesktopManager()
+        except OSError as error:
+            self._logger.debug("Virtual desktop following unavailable: %s", error)
+            return
+        self._windows_desktop_follower = DesktopFollower(
+            lambda: handle(window), desktop().user32.GetForegroundWindow,
+            manager=manager, scheduler=GLib,
+        )
+
     def do_shutdown(self) -> None:
+        if self._windows_desktop_follower is not None:
+            self._windows_desktop_follower.stop()
+            self._windows_desktop_follower = None
         stop_theme = getattr(self._color_scheme_sync, "stop", None)
         if callable(stop_theme):
             stop_theme()

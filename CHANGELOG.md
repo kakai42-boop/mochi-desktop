@@ -6,6 +6,7 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Follow the active Windows virtual desktop through the public Shell API when a foreground window identifies it.
 - Make the documented double-click heart available through the shared Linux and Windows click path.
 
 

@@ -15,12 +15,13 @@ class BuddyDoubleClickTests(unittest.TestCase):
         buddy = SimpleNamespace(
             _preview_mode=False, _on_click=None, _double_click_release=True,
             state=SimpleNamespace(current=MochiState.BOUNCING),
-            _transition_to=Mock(return_value=True),
+            _transition_to=Mock(return_value=True), _play_animation=Mock(),
             _start_heart_emote=Mock(return_value=True),
             _click_reactions=Mock(),
         )
         Buddy.react_to_click(buddy)
         buddy._transition_to.assert_called_once_with(MochiState.IDLE)
+        buddy._play_animation.assert_called_once_with("idle")
         buddy._start_heart_emote.assert_called_once_with(ignore_cooldown=True)
         buddy._click_reactions.clear.assert_called_once_with()
         buddy._click_reactions.request.assert_not_called()

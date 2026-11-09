@@ -123,7 +123,9 @@ def run(data):
             later(100, second_click)
 
         def double_complete():
-            assert buddy.state.current is MochiState.HEART, 'Double-click did not play heart'
+            assert buddy.state.current is MochiState.HEART, (
+                f'Double-click ended in {buddy.state.current.name}/{buddy._current_animation}'
+            )
             result['checks'].append('double_click_heart')
             later(900, begin_drag)
 
@@ -210,6 +212,7 @@ def run(data):
                 missing = required.difference(buddy._context_menu_rows)
                 assert not missing, 'Missing Linux menu entries: ' + repr(missing)
                 result['menu_rows'] = list(buddy._context_menu_row_order)
+                result['virtual_desktop_manager_available'] = app._windows_desktop_follower is not None
                 assert buddy._typing_monitor.available, 'Typing hook not active'
                 assert buddy._developer_shortcut_monitor.available, 'Developer shortcut not active'
                 assert buddy._app_category_monitor._tab_backend.active, 'Browser hook not active'

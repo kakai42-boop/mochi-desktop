@@ -284,3 +284,4 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] Windows native input opens the right-click menu, starts a left-click reaction and plays the double-click heart.
 - [ ] A native drag moves the HWND and clears the held state on release.
 - [ ] Focus starts, pauses, resumes and cancels from the normal Windows application.
+- [ ] Switch Windows virtual desktops with a foreground window, then switch to an empty desktop.
