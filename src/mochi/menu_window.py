@@ -206,8 +206,11 @@ class MenuWindow:
         self.window.present()
         # Mapping/size allocation can settle after present(). Position twice
         # for this one request instead of requiring another user click.
-        GLib.idle_add(self._position_if_current, serial)
-        GLib.timeout_add(24, self._position_if_current, serial)
+        if sys.platform == "win32":
+            GLib.timeout_add(30, self._position_windows_popup, serial, 20)
+        else:
+            GLib.idle_add(self._position_if_current, serial)
+            GLib.timeout_add(24, self._position_if_current, serial)
         if self._follow_owner and self._follow_source_id is None:
             self._follow_source_id = GLib.timeout_add(33, self._follow_owner_tick)
         if self._dismiss_on_focus_loss:
@@ -304,9 +307,21 @@ class MenuWindow:
         return GLib.SOURCE_REMOVE
 
     def _on_map(self, _window: Gtk.Window) -> None:
+        if sys.platform == "win32":
+            return  # Position and raise after the initial GTK allocation.
         request_keep_above(self.window)
         serial = self._position_serial
         GLib.idle_add(self._position_if_current, serial)
+
+    def _position_windows_popup(self, serial: int, retries: int) -> bool:
+        if serial != self._position_serial or not self.window.get_visible():
+            return GLib.SOURCE_REMOVE
+        if self.window.get_width() <= 1 or self.window.get_height() <= 1:
+            if retries:
+                GLib.timeout_add(30, self._position_windows_popup, serial, retries - 1)
+            return GLib.SOURCE_REMOVE
+        request_keep_above(self.window)
+        return self._position_if_current(serial)
 
     def _on_close_request(self, _window: Gtk.Window) -> bool:
         self.popdown()
@@ -342,6 +357,8 @@ class MenuWindow:
 
         width = self.window.get_width()
         height = self.window.get_height()
+        if sys.platform == "win32" and (width <= 1 or height <= 1):
+            return GLib.SOURCE_REMOVE
         if width <= 1:
             width = self._preferred_width
         if height <= 1:

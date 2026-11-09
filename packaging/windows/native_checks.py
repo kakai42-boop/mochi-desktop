@@ -258,7 +258,9 @@ def run(data):
             try:
                 window = get_window()
                 assert window.get_visible() and handle(window), name + ' has no native surface'
-                assert window.get_width() > 0 and window.get_height() > 0
+                assert window.get_width() > 0 and window.get_height() > 0, (
+                    f'{name}: GTK size {window.get_width()}x{window.get_height()}'
+                )
                 result['checks'].append(name)
                 close()
                 GLib.timeout_add(400, next_step)
@@ -281,7 +283,7 @@ def run(data):
                     return False
                 name, show, get_window, close = steps.pop(0)
                 show()
-                GLib.timeout_add(600, inspect_window, name, get_window, close)
+                GLib.timeout_add(900, inspect_window, name, get_window, close)
             except Exception:
                 return fail()
             return False
