@@ -6,6 +6,8 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Recognize Spotify for Windows while playing even when its media session omits the playback type.
+
 - Add an optional Windows active-screen follower and an opt-in browser mood countdown for Chrome and Edge.
 
 - Add Windows release discovery, verified package preparation and startup rollback through the shared update menu.

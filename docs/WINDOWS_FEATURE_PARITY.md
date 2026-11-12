@@ -9,7 +9,7 @@ prouve son ouverture, pas la disponibilité de toutes ses fonctions.
 |---|---|---|
 | Frappe et frappe soutenue | Hook Windows actif en mode normal. Temporisation couverte par la suite partagée. | Taper puis arrêter dans un éditeur. Vérifier entrée et sortie de l'animation. |
 | Éditeur, VS Code, terminal | Catégories par nom d'exécutable et transitions partagées. | Alterner VS Code, éditeur et terminal. Observer les réactions et le retour à l'état normal. |
-| Musique | Détecteur Windows initialisé. Bibliothèques audio présentes. | Lire, mettre en pause, reprendre et arrêter de la musique sur un lecteur compatible. |
+| Musique | Détection par session Windows, avec reconnaissance de Spotify quand le type de lecture manque. | Lire, mettre en pause, reprendre et arrêter Spotify pour Windows avec YouTube en pause. |
 | YouTube et vidéos compatibles | Détecteur Windows fondé sur le type de lecture déclaré par l'application. | Vérifier YouTube dans Edge, Chrome et Firefox et distinguer vidéo et musique. Un lecteur sans type déclaré reste un cas à résoudre. |
 | Inactivité, retour, veille et verrouillage | Adaptateur Windows et tests de transitions avec signaux simulés. | Laisser le poste inactif, reprendre, verrouiller puis déverrouiller, suspendre puis reprendre. |
 | Navigation de fichiers | Adaptateur Explorer et activité locale des téléchargements. | Utiliser l'Explorateur et revenir à un autre programme. |

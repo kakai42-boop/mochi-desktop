@@ -2,6 +2,7 @@
 
 Tests real windows and lifecycle. Does not claim physical mouse/audio/DPI QA.
 """
+import base64
 import ctypes as c
 import json
 import os
@@ -38,6 +39,45 @@ class TestMouse:
         events = (Input * len(flags))(*(Input(0, MouseInput(flags=flag)) for flag in flags))
         if self.send(len(events), events, c.sizeof(Input)) != len(events):
             raise OSError('Windows rejected the test mouse input')
+
+
+def check_windows_media_flags():
+    from mochi.windows.media import PLAYBACK_FLAGS_SCRIPT
+
+    fixtures = r'''
+$ErrorActionPreference = 'Stop'
+function New-MediaSession($source, $status, $type) {
+    $session = [pscustomobject]@{
+        SourceAppUserModelId = $source
+        Info = [pscustomobject]@{PlaybackStatus = $status; PlaybackType = $type}
+    }
+    $session | Add-Member ScriptMethod GetPlaybackInfo { $this.Info }
+    return $session
+}
+$spotify = New-MediaSession 'Spotify.exe' 'Playing' $null
+$store = New-MediaSession 'SpotifyAB.SpotifyMusic_zpdnekdrzrea0!Spotify' 'Playing' 'Unknown'
+$paused = New-MediaSession 'Spotify.exe' 'Paused' $null
+$stopped = New-MediaSession 'Spotify.exe' 'Stopped' 'Music'
+$browser = New-MediaSession 'Chrome' 'Playing' $null
+$other = New-MediaSession 'OtherSpotify.exe' 'Playing' $null
+$video = New-MediaSession 'Chrome' 'Playing' 'Video'
+$spotifyVideo = New-MediaSession 'Spotify.exe' 'Playing' 'Video'
+$music = New-MediaSession 'Music Player' 'Playing' 'Music'
+Get-MochiPlaybackFlags @($spotify)
+Get-MochiPlaybackFlags @($store)
+Get-MochiPlaybackFlags @($paused, $stopped, $browser, $other)
+Get-MochiPlaybackFlags @($spotify, $video)
+Get-MochiPlaybackFlags @($spotifyVideo)
+Get-MochiPlaybackFlags @($music)
+'''
+    powershell = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+    encoded = base64.b64encode((PLAYBACK_FLAGS_SCRIPT + fixtures).encode('utf-16-le')).decode('ascii')
+    output = subprocess.run(
+        [str(powershell), '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
+        capture_output=True, text=True, check=True, timeout=15,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    ).stdout.splitlines()
+    assert output == ['1,0', '1,0', '0,0', '1,1', '0,1', '1,0'], output
 
 
 def run(data):
@@ -373,6 +413,8 @@ def run(data):
                 assert buddy._app_category_monitor._tab_backend.active, 'Browser hook not active'
                 assert app._windows_agent_receiver is not None
                 result['checks'].append('normal_mode_backends')
+                check_windows_media_flags()
+                result['checks'].append('windows_media_playback_flags')
                 for name, show, obj in [
                     ('context_menu', right_click, lambda: buddy._context_menu),
                     ('developer_menu', buddy._show_developer_menu, lambda: buddy._developer_menu),
@@ -404,6 +446,6 @@ def run(data):
             result['errors'].append(traceback.format_exc())
         finally:
             sys.excepthook = old_hook
-            result['passed'] = not result['errors'] and len(result['checks']) == 19
+            result['passed'] = not result['errors'] and len(result['checks']) == 20
             report.write_text(json.dumps(result, indent=2), encoding='utf-8')
     return 0 if result['passed'] else 1

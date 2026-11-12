@@ -267,6 +267,7 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] Explorer drag/drop into Pocket; Unicode paths and unavailable files; persistence after restart
 - [ ] Anonymous typing, shortcut conflict, lock/unlock, suspend/resume, battery and network edges
 - [ ] Supported Windows media players: music/video start, pause, stop and missing playback type
+- [ ] Play and pause Spotify for Windows with YouTube paused, then play both and verify that each playback signal clears independently.
 - [ ] Agent events through Mochi.exe --agent-signal; malformed/oversized events ignored
 - [ ] Stop releases timers, hooks, mailslot, theme and media helper; relaunch does not duplicate instances
 - [ ] Installer upgrade refuses a running copy; uninstall retains Bond/Pocket/config

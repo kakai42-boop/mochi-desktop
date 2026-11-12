@@ -1,8 +1,9 @@
 """Observe Windows media playback without accessing media metadata.
 
 One shared background Windows PowerShell process calls the built-in WinRT API.
-It emits only two booleans (music/video). No title, URL, artist or app ID is read.
-Applications which do not publish a playback type cannot be classified.
+It emits only two booleans (music/video). When a session omits its playback
+type, the helper can recognize Spotify by its local app ID. It reads no
+media metadata and does not emit or store the app ID.
 """
 import base64
 import os
@@ -11,7 +12,29 @@ import subprocess
 import threading
 import time
 
-SCRIPT = r'''
+PLAYBACK_FLAGS_SCRIPT = r'''
+function Get-MochiPlaybackFlags($sessions) {
+    $music = 0; $video = 0
+    foreach ($session in $sessions) {
+        try {
+            $info = $session.GetPlaybackInfo()
+            if ([string]$info.PlaybackStatus -ne 'Playing') { continue }
+            $type = [string]$info.PlaybackType
+            if ($type -eq 'Video') {
+                $video = 1
+            } elseif ($type -eq 'Music') {
+                $music = 1
+            } elseif ($type -in @('', 'Unknown') -and
+                      $session.SourceAppUserModelId -match '^(Spotify|SpotifyAB\.SpotifyMusic_zpdnekdrzrea0(![^!]+)?)$|(^|[\\/])Spotify\.exe$') {
+                $music = 1
+            }
+        } catch { }
+    }
+    return "$music,$video"
+}
+'''
+
+SCRIPT = PLAYBACK_FLAGS_SCRIPT + r'''
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Runtime.WindowsRuntime
 $managerType = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager, Windows.Media.Control, ContentType=WindowsRuntime]
@@ -23,17 +46,7 @@ $task = $asTask.MakeGenericMethod($managerType).Invoke($null, @($managerType::Re
 if (-not $task.Wait(10000)) { exit 1 }
 $manager = $task.Result
 while ($true) {
-    $music = 0; $video = 0
-    foreach ($session in $manager.GetSessions()) {
-        try {
-            $info = $session.GetPlaybackInfo()
-            if ($info.PlaybackStatus.ToString() -eq 'Playing') {
-                if ($info.PlaybackType.ToString() -eq 'Music') { $music = 1 }
-                if ($info.PlaybackType.ToString() -eq 'Video') { $video = 1 }
-            }
-        } catch { }
-    }
-    [Console]::Out.WriteLine("$music,$video")
+    [Console]::Out.WriteLine((Get-MochiPlaybackFlags ($manager.GetSessions())))
     [Console]::Out.Flush()
     Start-Sleep -Milliseconds 1000
 }
