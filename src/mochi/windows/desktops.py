@@ -119,7 +119,10 @@ class DesktopFollower:
                                 on_current and foreground != self._foreground)
         self._foreground = foreground if on_current else None
         if self.monitor_follower is not None:
-            self.monitor_follower.sample(hwnd, self._foreground)
+            if on_current:
+                self.monitor_follower.sample(hwnd, foreground)
+            else:
+                self.monitor_follower.reset()
         return True
 
     def stop(self):

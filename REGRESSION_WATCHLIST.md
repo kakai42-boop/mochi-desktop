@@ -299,3 +299,8 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] With two physical monitors, switch foreground apps, drag Mochi and test mixed scaling without focus theft.
 - [ ] Chrome/Edge mood warns for ten seconds, targets the same tab and cancels on switch, fullscreen, attention or disconnect.
 - [ ] Enable and disable mood in Windows settings and verify the native host only connects while enabled.
+
+- [ ] Move the Windows companion outside the desktop and verify recovery with follow mode off.
+- [ ] Invoke both global shortcuts through Win32 input and open their expected windows.
+- [ ] Start and end an Agent Companion session through the installed Windows launcher with redirected stdin.
+- [ ] Drop file, text, link and image payloads through the installed GTK targets. Reopen the text, show the folder and remove the saved image.

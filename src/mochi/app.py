@@ -314,6 +314,7 @@ class MochiApplication(Gtk.Application):
             desktop_hint=shell_desktop_hint,
             monitor_follower=MonitorFollower(
                 desktop(), self._buddy._placement, allowed=self._can_follow_active_screen,
+                can_recover=self._can_recover_windows_position,
             ),
         )
 
@@ -323,6 +324,15 @@ class MochiApplication(Gtk.Application):
             self._follow_active_screen and buddy is not None and not buddy._stay_put
             and not self._windows_interaction_busy()
             and buddy.state.current is not MochiState.WALKING
+        )
+
+    def _can_recover_windows_position(self) -> bool:
+        buddy = self._buddy
+        return (
+            buddy is not None and not buddy._presence_shutting_down
+            and buddy._press is None and not buddy._drag_started
+            and not buddy._context_menu_open and not buddy._developer_menu.get_visible()
+            and not buddy._session_blocked()
         )
 
     def _windows_interaction_busy(self) -> bool:

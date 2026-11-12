@@ -21,12 +21,14 @@ prouve son ouverture, pas la disponibilité de toutes ses fonctions.
 | Petites phrases et mode silencieux | Moteur et réglages partagés. Fenêtre Mochi Lab vérifiée. | Déclencher une phrase contextuelle, désactiver les bulles, puis activer le mode silencieux. |
 | Focus et pauses | Ouverture de Focus vérifiée. Contrôles début/pause/reprise/arrêt ajoutés au scénario Windows. | Finir un cycle avec pause, vérifier le lien et l'ambiance sonore. |
 | Sommeil, réveil, Edge roam, Stay put, fermeture | Lignes du menu vérifiées. Persistance de Stay put vérifiée. | Basculer chaque commande, contrôler l'état de Mochi et la persistance après relance. |
-| Pocket | Fenêtre native ouverte en CI. | Déposer fichier, image, texte ou lien, rouvrir l'élément, vérifier la persistance. |
+| Pocket | Les cibles GTK installées reçoivent fichier, texte, lien et image dans le scénario Windows. Relecture du stockage, détail texte, ouverture du dossier et retrait de l’image sont vérifiés par le scénario. | Déposer depuis l’Explorateur et un navigateur avec la souris. |
 | Lien, nourriture, nom et emotes | Code partagé, présence des lignes et ouverture du catalogue vérifiées. | Nourrir, gagner du lien, débloquer et rejouer une emote. |
 | Guide, catalogue et Mochi Lab | Fenêtres natives vérifiées. | Tester les raccourcis et les actions du catalogue et du Lab. |
-| Agent Companion | Récepteur local Windows créé en mode normal. | Envoyer des événements d'agent et vérifier animations et fin de session. |
+| Agent Companion | Le scénario Windows lance `Mochi.exe --agent-signal` et vérifie l’ouverture et la fin d’une session par le canal local. | Essayer les hooks de Claude Code et Codex avec une session réelle. |
 | Installation et données | Installation, réinstallation et désinstallation silencieuses vérifiées en CI avec chemins accentués et fichiers témoins préservés. | Installer avec l'assistant sous un compte Windows 11 standard et démarrer par le raccourci. |
 | Mise à jour et retour arrière | Découverte par canal, vérification et transaction intégrées. | Publier un paquet Windows vérifié puis essayer la mise à jour depuis une version antérieure sur Windows 11. |
+| Écrans physiques | L’utilisateur a confirmé le suivi en changeant d’onglet. Un scénario natif vérifie le retour dans une zone visible depuis une position hors écran. | Débrancher un écran pendant l’utilisation et tester des échelles différentes. |
+| Raccourcis globaux | Le scénario Windows envoie les raccourcis natifs et vérifie l’ouverture du catalogue et de Mochi Lab. | Tester avec la disposition clavier habituelle et des raccourcis tiers. |
 | Bureaux virtuels | Le suivi utilise une fenêtre au premier plan et, à défaut, l’identifiant du bureau actif quand l’Explorateur le fournit. Tests de décision et nettoyage COM couverts. | Basculer entre deux bureaux, puis vérifier le comportement sur un bureau vide. L'épinglage dans la Vue des tâches reste un comportement distinct. |
 
 La suite Linux de cette révision donne 1 420 tests réussis, 5 ignorés et deux avertissements GTK.

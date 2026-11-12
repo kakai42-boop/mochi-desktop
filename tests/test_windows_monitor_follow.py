@@ -37,3 +37,16 @@ def test_pause_resets_debounce_and_same_screen_does_not_move():
     follower.sample(1, 2)
     follower.sample(1, 2)
     placement.move_to.assert_not_called()
+
+
+def test_recovers_missing_monitor_even_with_follow_disabled_and_waits_for_drag():
+    api = SimpleNamespace(monitor_for_window=lambda _: None)
+    placement = SimpleNamespace(restore=Mock())
+    dragging = True
+    follower = MonitorFollower(api, placement, allowed=lambda: False,
+                               can_recover=lambda: not dragging)
+    follower.sample(1, 2)
+    placement.restore.assert_not_called()
+    dragging = False
+    follower.sample(1, 2)
+    placement.restore.assert_called_once_with()

@@ -6,6 +6,9 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Bring Mochi back into a visible Windows work area if his window ends up outside all monitors.
+- Keep Windows agent hook input attached to the hidden launcher process.
+
 - Recognize Spotify for Windows while playing even when its media session omits the playback type.
 
 - Add an optional Windows active-screen follower and an opt-in browser mood countdown for Chrome and Edge.

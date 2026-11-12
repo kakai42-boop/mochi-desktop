@@ -16,9 +16,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR arguments, int
     wchar_t *slash = wcsrchr(root, L'\\');
     if (!slash) return 1;
     *slash = 0;
-    int agent = wcsncmp(arguments, L"--agent-signal", 14) == 0;
     int argc = 0;
     wchar_t **argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+    int agent = argv && argc >= 2 && wcscmp(argv[1], L"--agent-signal") == 0;
     int browser = argv && argc >= 2 && wcsncmp(argv[1], L"chrome-extension://", 19) == 0;
     if (argv) LocalFree(argv);
     int stdio = agent || browser;
@@ -32,7 +32,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR arguments, int
         if (!mutex) return 1;
         if (GetLastError() == ERROR_ALREADY_EXISTS) { CloseHandle(mutex); return 0; }
     }
-    if (_snwprintf(python, 32768, L"%ls\\runtime\\bin\\%ls", root, browser ? L"python.exe" : L"pythonw.exe") < 0 ||
+    if (_snwprintf(python, 32768, L"%ls\\runtime\\bin\\%ls", root, stdio ? L"python.exe" : L"pythonw.exe") < 0 ||
         _snwprintf(command, 32768, L"\"%ls\" -I \"%ls\\bootstrap.py\" %ls", python, root, arguments) < 0) {
         if (mutex) CloseHandle(mutex);
         return 1;

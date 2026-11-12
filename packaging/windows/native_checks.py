@@ -21,12 +21,20 @@ class MouseInput(c.Structure):
                 ('flags', c.c_uint32), ('time', c.c_uint32), ('extra', c.c_size_t)]
 
 
+class KeyboardInput(c.Structure):
+    _fields_ = [('key', c.c_ushort), ('scan', c.c_ushort), ('flags', c.c_uint32),
+                ('time', c.c_uint32), ('extra', c.c_size_t)]
+
+
+class InputData(c.Union):
+    _fields_ = [('mouse', MouseInput), ('keyboard', KeyboardInput)]
+
+
 class Input(c.Structure):
-    # MouseInput is the largest member of the Win32 INPUT union.
-    _fields_ = [('kind', c.c_uint32), ('mouse', MouseInput)]
+    _fields_ = [('kind', c.c_uint32), ('data', InputData)]
 
 
-class TestMouse:
+class TestInput:
     def __init__(self, user32):
         self.send = user32.SendInput
         self.send.argtypes = [c.c_uint, c.POINTER(Input), c.c_int]
@@ -36,9 +44,17 @@ class TestMouse:
         self.move.restype = c.c_int
 
     def buttons(self, *flags):
-        events = (Input * len(flags))(*(Input(0, MouseInput(flags=flag)) for flag in flags))
+        self._send([Input(0, InputData(mouse=MouseInput(flags=flag))) for flag in flags])
+
+    def shortcut(self, *keys):
+        pressed = [Input(1, InputData(keyboard=KeyboardInput(key=key))) for key in keys]
+        released = [Input(1, InputData(keyboard=KeyboardInput(key=key, flags=2))) for key in reversed(keys)]
+        self._send(pressed + released)
+
+    def _send(self, inputs):
+        events = (Input * len(inputs))(*inputs)
         if self.send(len(events), events, c.sizeof(Input)) != len(events):
-            raise OSError('Windows rejected the test mouse input')
+            raise OSError('Windows rejected the test input')
 
 
 def check_windows_media_flags():
@@ -83,12 +99,12 @@ Get-MochiPlaybackFlags @($music)
 def run(data):
     import gi
     gi.require_version('Gtk', '4.0')
-    from gi.repository import GLib
+    from gi.repository import Gdk, Gio, GLib
     from mochi.app import MochiApplication
     from mochi.config import ConfigStore
     from mochi.focus import FocusPlan
-    from mochi.pocket import make_local_file_item
-    from mochi.pocket_window import PocketWindow
+    from mochi.pocket import PocketItemKind
+    from mochi.pocket_store import PocketStore
     from mochi.state import MochiState
     from mochi.windows.browser_mood_transport import ORIGIN, read_message, write_message
     from mochi.windows.native import desktop, RECT
@@ -96,7 +112,7 @@ def run(data):
 
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Mouse qualification requires a disposable GitHub Actions desktop')
-    mouse = TestMouse(desktop().user32)
+    mouse = TestInput(desktop().user32)
 
     result = {'run_id': os.environ.get('MOCHI_SMOKE_RUN_ID', ''), 'checks': [], 'errors': []}
     report = data / 'integration-test.json'
@@ -269,23 +285,93 @@ def run(data):
                 )
                 menu.popdown()
                 result['checks'].append('native_edge_menu_work_area')
-                exercise_pocket_folder()
+                exercise_offscreen_recovery(hwnd=handle(buddy._window))
 
             later(600, positioned)
 
-        def exercise_pocket_folder():
+        def exercise_offscreen_recovery(hwnd):
+            api = desktop()
+            assert api.move(hwnd, -20000, -20000), 'Could not move the test window off-screen'
+            assert not api.monitor_for_window(hwnd), 'Fixture still overlaps a monitor'
+
+            def recovered():
+                assert api.monitor_for_window(hwnd), 'Mochi remained outside all monitors'
+                result['checks'].append('native_offscreen_recovery')
+                exercise_agent()
+
+            later(1650, recovered)
+
+        def exercise_agent():
+            exe = Path(__file__).with_name('Mochi.exe')
+            payload = json.dumps({'session_id': 'windows-qa', 'prompt': 'fixture only'}).encode()
+
+            def send(event):
+                command = subprocess.run(
+                    [str(exe), '--agent-signal', event, '--source', 'codex'], input=payload,
+                    capture_output=True, check=True, timeout=8,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                )
+                assert command.stdout == command.stderr == b'', 'Agent hook wrote output'
+
+            def stopped():
+                assert not buddy._agent_tracker.working, 'Agent session did not end'
+                result['checks'].append('native_agent_lifecycle')
+                exercise_pocket()
+
+            def working():
+                assert buddy._agent_tracker and buddy._agent_tracker.working, 'Agent event did not arrive'
+                send('ended')
+                later(350, stopped)
+
+            send('working')
+            later(350, working)
+
+        def exercise_pocket():
             folder = data / 'QA dossier été & projets'
             folder.mkdir(exist_ok=True)
             sample = folder / 'note témoin.txt'
             sample.write_text('Pocket smoke test', encoding='utf-8')
-            item = make_local_file_item(sample)
-            pocket = PocketWindow(SimpleNamespace(items=(item,)))
-            try:
-                assert pocket.open_containing_folder(item.id), 'Windows could not open the Pocket folder'
-            finally:
-                pocket.destroy()
-            result['checks'].append('pocket_shell_folder')
-            app.quit()
+            files, text, image = buddy._pocket_drop.targets
+            texture = Gdk.MemoryTexture.new(
+                1, 1, Gdk.MemoryFormat.R8G8B8A8, GLib.Bytes.new(bytes((90, 210, 120, 255))), 4,
+            )
+            inputs = [
+                (files, Gdk.FileList.new_from_list([Gio.File.new_for_path(str(sample))])),
+                (text, 'Une note témoin'), (text, 'https://example.com/qa'), (image, texture),
+            ]
+            controller = buddy._pocket_controller
+
+            def finish():
+                stored = {item.kind: item for item in PocketStore().load()}
+                assert set(stored) == set(PocketItemKind), 'A Pocket payload was not persisted'
+                assert Path(stored[PocketItemKind.SAVED_IMAGE].value).is_file()
+                buddy._show_pocket_window()
+                pocket = buddy._pocket_window
+                assert pocket.open_item(stored[PocketItemKind.TEXT].id)
+                detail = pocket.detail_windows[-1]
+                buf = detail.text_view.get_buffer()
+                assert buf.get_text(*buf.get_bounds(), True) == 'Une note témoin'
+                detail.close()
+                assert pocket.open_containing_folder(stored[PocketItemKind.LOCAL_FILE].id)
+                assert pocket.remove_item(stored[PocketItemKind.SAVED_IMAGE].id)
+                assert sample.is_file(), 'Pocket changed the original file'
+                pocket.hide()
+                result['checks'].append('pocket_shell_folder')
+                result['checks'].append('pocket_payloads_and_persistence')
+                app.quit()
+
+            def drop_next(retries=30):
+                if not inputs:
+                    finish()
+                elif controller.can_receive():
+                    target, value = inputs.pop(0)
+                    assert target.emit('drop', value, 1.0, 1.0), 'Pocket rejected its registered drop type'
+                    later(350, drop_next)
+                else:
+                    assert retries > 0, 'Pocket did not become ready for another drop'
+                    later(200, lambda: drop_next(retries - 1))
+
+            drop_next()
 
         def exercise_focus():
             buddy._start_focus_session(FocusPlan(focus_minutes=1, break_minutes=1, rounds=1))
@@ -417,10 +503,12 @@ def run(data):
                 result['checks'].append('windows_media_playback_flags')
                 for name, show, obj in [
                     ('context_menu', right_click, lambda: buddy._context_menu),
-                    ('developer_menu', buddy._show_developer_menu, lambda: buddy._developer_menu),
+                    ('developer_menu_hotkey', lambda: mouse.shortcut(0x11, 0x12, 0x10, ord('M')),
+                     lambda: buddy._developer_menu),
                     ('focus_window', buddy._show_focus_window, lambda: buddy._focus_window),
                     ('quick_start', buddy._show_quick_start, lambda: buddy._quick_start_window),
-                    ('emote_catalogue', buddy._show_emote_catalogue, lambda: buddy._emote_catalogue_window),
+                    ('emote_catalogue_hotkey', lambda: mouse.shortcut(0x11, 0x12, ord('E')),
+                     lambda: buddy._emote_catalogue_window),
                 ]:
                     steps.append((name, show, lambda obj=obj: obj().window,
                                   lambda obj=obj: obj().popdown() if hasattr(obj(), 'popdown') else obj().window.hide()))
@@ -446,6 +534,6 @@ def run(data):
             result['errors'].append(traceback.format_exc())
         finally:
             sys.excepthook = old_hook
-            result['passed'] = not result['errors'] and len(result['checks']) == 20
+            result['passed'] = not result['errors'] and len(result['checks']) == 23
             report.write_text(json.dumps(result, indent=2), encoding='utf-8')
     return 0 if result['passed'] else 1

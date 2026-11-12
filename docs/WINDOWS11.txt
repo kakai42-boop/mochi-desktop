@@ -18,6 +18,7 @@ PARAMETRES WINDOWS
 Clic droit sur Mochi, puis clique sur l’engrenage « Windows settings ».
 « Suivre l’écran actif » déplace Mochi vers l’écran de la fenêtre active.
 Désactive « Stay put » pour laisser Mochi changer d’écran automatiquement.
+Si Mochi se retrouve hors de tous les écrans, il revient dans une zone visible.
 « Humeur taquine » est désactivée par défaut. Elle demande l’extension
 Mochi Browser Mood pour Chrome ou Edge. Dans chrome://extensions ou
 edge://extensions, active le mode développeur, puis « Charger l’extension
@@ -70,7 +71,10 @@ Les contenus que tu déposes volontairement dans Pocket restent locaux.
 
 AGENT COMPANION (facultatif)
 Les hooks existants peuvent appeler :
-"chemin\Mochi.exe" --agent-signal working --source codex
+Depuis PowerShell, envoie un exemple local à Mochi déjà ouvert.
+'{"session_id":"essai"}' | & "$env:LOCALAPPDATA\Programs\Mochi\Mochi.exe" --agent-signal working --source codex
+Remplace working par ended avec le même identifiant pour terminer cet essai.
+Si tu as choisi un autre dossier, adapte le chemin de Mochi.exe.
 Les événements et les jetons opaques passent par une messagerie locale Windows.
 
 LICENCE ET CREDITS
