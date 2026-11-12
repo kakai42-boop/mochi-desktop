@@ -1,0 +1,84 @@
+MOCHI POUR WINDOWS 11 x64 — PREVERSION 0.4.1-win-preview1
+
+INSTALLATION
+Double-clique sur Mochi-Windows11-Setup.exe, puis suis l'assistant.
+Ensuite, lance Mochi depuis le bureau ou le menu Démarrer.
+Python, GTK et les bibliothèques audio sont inclus. Aucun terminal nécessaire.
+
+Si tu utilises l'archive portable : extrais TOUT le dossier, puis lance Mochi.exe.
+Garde les dossiers runtime, src et assets à côté de Mochi.exe.
+
+COMMANDES
+Clic gauche : réaction. Double clic : coeur. Trois clics : dialogue.
+Glisser : déplacer Mochi. Clic droit : menu complet.
+Ctrl+Alt+E : catalogue. Ctrl+Alt+Maj+M : Mochi Lab.
+Pour quitter : clic droit sur Mochi, puis Close.
+
+PARAMETRES WINDOWS
+Clic droit sur Mochi, puis clique sur l’engrenage « Windows settings ».
+« Suivre l’écran actif » déplace Mochi vers l’écran de la fenêtre active.
+Désactive « Stay put » pour laisser Mochi changer d’écran automatiquement.
+Si Mochi se retrouve hors de tous les écrans, il revient dans une zone visible.
+« Humeur taquine » est désactivée par défaut. Elle demande l’extension
+Mochi Browser Mood pour Chrome ou Edge. Dans chrome://extensions ou
+edge://extensions, active le mode développeur, puis « Charger l’extension
+non empaquetée ». Sélectionne le dossier indiqué dans les réglages de Mochi.
+Coche l’option dans Mochi et enregistre le délai souhaité. Le navigateur
+vérifie périodiquement si le délai configuré est écoulé.
+Le compte à rebours de 10 secondes peut être annulé. L’onglet doit rester
+actif, hors plein écran, non épinglé et dans une fenêtre normale avec au
+moins deux onglets. Une saisie non enregistrée peut être perdue.
+Les raccourcis globaux peuvent être occupés par une autre application ; les menus restent disponibles.
+
+DONNEES
+Préférences et progression : %APPDATA%\mochi\config.json
+Pocket : %LOCALAPPDATA%\mochi-desktop\pocket
+Journaux : %LOCALAPPDATA%\mochi-desktop\mochi.log et startup.log
+La désinstallation conserve les données personnelles.
+Pour passer d'une ancienne préversion à cette version : ferme Mochi puis lance
+le nouvel installateur par-dessus. Ensuite, le menu « Check for updates » peut
+proposer un paquet publié sur le canal Windows sélectionné.
+
+ETAT DE CETTE PREVERSION
+Le code des animations, interactions, Bond, Focus, catalogue et Pocket vient
+du projet original ; des adaptateurs Windows remplacent les appels Linux.
+Les tests automatisés couvrent le lancement et le cycle d'installation sous
+Windows Server. Les essais interactifs sous Windows 11 restent à terminer.
+
+DIFFERENCES ET LIMITES CONNUES
+- Le menu de mise à jour nécessite un paquet Windows publié sur le canal choisi.
+  Après « Update & Restart », Mochi vérifie le paquet avant de redémarrer et tente
+  de restaurer les anciens fichiers si le nouveau lancement échoue.
+- Les réactions musique et vidéo s’appuient sur les sessions de lecture Windows.
+  Si Spotify publie une lecture sans en préciser le type, Mochi le reconnaît par
+  son identifiant d’application local. Aucun titre, URL ou contenu média n’est lu.
+- Le navigateur doit émettre une notification Windows lors du changement de page
+  ou d'onglet. Mochi la traite uniquement pour le navigateur au premier plan
+  après une interaction récente, sans lire le titre.
+- Mochi essaie de suivre le bureau virtuel actif via la fenêtre au premier
+  plan ou, sur un bureau vide, via les informations fournies par l’Explorateur.
+  Le changement vers un bureau vide et la Vue des tâches restent à vérifier.
+- Les mises à l'échelle mixtes, audio, Pocket/Explorer, veille et raccourcis
+  nécessitent encore une validation sur Windows 11 réel.
+- L'installateur n'est pas signé avec un certificat de publication.
+- Windows ARM64 n'est pas une cible qualifiée ; le paquet est x64.
+
+CONFIDENTIALITE
+La frappe est réduite à des impulsions anonymes ; aucune touche ni aucun texte
+n'est lu ou enregistré. Les catégories d'applications sont déduites uniquement
+du nom de leur programme. Pas de lecture des titres de fenêtre ou du presse-papiers.
+Les contenus que tu déposes volontairement dans Pocket restent locaux.
+
+AGENT COMPANION (facultatif)
+Les hooks existants peuvent appeler :
+Depuis PowerShell, envoie un exemple local à Mochi déjà ouvert.
+'{"session_id":"essai"}' | & "$env:LOCALAPPDATA\Programs\Mochi\Mochi.exe" --agent-signal working --source codex
+Remplace working par ended avec le même identifiant pour terminer cet essai.
+Si tu as choisi un autre dossier, adapte le chemin de Mochi.exe.
+Les événements et les jetons opaques passent par une messagerie locale Windows.
+
+LICENCE ET CREDITS
+Projet original : https://github.com/miflow13/mochi-desktop
+Illustrations, sons et code original : auteurs de Mochi, licence MIT (fichier LICENSE).
+Les composants embarqués gardent leurs licences dans runtime\share\licenses.
+Leurs versions et sites sources sont listés dans runtime\runtime-lock.json.

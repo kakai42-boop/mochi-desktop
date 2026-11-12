@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import time
+import sys
 
 import gi
 
@@ -155,6 +156,13 @@ class BuddyMenuController:
         header_text.append(title)
         header_text.append(subtitle)
         header.append(header_text)
+        if sys.platform == "win32" and not self._buddy._preview_mode:
+            header_text.set_hexpand(True)
+            settings = Gtk.Button.new_from_icon_name("preferences-system-symbolic")
+            settings.add_css_class("flat")
+            settings.set_tooltip_text("Windows settings")
+            settings.connect("clicked", self._show_windows_settings)
+            header.append(settings)
         self._buddy._initialize_context_menu_layout(popover, card)
         self._buddy._register_context_menu_row("header", header, animated=False)
 
@@ -178,6 +186,9 @@ class BuddyMenuController:
 
         popover.set_child(card)
         return popover
+
+    def _show_windows_settings(self, _button) -> None:
+        self._buddy._close_context_menu_then(self._buddy._window.get_application().show_windows_settings)
 
     def _build_developer_menu(self) -> MenuWindow:
         """Developer-only controls opened by Mochi's private global shortcut."""
@@ -443,9 +454,8 @@ class BuddyMenuController:
         self._buddy._size = size
         self._buddy.set_content_width(size)
         self._buddy.set_content_height(size)
-        self._buddy._window.set_default_size(size, size)
+        self._buddy._placement.resize(size, size)
         self._buddy._config.save_size(size)
-        self._buddy._placement.move_to(self._buddy._placement.position.x, self._buddy._placement.position.y)
         self._buddy.queue_draw()
 
     def _change_volume(self, scale: Gtk.Scale) -> None:

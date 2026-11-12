@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import json
 import logging
 import os
+import sys
 from pathlib import Path
 from uuid import uuid4
 
@@ -27,7 +28,7 @@ class ConfigStore:
     DEFAULT_VOLUME = 0.6
 
     def __init__(self, path: Path | None = None) -> None:
-        config_home = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+        config_home = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming") if sys.platform == "win32" else os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
         self.path = path or config_home / "mochi" / "config.json"
         self._logger = logging.getLogger(__name__)
 
@@ -103,6 +104,27 @@ class ConfigStore:
         data["stay_put"] = bool(enabled)
         self._save(data)
         self._logger.debug("Stay put: %s", bool(enabled))
+
+    def load_follow_active_screen(self) -> bool:
+        return self._load_or_empty().get("follow_active_screen") is True
+
+    def save_follow_active_screen(self, enabled: bool) -> None:
+        data = self._load_or_empty()
+        data["follow_active_screen"] = bool(enabled)
+        self._save(data)
+
+    def load_browser_mood(self) -> tuple[bool, int]:
+        data = self._load_or_empty()
+        minutes = data.get("browser_mood_minutes")
+        if type(minutes) is not int or not 1 <= minutes <= 240:
+            minutes = 60
+        return data.get("browser_mood_enabled") is True, minutes
+
+    def save_browser_mood(self, enabled: bool, minutes: int) -> None:
+        data = self._load_or_empty()
+        data["browser_mood_enabled"] = bool(enabled)
+        data["browser_mood_minutes"] = max(1, min(240, minutes))
+        self._save(data)
 
     def load_edge_roam(self) -> bool:
         """Return whether autonomous wandering should stay on screen edges."""

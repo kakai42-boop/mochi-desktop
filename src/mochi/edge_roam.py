@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+import sys
 
 from mochi.behavior import WalkMotion
 from mochi.config import Position
@@ -31,6 +32,17 @@ class EdgeBounds:
 
 def bounds_for_placement(placement, origin: Position) -> EdgeBounds | None:
     """Return the same safe monitor bounds used by WindowPlacement.clamp_position."""
+    if sys.platform == "win32":
+        from mochi.windows.native import desktop, clamp_to_work_area
+        width, height = placement.window.get_default_size()
+        scale = placement._x11_coordinate_scale()
+        width, height = width * scale, height * scale
+        area = desktop().work_area(origin.x + width / 2, origin.y + height / 2)
+        if area is None:
+            return None
+        left, top = clamp_to_work_area(area[0], area[1], width, height, area)
+        right, bottom = clamp_to_work_area(area[2], area[3], width, height, area)
+        return EdgeBounds(left, right, top, bottom)
     monitor = placement._monitor_for_position(origin.x, origin.y)
     if monitor is None:
         return None

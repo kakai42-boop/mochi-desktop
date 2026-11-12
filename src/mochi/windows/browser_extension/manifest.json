@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Mochi Browser Mood",
+  "description": "Optional local bridge for Mochi\u2019s playful tab countdown.",
+  "version": "1.0.0",
+  "minimum_chrome_version": "120",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6hxjgB280GpnrIVrr1So8ozCh4xHK2jUl9ZsfD8WEz6JIargRQsVTtTIdoBVvyMnGd3D9c+6CA00fd3KlnLGrwMRCO7fqHfcmYawY447BnbPtTDGnfw6ybgdDkO0XbMU8XeK63igGmIxZwN8jjgk6Tq9gjKzZ4Qphz51E5pfBsePc78RY0CDYSv4d0/zpXClXuCaBcYBTojrbIh7UA7cWP8BIVJIk3VmoObrUL+FeGAzDUeryYoDRDmbNDAnl0BNo4dhxn0KYu28vxbcAoU7nlWjAChPEKkKFpw0mn39enfWLuFgTjm3cgAX1hD+1/a6Eh6ccJ2agTT4zsUnlzfoqQIDAQAB",
+  "permissions": [
+    "alarms",
+    "nativeMessaging"
+  ],
+  "background": {
+    "service_worker": "worker.js",
+    "type": "module"
+  },
+  "incognito": "not_allowed"
+}

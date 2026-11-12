@@ -11,6 +11,7 @@ from __future__ import annotations
 from collections import deque
 from collections.abc import Callable, Iterable
 import logging
+import sys
 import time
 from typing import Protocol
 
@@ -401,6 +402,9 @@ class TypingActivityMonitor:
         # not installed or enabled. Broad text-changed events are disabled in
         # the runtime fallback because Mochi's own animated speech labels can
         # otherwise generate a self-sustaining feedback loop.
+        if backends is None and sys.platform == "win32":
+            from mochi.windows.activity import WindowsInputBackend
+            backends = (WindowsInputBackend(),)
         self._backends = tuple(backends) if backends is not None else (
             GnomeShellTypingPulseBackend(),
             AtspiTextActivityBackend(allow_text_changed=False),

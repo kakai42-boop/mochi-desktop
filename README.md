@@ -1,3 +1,6 @@
+> **Windows 11 x64 — préversion de portage** : cette branche fournit un installateur autonome avec Python et GTK inclus. Consulte [le guide Windows](docs/WINDOWS11.txt), [les fonctions à vérifier](docs/WINDOWS_FEATURE_PARITY.md) et [les canaux de mise à jour](docs/WINDOWS_RELEASES.md). Les essais interactifs sur Windows 11 restent distincts de la qualification automatisée.
+> L’engrenage « Windows settings » dans le menu de Mochi propose le suivi de l’écran actif et une humeur taquine optionnelle pour Chrome et Edge.
+
 <div align="center">
 
 # mochi 🌱
@@ -495,3 +498,11 @@ Growing together, one tiny interaction at a time. 🌱
 Mochi is released under the [MIT License](LICENSE).
 
 </div>
+
+### Windows qualification update (2026-11-09)
+
+The source archive now contains installation lifecycle checks. They have not run on Windows yet. The previously distributed installer is unchanged; see [validation status](docs/WINDOWS_VALIDATION.md).
+
+Windows parity work now includes content-free browser-change detection and normal-mode native checks for the original Linux menus and feature windows. These checks do not replace interactive mouse, audio or DPI testing.
+
+The [Windows feature checklist](docs/WINDOWS_FEATURE_PARITY.md) tracks the Quick Start and platform-specific verification.

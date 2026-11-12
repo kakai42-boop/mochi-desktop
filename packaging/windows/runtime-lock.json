@@ -1,0 +1,1153 @@
+[
+  {
+    "name": "mingw-w64-ucrt-x86_64-adobe-source-code-pro-fonts",
+    "version": "2.042u+1.062i+1.026vf-1",
+    "file": "mingw-w64-ucrt-x86_64-adobe-source-code-pro-fonts-2.042u+1.062i+1.026vf-1-any.pkg.tar.zst",
+    "sha256": "711d2e809be6a35ada61cb7fcd57b9605ad1b95e3bd591638c4932059847bc4b",
+    "source": "https://adobe-fonts.github.io/source-code-pro/",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-adwaita-icon-theme",
+    "version": "51.0-1",
+    "file": "mingw-w64-ucrt-x86_64-adwaita-icon-theme-51.0-1-any.pkg.tar.zst",
+    "sha256": "27323f39c04761d94b882ad012dd4a78eccc0efe4e0d8d5a28786a5eec6bdc4c",
+    "source": "https://gitlab.gnome.org/GNOME/adwaita-icon-theme",
+    "license": [
+      "spdx:LGPL-3.0-or-later OR CC-BY-SA-3.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-adwaita-icon-theme-legacy",
+    "version": "46.2-1",
+    "file": "mingw-w64-ucrt-x86_64-adwaita-icon-theme-legacy-46.2-1-any.pkg.tar.zst",
+    "sha256": "f365c5724a7829e5cc52f131cd664f0391f996cf456bc7da6196e4cc5ce82903",
+    "source": "https://gitlab.gnome.org/GNOME/adwaita-icon-theme-legacy",
+    "license": [
+      "spdx:LGPL-3.0-or-later OR CC-BY-SA-3.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-brotli",
+    "version": "1.2.1-1",
+    "file": "mingw-w64-ucrt-x86_64-brotli-1.2.1-1-any.pkg.tar.zst",
+    "sha256": "e3257d4303fc0aca4c64f702d4c8cd766a321351c5e61927631c30bfdf2e7536",
+    "source": "https://github.com/google/brotli",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-bzip2",
+    "version": "1.0.8-4",
+    "file": "mingw-w64-ucrt-x86_64-bzip2-1.0.8-4-any.pkg.tar.zst",
+    "sha256": "f03a2174034ddd2d96cecd34f617c5f8e2ef86c812b8d2bb3b8875257f2c8bfa",
+    "source": "https://sourceware.org/bzip2/",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-c-ares",
+    "version": "1.34.9-1",
+    "file": "mingw-w64-ucrt-x86_64-c-ares-1.34.9-1-any.pkg.tar.zst",
+    "sha256": "a95c349e1a838a825d4c6723c0fc497ae62d7ca9fe68b517552fd80afa5cd5f1",
+    "source": "https://c-ares.org/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-ca-certificates",
+    "version": "20260816-3",
+    "file": "mingw-w64-ucrt-x86_64-ca-certificates-20260816-3-any.pkg.tar.zst",
+    "sha256": "037d3bf0b4eb004e2b3586baa29e526db70013dfe3118a2a86748acb46ee07b4",
+    "source": "https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/",
+    "license": [
+      "MPL",
+      "GPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-cairo",
+    "version": "1.18.6-2",
+    "file": "mingw-w64-ucrt-x86_64-cairo-1.18.6-2-any.pkg.tar.zst",
+    "sha256": "021c0a4d1df463d08d0cac170818a7cbaccaa5b09ac6edc7948e461cb5a46e85",
+    "source": "https://cairographics.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later OR MPL-1.1"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-cantarell-fonts",
+    "version": "0.311-1",
+    "file": "mingw-w64-ucrt-x86_64-cantarell-fonts-0.311-1-any.pkg.tar.zst",
+    "sha256": "3fb8c646b67b2838f2ae306f02b06b1d909fdf69fb0ae6796e7813570aad219f",
+    "source": "https://www.gnome.org",
+    "license": [
+      "custom:SIL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-cc-libs",
+    "version": "16.2.0-6",
+    "file": "mingw-w64-ucrt-x86_64-cc-libs-16.2.0-6-any.pkg.tar.zst",
+    "sha256": "d8fff9e62443168bcda8ce746697243519c4f090ea607357ce94feac0bd10a50",
+    "source": "https://gcc.gnu.org",
+    "license": [
+      "spdx:GPL-3.0-or-later WITH GCC-exception-3.1 AND GFDL-1.3-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-curl",
+    "version": "8.23.0-1",
+    "file": "mingw-w64-ucrt-x86_64-curl-8.23.0-1-any.pkg.tar.zst",
+    "sha256": "cb1b4e7c0aa8e6e39ac88af83f083d36fb9ea4c50377e795fdb7c3e97ac9fda5",
+    "source": "https://curl.se/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-directx-headers",
+    "version": "1~1.619.5-1",
+    "file": "mingw-w64-ucrt-x86_64-directx-headers-1~1.619.5-1-any.pkg.tar.zst",
+    "sha256": "e3524c39e8b0ead83f336e67b7b1b520fdcb801c6eb9c6134cbdbd196d67deb8",
+    "source": "https://github.com/microsoft/DirectX-Headers",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-directxmath",
+    "version": "3.20.b-1",
+    "file": "mingw-w64-ucrt-x86_64-directxmath-3.20.b-1-any.pkg.tar.zst",
+    "sha256": "c01486e96a024a7366d3ceadf5b8b8263d50c7d7a02343abdd43c47200cd223e",
+    "source": "https://go.microsoft.com/fwlink/?LinkID=615560",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-duktape",
+    "version": "2.7.0-2",
+    "file": "mingw-w64-ucrt-x86_64-duktape-2.7.0-2-any.pkg.tar.zst",
+    "sha256": "9321075fef48d29f32aab10df3b70b7e8407a01c702d01b7f4498b4d1c1fcf57",
+    "source": "https://duktape.org/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-egl-headers",
+    "version": "1.5.r284.3ae2b7c-1",
+    "file": "mingw-w64-ucrt-x86_64-egl-headers-1.5.r284.3ae2b7c-1-any.pkg.tar.zst",
+    "sha256": "29743159048cf216f75d0dc3eb3e0a04a07515db17d839803e54b060f5aeb0b3",
+    "source": "https://registry.khronos.org/EGL/",
+    "license": [
+      "spdx:Apache-2.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-expat",
+    "version": "2.9.0-1",
+    "file": "mingw-w64-ucrt-x86_64-expat-2.9.0-1-any.pkg.tar.zst",
+    "sha256": "f52364dc874009316e1ee1fe46ee89784594b80d10cbcc1cc856945d575308e0",
+    "source": "https://libexpat.github.io/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-flac",
+    "version": "1.5.0-2",
+    "file": "mingw-w64-ucrt-x86_64-flac-1.5.0-2-any.pkg.tar.zst",
+    "sha256": "28e8637795bd7d80289ddbb582d6ad350b73eac64390b877149717dd3757ad79",
+    "source": "https://xiph.org/flac/",
+    "license": [
+      "custom:Xiph",
+      "LGPL",
+      "GPL",
+      "FDL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-fontconfig",
+    "version": "2.18.3-1",
+    "file": "mingw-w64-ucrt-x86_64-fontconfig-2.18.3-1-any.pkg.tar.zst",
+    "sha256": "d0b364f3ee37e3b6f6c136688ce8fa909bb6d8a69df7e08de1aa40870d9e1d60",
+    "source": "https://wiki.freedesktop.org/www/Software/fontconfig/",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-freetype",
+    "version": "2.15.0-1",
+    "file": "mingw-w64-ucrt-x86_64-freetype-2.15.0-1-any.pkg.tar.zst",
+    "sha256": "a9a691f71d1a553099c54ca666e611abfb2b4ff08dae24f2a5af72e22a7e5feb",
+    "source": "https://www.freetype.org/",
+    "license": [
+      "spdx:GPL-2.0-or-later OR FTL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-fribidi",
+    "version": "1.0.17-1",
+    "file": "mingw-w64-ucrt-x86_64-fribidi-1.0.17-1-any.pkg.tar.zst",
+    "sha256": "3581ee03cf83a9bb0e98bf688c4f532a29553500e317532d90746de295b0f8a8",
+    "source": "https://github.com/fribidi/fribidi",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gdk-pixbuf2",
+    "version": "2.44.8-1",
+    "file": "mingw-w64-ucrt-x86_64-gdk-pixbuf2-2.44.8-1-any.pkg.tar.zst",
+    "sha256": "aacfe4bdf635b1ad5bd50ffe9b106f9256e5aee567aec37d4fabe142a0353419",
+    "source": "https://gitlab.gnome.org/GNOME/gdk-pixbuf",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gettext-runtime",
+    "version": "1.0-1",
+    "file": "mingw-w64-ucrt-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+    "sha256": "ba693dda4ac375af76ce481ff3a6e7481286546cc7dc6d56c7021dae34084157",
+    "source": "https://www.gnu.org/software/gettext/",
+    "license": [
+      "spdx:GPL-3.0-or-later AND LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-giflib",
+    "version": "6.1.3-1",
+    "file": "mingw-w64-ucrt-x86_64-giflib-6.1.3-1-any.pkg.tar.zst",
+    "sha256": "9e7ac8feb0e2af6e0fce3c8ead1bd7bcaf018661d08033858c1e2657a04f6f1a",
+    "source": "https://sourceforge.net/projects/giflib/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gles-headers",
+    "version": "3.2.r1065.7fc154c-1",
+    "file": "mingw-w64-ucrt-x86_64-gles-headers-3.2.r1065.7fc154c-1-any.pkg.tar.zst",
+    "sha256": "066007a50bd08f062b5494f2c4811a219e1a65f4ecdce2beb453f6d9d8b92098",
+    "source": "https://www.khronos.org/opengles",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-glib-networking",
+    "version": "2.90.1-1",
+    "file": "mingw-w64-ucrt-x86_64-glib-networking-2.90.1-1-any.pkg.tar.zst",
+    "sha256": "53654bcc3def83b545f6d7c13cfb81b9be471f476b75fa3fcb6bdac04b2d8bd0",
+    "source": "https://gitlab.gnome.org/GNOME/glib-networking",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-glib2",
+    "version": "2.90.1-1",
+    "file": "mingw-w64-ucrt-x86_64-glib2-2.90.1-1-any.pkg.tar.zst",
+    "sha256": "9a7826349279bcca0c935b01880d812be9de9609aef2205be68fd7a6128c1695",
+    "source": "https://gitlab.gnome.org/GNOME/glib",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gmp",
+    "version": "6.3.0-2",
+    "file": "mingw-w64-ucrt-x86_64-gmp-6.3.0-2-any.pkg.tar.zst",
+    "sha256": "e82a75968a556484a50084578238a84eb60fb93e34986fd6695c537975bd39ea",
+    "source": "https://gmplib.org/",
+    "license": [
+      "LGPL3",
+      "GPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gnutls",
+    "version": "3.8.13-3",
+    "file": "mingw-w64-ucrt-x86_64-gnutls-3.8.13-3-any.pkg.tar.zst",
+    "sha256": "303da3babd11f545fcac647439298e8559951ce6a1086666faf8ad2a1f708be6",
+    "source": "https://www.gnutls.org/",
+    "license": [
+      "spdx:GPL-3.0-or-later",
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gobject-introspection-runtime",
+    "version": "1.86.0-4",
+    "file": "mingw-w64-ucrt-x86_64-gobject-introspection-runtime-1.86.0-4-any.pkg.tar.zst",
+    "sha256": "d33a35499bf5be2e9b28afcc368232e3c5d11bdb07d8832e6814e448c05da476",
+    "source": "https://gi.readthedocs.io/",
+    "license": [
+      "spdx:LGPL-2.0-only"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-graphene",
+    "version": "1.10.8-3",
+    "file": "mingw-w64-ucrt-x86_64-graphene-1.10.8-3-any.pkg.tar.zst",
+    "sha256": "4ae49208acf49de84f2abbe9555c2d22f51ab52c1509f5ac8bb5ce7fcaf07d57",
+    "source": "https://ebassi.github.io/graphene/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-graphite2",
+    "version": "1.3.15-1",
+    "file": "mingw-w64-ucrt-x86_64-graphite2-1.3.15-1-any.pkg.tar.zst",
+    "sha256": "34ca1f88bff10ef182a6b1c8e5622d5029f13b05748e361af13b552b422ea849",
+    "source": "https://github.com/silnrsi/graphite",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gsettings-desktop-schemas",
+    "version": "51.0-1",
+    "file": "mingw-w64-ucrt-x86_64-gsettings-desktop-schemas-51.0-1-any.pkg.tar.zst",
+    "sha256": "6ef842a0263ee34f3037fecae210ecfce93d7f17568465d54233a0f17e0c4323",
+    "source": "https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gst-plugins-bad-libs",
+    "version": "1.28.8-3",
+    "file": "mingw-w64-ucrt-x86_64-gst-plugins-bad-libs-1.28.8-3-any.pkg.tar.zst",
+    "sha256": "4825e648fa0c10b17cdddaedc84aba9a1d869429acbe675762066dc889aaec5d",
+    "source": "https://gstreamer.freedesktop.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gst-plugins-base",
+    "version": "1.28.8-1",
+    "file": "mingw-w64-ucrt-x86_64-gst-plugins-base-1.28.8-1-any.pkg.tar.zst",
+    "sha256": "2c6e937a3e551eea5a139c47896517bb6fa6a00dfefcf3a0968e3175c1ba4eaf",
+    "source": "https://gstreamer.freedesktop.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gst-plugins-good",
+    "version": "1.28.8-1",
+    "file": "mingw-w64-ucrt-x86_64-gst-plugins-good-1.28.8-1-any.pkg.tar.zst",
+    "sha256": "258f9192bcb65dd7ee79f3298784d5355b16fcd62fb7060789a1194f8010e3a5",
+    "source": "https://gstreamer.freedesktop.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gstreamer",
+    "version": "1.28.8-1",
+    "file": "mingw-w64-ucrt-x86_64-gstreamer-1.28.8-1-any.pkg.tar.zst",
+    "sha256": "db13c201cbc385aebf23916b971ae0aaf4aeabb53c07f2ca232a644886b82e1b",
+    "source": "https://gstreamer.freedesktop.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gtk-update-icon-cache",
+    "version": "3.24.52-1",
+    "file": "mingw-w64-ucrt-x86_64-gtk-update-icon-cache-3.24.52-1-any.pkg.tar.zst",
+    "sha256": "eedfe01d226496699b95b065b3ec2a4fb3c51979b2fd649541a560d1f949ae18",
+    "source": "https://www.gtk.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-gtk4",
+    "version": "4.24.1-1",
+    "file": "mingw-w64-ucrt-x86_64-gtk4-4.24.1-1-any.pkg.tar.zst",
+    "sha256": "03e6fd251437d50ea8c53b90e2ece1879064fdc30d0c7675da64f1d0ce3bcde8",
+    "source": "https://www.gtk.org",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-harfbuzz",
+    "version": "15.0.0-1",
+    "file": "mingw-w64-ucrt-x86_64-harfbuzz-15.0.0-1-any.pkg.tar.zst",
+    "sha256": "3f9abf2efe4e0380291b48583551475031f5da524b2d60962d8e3c479505c4cd",
+    "source": "https://harfbuzz.github.io/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-hicolor-icon-theme",
+    "version": "0.18-1",
+    "file": "mingw-w64-ucrt-x86_64-hicolor-icon-theme-0.18-1-any.pkg.tar.zst",
+    "sha256": "1ef00d7c034935a479f951a36a7b0e17cfdc482765e860924061b98e6948340c",
+    "source": "https://wiki.freedesktop.org/www/Software/icon-theme/",
+    "license": [
+      "spdx:GPL-2.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-iso-codes",
+    "version": "4.20.1-1",
+    "file": "mingw-w64-ucrt-x86_64-iso-codes-4.20.1-1-any.pkg.tar.zst",
+    "sha256": "4e510fda4d64bcadf7d79d76f02f7080e016bf37759b0a5fe5b2e65553e49785",
+    "source": "https://salsa.debian.org/iso-codes-team/iso-codes",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-jbigkit",
+    "version": "2.1-6",
+    "file": "mingw-w64-ucrt-x86_64-jbigkit-2.1-6-any.pkg.tar.zst",
+    "sha256": "9e237d1041350e7436294cfa13d4bd3d1606d1f2a32ade2eb2958b4d4e79b7ad",
+    "source": "https://www.cl.cam.ac.uk/~mgk25/jbigkit/",
+    "license": [
+      "spdx:GPL-2.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-json-glib",
+    "version": "1.10.8-2",
+    "file": "mingw-w64-ucrt-x86_64-json-glib-1.10.8-2-any.pkg.tar.zst",
+    "sha256": "3b07443be79b7be8062f085d4453161fc71441700494a393807f76c0abda2fc6",
+    "source": "https://gnome.pages.gitlab.gnome.org/json-glib/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-lame",
+    "version": "4.0-1",
+    "file": "mingw-w64-ucrt-x86_64-lame-4.0-1-any.pkg.tar.zst",
+    "sha256": "01441a4daa1e6a6550f9d80a3ca9edfd4504b3eec3a055c163547d7d55847bc9",
+    "source": "https://lame.sourceforge.io/",
+    "license": [
+      "LGPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-lerc",
+    "version": "4.1.1-1",
+    "file": "mingw-w64-ucrt-x86_64-lerc-4.1.1-1-any.pkg.tar.zst",
+    "sha256": "c0afbf4832488d67030c6f313349cd814946c9a7bc3ae9fd54524825c9ca055d",
+    "source": "https://github.com/Esri/lerc",
+    "license": [
+      "spdx:Apache-2.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libb2",
+    "version": "0.98.1-3",
+    "file": "mingw-w64-ucrt-x86_64-libb2-0.98.1-3-any.pkg.tar.zst",
+    "sha256": "dfb554635119d3c46adb00c9d0c589bb38d1cb0781b10ecf31de07ce388bd0c0",
+    "source": "https://blake2.net/",
+    "license": [
+      "custom:CC0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libcaca",
+    "version": "0.99.beta20-8",
+    "file": "mingw-w64-ucrt-x86_64-libcaca-0.99.beta20-8-any.pkg.tar.zst",
+    "sha256": "fd2e0dd4f64179155aee7f6ef814ad1ccf460c775713025ab896e2df4769e712",
+    "source": "https://github.com/cacalabs/libcaca",
+    "license": [
+      "LGPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libdatrie",
+    "version": "0.2.14-1",
+    "file": "mingw-w64-ucrt-x86_64-libdatrie-0.2.14-1-any.pkg.tar.zst",
+    "sha256": "ea92777801ad325278193a362967540752ae37035016df2f6bcee2d89928a195",
+    "source": "https://linux.thai.net/projects/datrie",
+    "license": [
+      "LGPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libdeflate",
+    "version": "1.26-1",
+    "file": "mingw-w64-ucrt-x86_64-libdeflate-1.26-1-any.pkg.tar.zst",
+    "sha256": "17720c77bd01641a3554801cafd71d96fb7fff7427f4cc20ac9f36efb8cb3da0",
+    "source": "https://github.com/ebiggers/libdeflate",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libepoxy",
+    "version": "1.5.10-7",
+    "file": "mingw-w64-ucrt-x86_64-libepoxy-1.5.10-7-any.pkg.tar.zst",
+    "sha256": "c6c6994e8ec49071f06cc1fae475406bdf17603d4687ad0bcac2e11078cfd7c8",
+    "source": "https://github.com/anholt/libepoxy",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libffi",
+    "version": "3.8.0-1",
+    "file": "mingw-w64-ucrt-x86_64-libffi-3.8.0-1-any.pkg.tar.zst",
+    "sha256": "99ad12f4ecfa00a889ef9c5c0188592368a5bac109d0c508ce4e04f29ea95a76",
+    "source": "https://sourceware.org/libffi",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libgcc",
+    "version": "16.2.0-6",
+    "file": "mingw-w64-ucrt-x86_64-libgcc-16.2.0-6-any.pkg.tar.zst",
+    "sha256": "80b2497f019977dd9528b1abc8621b1328a0115ab1f724047ccbb56bf323f11d",
+    "source": "https://gcc.gnu.org",
+    "license": [
+      "spdx:GPL-3.0-or-later WITH GCC-exception-3.1 AND GFDL-1.3-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libiconv",
+    "version": "1.19-1",
+    "file": "mingw-w64-ucrt-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+    "sha256": "9a500f38c2b91808741c62fae746b3e9110b33a1ecf5c30fa0c66dbedddf7e16",
+    "source": "https://www.gnu.org/software/libiconv/",
+    "license": [
+      "spdx:LGPL-2.1-or-later",
+      "documentation:spdx:GPL-3.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libidn2",
+    "version": "2.3.8-4",
+    "file": "mingw-w64-ucrt-x86_64-libidn2-2.3.8-4-any.pkg.tar.zst",
+    "sha256": "d5f4b5e9d99ff7b2a986d1dc0c73da2bcd93ba68462be7b1debbd6ef76371f57",
+    "source": "https://www.gnu.org/software/libidn/#libidn2",
+    "license": [
+      "spdx:GPL-2.0-or-later",
+      "spdx:LGPL-3.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libjpeg-turbo",
+    "version": "3.2.0-1",
+    "file": "mingw-w64-ucrt-x86_64-libjpeg-turbo-3.2.0-1-any.pkg.tar.zst",
+    "sha256": "7c001d00df557cfee969ad43d37b9c31ae22869e8aac4091a89dc3ae6d95e11d",
+    "source": "https://libjpeg-turbo.virtualgl.org/",
+    "license": [
+      "custom:BSD-like"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libnice",
+    "version": "0.1.24-1",
+    "file": "mingw-w64-ucrt-x86_64-libnice-0.1.24-1-any.pkg.tar.zst",
+    "sha256": "081b7c4efd7b413c458ab9e476eff7dfd10800fbcb70ca04c5b16a0da58c06db",
+    "source": "https://libnice.freedesktop.org/",
+    "license": [
+      "spdx:LGPL-2.1-only OR MPL-1.1"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libogg",
+    "version": "1.3.6-1",
+    "file": "mingw-w64-ucrt-x86_64-libogg-1.3.6-1-any.pkg.tar.zst",
+    "sha256": "110a34239e8f122da15e041b2601e2f3c6d4c909d738bdf978700601e0f64449",
+    "source": "https://xiph.org/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libpng",
+    "version": "1.6.59-2",
+    "file": "mingw-w64-ucrt-x86_64-libpng-1.6.59-2-any.pkg.tar.zst",
+    "sha256": "6cc296f5029220e1a226c4bc50294212b20ab8fcabeb00b5a002667f4a882edc",
+    "source": "http://www.libpng.org/pub/png/libpng.html",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libproxy",
+    "version": "0.5.12-1",
+    "file": "mingw-w64-ucrt-x86_64-libproxy-0.5.12-1-any.pkg.tar.zst",
+    "sha256": "ebf80a4c84bfeed53c023bbdda4fb514c84b9e433baf3ba6e976de59dea1df74",
+    "source": "https://libproxy.github.io/libproxy/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libpsl",
+    "version": "0.21.5-3",
+    "file": "mingw-w64-ucrt-x86_64-libpsl-0.21.5-3-any.pkg.tar.zst",
+    "sha256": "d96e0bb50ac3f8b6e44a39ea8de8d186f7b08f6938b0676eb69a7ba1f127bcf4",
+    "source": "https://rockdaboot.github.io/libpsl/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-librsvg",
+    "version": "2.63.4-1",
+    "file": "mingw-w64-ucrt-x86_64-librsvg-2.63.4-1-any.pkg.tar.zst",
+    "sha256": "a47e66bf8df578990ba4421bb7234e525f32739ede1473323425a62066ce7fe8",
+    "source": "https://wiki.gnome.org/Projects/LibRsvg",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libshout",
+    "version": "2.4.6-6",
+    "file": "mingw-w64-ucrt-x86_64-libshout-2.4.6-6-any.pkg.tar.zst",
+    "sha256": "21a175c3d3a7d5538015218771c6680ac2846d48c13ff194d33dac8dc921bdee",
+    "source": "https://www.icecast.org/",
+    "license": [
+      "spdx:LGPL-2.0-only"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libsndfile",
+    "version": "1.2.2-1",
+    "file": "mingw-w64-ucrt-x86_64-libsndfile-1.2.2-1-any.pkg.tar.zst",
+    "sha256": "a882301af8cb1f645c45b1dcbf9634a9bf5a92af47f0cef95a88e83d3a3f444b",
+    "source": "https://libsndfile.github.io/libsndfile/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libsoup3",
+    "version": "3.8.1-1",
+    "file": "mingw-w64-ucrt-x86_64-libsoup3-3.8.1-1-any.pkg.tar.zst",
+    "sha256": "0ad16c3524fcd8a03a14d493b6bba9161c443f1a9e93171057bfa0dbd1c32a4e",
+    "source": "https://wiki.gnome.org/Projects/libsoup/",
+    "license": [
+      "spdx:LGPL-2.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libssh2",
+    "version": "1.11.1-2",
+    "file": "mingw-w64-ucrt-x86_64-libssh2-1.11.1-2-any.pkg.tar.zst",
+    "sha256": "0e91316dfa4979dcabbfa9e71528ec9882ece619ce549cb25312089b4754fa65",
+    "source": "https://libssh2.org/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libstdc++",
+    "version": "16.2.0-6",
+    "file": "mingw-w64-ucrt-x86_64-libstdc++-16.2.0-6-any.pkg.tar.zst",
+    "sha256": "33c5e58a85a538cf843a8672991cce591f0231d66da3b66a57629712d64be17f",
+    "source": "https://gcc.gnu.org",
+    "license": [
+      "spdx:GPL-3.0-or-later WITH GCC-exception-3.1 AND GFDL-1.3-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libsystre",
+    "version": "1.0.2-3",
+    "file": "mingw-w64-ucrt-x86_64-libsystre-1.0.2-3-any.pkg.tar.zst",
+    "sha256": "62f564b1395d4862db1599b77f6588c32de5c80936845751cf369b31eee1560b",
+    "source": "https://github.com/msys2/MINGW-packages/tree/master/mingw-w64-libsystre",
+    "license": [
+      "spdx:BSD-2-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libtasn1",
+    "version": "4.21.0-1",
+    "file": "mingw-w64-ucrt-x86_64-libtasn1-4.21.0-1-any.pkg.tar.zst",
+    "sha256": "d098b27834c3b25142b6f5aa9a0ca5731a8e4334c232786406cb149dd8bde2ba",
+    "source": "https://www.gnu.org/software/libtasn1/",
+    "license": [
+      "GPL3, LGPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libthai",
+    "version": "0.1.30-1",
+    "file": "mingw-w64-ucrt-x86_64-libthai-0.1.30-1-any.pkg.tar.zst",
+    "sha256": "c90ebbca3e7b4c34f4b3ffa501ba8d00cdaf6340cff7db3c46d79d5e01ef207c",
+    "source": "https://linux.thai.net/projects/libthai",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libtheora",
+    "version": "1.2.0-1",
+    "file": "mingw-w64-ucrt-x86_64-libtheora-1.2.0-1-any.pkg.tar.zst",
+    "sha256": "7c5d7caadc7da0b293ccb3eb8ed9d00f335fd62527a16cfd2a4fddca43d8de11",
+    "source": "https://www.theora.org",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libtiff",
+    "version": "4.7.2-2",
+    "file": "mingw-w64-ucrt-x86_64-libtiff-4.7.2-2-any.pkg.tar.zst",
+    "sha256": "258e08a91e6b1703d41730ffe6080c2a40968fe90896b45716c1b41042775076",
+    "source": "https://libtiff.gitlab.io/libtiff/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libtre",
+    "version": "0.9.0-2",
+    "file": "mingw-w64-ucrt-x86_64-libtre-0.9.0-2-any.pkg.tar.zst",
+    "sha256": "d50f22545c50d7c0cd584474bba83f0c7a2cd8aab1aed1ad6c1f9c6452f3c4fc",
+    "source": "https://github.com/laurikari/tre",
+    "license": [
+      "BSD"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libunistring",
+    "version": "1.4.2-1",
+    "file": "mingw-w64-ucrt-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+    "sha256": "e784273da19bbdcc91cbb510b5e27c3ac021b026140734eefcce5ccbd878bd97",
+    "source": "https://www.gnu.org/software/libunistring",
+    "license": [
+      "spdx:LGPL-3.0-or-later OR GPL-3.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libva",
+    "version": "2.24.1-1",
+    "file": "mingw-w64-ucrt-x86_64-libva-2.24.1-1-any.pkg.tar.zst",
+    "sha256": "bd3c2aabe37534f17aaa11a5d846034b56b6890767abcbfb2e8c3fd9153a1a6f",
+    "source": "https://intel.github.io/libva/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libvorbis",
+    "version": "1.3.7-3",
+    "file": "mingw-w64-ucrt-x86_64-libvorbis-1.3.7-3-any.pkg.tar.zst",
+    "sha256": "d013d2c7489b175299f9ea8bd9b70cf456337943b0f13e6eb470beb6c3fc251f",
+    "source": "https://xiph.org/",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libvpx",
+    "version": "1.17.0-1",
+    "file": "mingw-w64-ucrt-x86_64-libvpx-1.17.0-1-any.pkg.tar.zst",
+    "sha256": "8ff6919dbb88ea26ce28d22fd81d6f0d6e200cf56a4dd81ffc2d33124fe98024",
+    "source": "https://www.webmproject.org/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libwebp",
+    "version": "1.6.0-1",
+    "file": "mingw-w64-ucrt-x86_64-libwebp-1.6.0-1-any.pkg.tar.zst",
+    "sha256": "34ff8396c403d484c8777ad49ad0fc06dfb94fadf6f14bcf84d50c45bc6fd17e",
+    "source": "https://developers.google.com/speed/webp/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libwinpthread",
+    "version": "14.0.0.r569.g34eeafb7d-1",
+    "file": "mingw-w64-ucrt-x86_64-libwinpthread-14.0.0.r569.g34eeafb7d-1-any.pkg.tar.zst",
+    "sha256": "b4ebe2826e848c5e790e06ea7b37d3e0594e005f42382b0506886f17df8127da",
+    "source": "https://www.mingw-w64.org/",
+    "license": [
+      "spdx:MIT AND BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-libxml2",
+    "version": "2.15.4-3",
+    "file": "mingw-w64-ucrt-x86_64-libxml2-2.15.4-3-any.pkg.tar.zst",
+    "sha256": "e774c85139c004ce9b4085474d6b3450526c718d2e8c555a87e47adc11f376b1",
+    "source": "https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-lzo2",
+    "version": "2.10-3",
+    "file": "mingw-w64-ucrt-x86_64-lzo2-2.10-3-any.pkg.tar.zst",
+    "sha256": "717c8065996bea51543518a0d3ab46837bf9a990c41886348bd2fa9484ea23f3",
+    "source": "https://www.oberhumer.com/opensource/lzo",
+    "license": [
+      "spdx:GPL-2.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-mpdecimal",
+    "version": "4.0.1-3",
+    "file": "mingw-w64-ucrt-x86_64-mpdecimal-4.0.1-3-any.pkg.tar.zst",
+    "sha256": "abf25c3869ba5e5bc3b69fdeb6cd49b060fc1a64d0d2de10918adeae9630a68d",
+    "source": "https://www.bytereef.org/mpdecimal/index.html",
+    "license": [
+      "spdx:BSD-2-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-mpg123",
+    "version": "1.33.7-1",
+    "file": "mingw-w64-ucrt-x86_64-mpg123-1.33.7-1-any.pkg.tar.zst",
+    "sha256": "7d4efa8ab7682476f0b8b048658596e9b64d8115cd9706afbba0a5410792e240",
+    "source": "https://www.mpg123.com/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-ncurses",
+    "version": "6.6-4",
+    "file": "mingw-w64-ucrt-x86_64-ncurses-6.6-4-any.pkg.tar.zst",
+    "sha256": "88331fe78470ef2c5e0280652fee5e10b6dcaa35f8037725c359407f2702309c",
+    "source": "https://www.gnu.org/software/ncurses/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-nettle",
+    "version": "4.0-1",
+    "file": "mingw-w64-ucrt-x86_64-nettle-4.0-1-any.pkg.tar.zst",
+    "sha256": "47b49f1723ef2c75ff3042b6e463910c47cdffa3342e175b6409fb9d630e64ed",
+    "source": "https://www.lysator.liu.se/~nisse/nettle",
+    "license": [
+      "spdx:GPL-2.0-or-later",
+      "spdx:LGPL-3.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-nghttp2",
+    "version": "1.70.0-1",
+    "file": "mingw-w64-ucrt-x86_64-nghttp2-1.70.0-1-any.pkg.tar.zst",
+    "sha256": "39baf792ff3855c1d656514eaef648fab20de80614517fc15f57a57fa103cc20",
+    "source": "https://nghttp2.org/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-nghttp3",
+    "version": "1.18.0-1",
+    "file": "mingw-w64-ucrt-x86_64-nghttp3-1.18.0-1-any.pkg.tar.zst",
+    "sha256": "06e51ea288e5fdd511c753038979772ec22ec71504dac61f912c63a6e586ba80",
+    "source": "https://nghttp2.org/nghttp3/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-ngtcp2",
+    "version": "1.25.0-1",
+    "file": "mingw-w64-ucrt-x86_64-ngtcp2-1.25.0-1-any.pkg.tar.zst",
+    "sha256": "cce230d80a05cd0a1ec38fa5d76c0445c9bb725c65c2136be3d23e6dc218a89e",
+    "source": "https://nghttp2.org/ngtcp2/",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-opencore-amr",
+    "version": "0.1.6-1",
+    "file": "mingw-w64-ucrt-x86_64-opencore-amr-0.1.6-1-any.pkg.tar.zst",
+    "sha256": "65c6b5a2795ff12fd1839fa52b59785210ca1c2154fcbb73d7ea39767ea11fc4",
+    "source": "https://opencore-amr.sourceforge.io/",
+    "license": [
+      "Apache"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-openssl",
+    "version": "3.6.5-1",
+    "file": "mingw-w64-ucrt-x86_64-openssl-3.6.5-1-any.pkg.tar.zst",
+    "sha256": "773e021ebad83f14b5c103db467411e8ff064663e1c7e7f730e2be72f4117064",
+    "source": "https://openssl-library.org",
+    "license": [
+      "spdx:Apache-2.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-opus",
+    "version": "1.6.1-2",
+    "file": "mingw-w64-ucrt-x86_64-opus-1.6.1-2-any.pkg.tar.zst",
+    "sha256": "bb114bcf26225f50f874497ebfd6b8224fff2a20bda3f8ee45cd07ce5f02657b",
+    "source": "https://www.opus-codec.org/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-orc",
+    "version": "0.4.44-1",
+    "file": "mingw-w64-ucrt-x86_64-orc-0.4.44-1-any.pkg.tar.zst",
+    "sha256": "f333a8207fbec0178e34d6293e412015c7450e3e73dfa1627279cd922f5d622f",
+    "source": "https://gstreamer.freedesktop.org/projects/orc.html",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-p11-kit",
+    "version": "0.26.5-1",
+    "file": "mingw-w64-ucrt-x86_64-p11-kit-0.26.5-1-any.pkg.tar.zst",
+    "sha256": "6e1645f0afa669f3e3325abb891d79c58dacf0bb5f9bb1ea719d22da1d754e62",
+    "source": "https://p11-glue.freedesktop.org/p11-kit.html",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-pango",
+    "version": "1.58.2-1",
+    "file": "mingw-w64-ucrt-x86_64-pango-1.58.2-1-any.pkg.tar.zst",
+    "sha256": "8d86e4a018ff139b010bf357fa1c9f9030fa32ee195c54ed7e89d8ea701851c8",
+    "source": "https://www.pango.org/",
+    "license": [
+      "spdx:LGPL-2.1"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-pcre2",
+    "version": "10.49-1",
+    "file": "mingw-w64-ucrt-x86_64-pcre2-10.49-1-any.pkg.tar.zst",
+    "sha256": "63172179db724ac71e2439a7981134c1bcab8049bdddfd349b32b8f76ed52d1e",
+    "source": "https://pcre.org/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-pixman",
+    "version": "0.46.4-3",
+    "file": "mingw-w64-ucrt-x86_64-pixman-0.46.4-3-any.pkg.tar.zst",
+    "sha256": "4c01b986563d2b5f7ad6fcec2d0ec9915d2f242ddac5eacddc19971964241cc5",
+    "source": "https://gitlab.freedesktop.org/pixman/pixman",
+    "license": [
+      "spdx:MIT"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-python",
+    "version": "3.14.9-1",
+    "file": "mingw-w64-ucrt-x86_64-python-3.14.9-1-any.pkg.tar.zst",
+    "sha256": "824bcc2b3d048f6afa47ad2d13bb48ebe016203bd603d47dabfe2d13f317ae48",
+    "source": "https://www.python.org/",
+    "license": [
+      "spdx:PSF-2.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-python-cairo",
+    "version": "1.29.2-1",
+    "file": "mingw-w64-ucrt-x86_64-python-cairo-1.29.2-1-any.pkg.tar.zst",
+    "sha256": "8eac0882871a74912fd4963ce31a8677d49af374a77ea1d39d64609c288eb139",
+    "source": "https://pycairo.readthedocs.io",
+    "license": [
+      "spdx:LGPL-2.1-only OR MPL-1.1"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-python-gobject",
+    "version": "3.58.1-1",
+    "file": "mingw-w64-ucrt-x86_64-python-gobject-3.58.1-1-any.pkg.tar.zst",
+    "sha256": "d638df173cb0dbcd69a229dc883813aa62cf4ab7ad9cbe1640040bc9c7891d3e",
+    "source": "https://pygobject.gnome.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-python-packaging",
+    "version": "26.3-1",
+    "file": "mingw-w64-ucrt-x86_64-python-packaging-26.3-1-any.pkg.tar.zst",
+    "sha256": "b90d1451cfbf015a5334409bd9edf9c61bc0f7b78cac19400b0f92c9279fbaa7",
+    "source": "https://github.com/pypa/packaging",
+    "license": [
+      "spdx:Apache-2.0",
+      "spdx:BSD-2-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-shared-mime-info",
+    "version": "2.5.1-1",
+    "file": "mingw-w64-ucrt-x86_64-shared-mime-info-2.5.1-1-any.pkg.tar.zst",
+    "sha256": "71da1e4032374f89e2c9fcfd8f626b5b64e6d359e53235cd9653465e88d435d6",
+    "source": "https://freedesktop.org/Software/shared-mime-info",
+    "license": [
+      "spdx:GPL-2.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-speex",
+    "version": "1.2.1-1",
+    "file": "mingw-w64-ucrt-x86_64-speex-1.2.1-1-any.pkg.tar.zst",
+    "sha256": "bed78c12555879a6463a6585b01fea72746143c0e98d7015ae99b8e9bb8daba4",
+    "source": "https://speex.org/",
+    "license": [
+      "BSD"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-speexdsp",
+    "version": "1.2.1-2",
+    "file": "mingw-w64-ucrt-x86_64-speexdsp-1.2.1-2-any.pkg.tar.zst",
+    "sha256": "397f3e3b7922cc7016c965ba42a67c22372ab8e0c4c144eddd26092a562acbf8",
+    "source": "https://www.speex.org/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-sqlite3",
+    "version": "3.54.0-1",
+    "file": "mingw-w64-ucrt-x86_64-sqlite3-3.54.0-1-any.pkg.tar.zst",
+    "sha256": "fc7100490316733bbb96d5633d305a5d6c579200c321969cfa21d5a128055e65",
+    "source": "https://www.sqlite.org/",
+    "license": [
+      "PublicDomain"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-taglib",
+    "version": "2.2.1-1",
+    "file": "mingw-w64-ucrt-x86_64-taglib-2.2.1-1-any.pkg.tar.zst",
+    "sha256": "7a3bd5f6d08bebd0f3e2ec8893324e97bbb54b02b48ef476ee613c3e8f5cc0b2",
+    "source": "https://taglib.org/",
+    "license": [
+      "spdx:LGPL-2.1-or-later",
+      "spdx:MPL-1.1"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-tcl",
+    "version": "8.6.18-1",
+    "file": "mingw-w64-ucrt-x86_64-tcl-8.6.18-1-any.pkg.tar.zst",
+    "sha256": "0c3a50ea5be8c5190e58a1fdc46c09f8113ad1b855745875646b7a78a02215df",
+    "source": "https://tcl-lang.org/",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-tk",
+    "version": "8.6.18-1",
+    "file": "mingw-w64-ucrt-x86_64-tk-8.6.18-1-any.pkg.tar.zst",
+    "sha256": "bfa011886032962833ddc93ae9b508798ec56625b9093cc6d0ff5c95507c79c6",
+    "source": "https://tcl-lang.org/",
+    "license": [
+      "custom"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-twolame",
+    "version": "0.4.0-3",
+    "file": "mingw-w64-ucrt-x86_64-twolame-0.4.0-3-any.pkg.tar.zst",
+    "sha256": "e8094a54e83f34f15b779b383e33f75b65e777912479c0787dacf6d34c366c92",
+    "source": "https://www.twolame.org/",
+    "license": [
+      "LGPL"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-tzdata",
+    "version": "2026e-1",
+    "file": "mingw-w64-ucrt-x86_64-tzdata-2026e-1-any.pkg.tar.zst",
+    "sha256": "f1809089f8ed5cec858ae8584289172896eb921be1e78ba583555f74e9015428",
+    "source": "https://www.iana.org/time-zones",
+    "license": [
+      "custom: public domain"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-vulkan-loader",
+    "version": "1~1.4.363.0-1",
+    "file": "mingw-w64-ucrt-x86_64-vulkan-loader-1~1.4.363.0-1-any.pkg.tar.zst",
+    "sha256": "065076fe13d39ab97eea4740596426d5ae741b5044e48e1c9495d04835c92dbe",
+    "source": "https://www.khronos.org/vulkan/",
+    "license": [
+      "spdx:Apache-2.0"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-wavpack",
+    "version": "5.9.0-1",
+    "file": "mingw-w64-ucrt-x86_64-wavpack-5.9.0-1-any.pkg.tar.zst",
+    "sha256": "d4edfdc44a6449e3636c150a2ebf513e779176b8173c206f0d1830e0f6c7f17d",
+    "source": "https://www.wavpack.com/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-wineditline",
+    "version": "2.208-1",
+    "file": "mingw-w64-ucrt-x86_64-wineditline-2.208-1-any.pkg.tar.zst",
+    "sha256": "b07b34de1669e16cfd6743691914f5a66ad4013500bbf0e4c7a7644046ae7b1c",
+    "source": "https://mingweditline.sourceforge.io/",
+    "license": [
+      "spdx:BSD-3-Clause"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-xz",
+    "version": "5.8.4-1",
+    "file": "mingw-w64-ucrt-x86_64-xz-5.8.4-1-any.pkg.tar.zst",
+    "sha256": "a9d771f816d8c0c5bde152ffb27a687ede91079b8e77e5b8297efa3b5a835934",
+    "source": "https://tukaani.org/xz",
+    "license": [
+      "spdx:0BSD AND LGPL-2.1-or-later AND GPL-2.0-or-later"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-zlib",
+    "version": "1.3.2-3",
+    "file": "mingw-w64-ucrt-x86_64-zlib-1.3.2-3-any.pkg.tar.zst",
+    "sha256": "130e6ef04c654fc2150a177600aa5ed0035087665a893479d2c85ba7485d5704",
+    "source": "https://www.zlib.net/",
+    "license": [
+      "spdx:Zlib"
+    ]
+  },
+  {
+    "name": "mingw-w64-ucrt-x86_64-zstd",
+    "version": "1.5.7-2",
+    "file": "mingw-w64-ucrt-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+    "sha256": "dbdb8427280046a2b41697780aa4c52983b708082b0da4755951dc3bea96ca89",
+    "source": "https://facebook.github.io/zstd/",
+    "license": [
+      "spdx:BSD-3-Clause OR GPL-2.0-or-later"
+    ]
+  }
+]

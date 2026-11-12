@@ -6,6 +6,30 @@ Mochi is still in early public alpha, so behavior, configuration, and compatibil
 
 ## Unreleased
 
+- Bring Mochi back into a visible Windows work area if his window ends up outside all monitors.
+- Keep Windows agent hook input attached to the hidden launcher process.
+
+- Recognize Spotify for Windows while playing even when its media session omits the playback type.
+
+- Add an optional Windows active-screen follower and an opt-in browser mood countdown for Chrome and Edge.
+
+- Add Windows release discovery, verified package preparation and startup rollback through the shared update menu.
+
+- Resize the Windows companion in both directions, recover its topmost placement without taking focus, and open Pocket folders in Explorer.
+- Use the Windows monitor work area for menus and consult Explorer’s active desktop hint when a new desktop has no foreground app.
+- Accept browser-change hints from the current foreground browser before the periodic focus poll catches up.
+
+- Follow the active Windows virtual desktop through the public Shell API when a foreground window identifies it.
+- Make the documented double-click heart available through the shared Linux and Windows click path.
+
+
+### Windows 11 port preview
+
+- Add native Win32 placement/work-area handling, anonymous typing, hotkeys, session/app/power signals, local agent messages, Windows media playback observation and bundled GStreamer audio.
+- Store configuration in APPDATA and Pocket in LOCALAPPDATA; preserve Linux adapters and the shared behavior engine.
+- Add a self-contained native launcher, locked Windows runtime, French per-user installer, build recipe and Windows smoke-test workflow.
+- Windows updates are manual in this preview. Browser-tab pulses and all-virtual-desktop pinning are not implemented. Real Windows 11 validation is pending; this is not a full-parity release.
+
 ### Added
 
 - Mochi can keep you company while a coding agent works. Point Claude Code's
@@ -205,3 +229,13 @@ Feature summary for the earlier alpha line.
 ## 0.1 — Exists
 
 Initial desktop-companion foundation: core windowing, sprite animation, movement, interactions, and the first persistent character behaviors.
+
+### Windows qualification — 2026-11-09
+
+- Reject stale native smoke reports; add install/reinstall/uninstall CI checks.
+- Fail silent setup/uninstall explicitly when Mochi is open. Native Windows execution remains pending.
+
+- Fix the packaged GTK Win32 handle bridge using the typed C ABI; native CI exposed a missing introspected method.
+
+- Windows browser-change awareness now receives content-free WinEvent notifications with foreground, recent-input and debounce gates.
+- Added normal-mode Windows GUI qualification for shared menus, Focus, Pocket, Quick Start, emote catalogue, hook startup and preference persistence.

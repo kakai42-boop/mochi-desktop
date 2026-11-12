@@ -81,6 +81,15 @@ class MenuPositionTests(unittest.TestCase):
         )
         self.assertEqual(x, 124)
 
+    def test_windows_work_area_preserves_negative_origin_and_excludes_taskbar(self):
+        x, y = menu_position_for_anchor(
+            -80, 1005, 240, 420, [], coordinate_scale=1.25, anchor_width=112,
+            device_work_area=(-1920, 0, 0, 1030),
+        )
+        self.assertGreaterEqual(x, -1920 + 15)
+        self.assertLessEqual(x + 300, -15)
+        self.assertLessEqual(y + 525, 1030 - 15)
+
     def test_menu_window_supports_optional_owner_following(self) -> None:
         source = inspect.getsource(MenuWindow)
         self.assertIn("follow_owner: bool = False", source)

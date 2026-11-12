@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 
 from .model import InstalledBuild
@@ -12,7 +13,7 @@ from .model import InstalledBuild
 class InstallMetadataStore:
     def __init__(self, path: Path | None = None) -> None:
         data_home = Path(
-            os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")
+            os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local") if sys.platform == "win32" else os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")
         )
         self.path = path or data_home / "mochi-desktop" / "install.json"
 

@@ -10,6 +10,7 @@ multi-monitor path.
 from __future__ import annotations
 
 import logging
+import sys
 from collections.abc import Callable
 
 import gi
@@ -65,6 +66,7 @@ def menu_position_for_anchor(
     padding: int = 12,
     coordinate_scale: float = 1.0,
     anchor_width: int = 0,
+    device_work_area: tuple[int, int, int, int] | None = None,
 ) -> tuple[int, int]:
     """Place a menu beside an X11-root anchor and clamp it to the nearest monitor.
 
@@ -72,23 +74,24 @@ def menu_position_for_anchor(
     Menu sizes, monitor geometries, gap, and padding are GTK application pixels.
     """
     scale = coordinate_scale if coordinate_scale > 0 else 1.0
-    if not geometries:
-        return (anchor_x + round(gap * scale), anchor_y)
-
-    application_anchor_x = anchor_x / scale
-    application_anchor_y = anchor_y / scale
-    monitor = min(
-        geometries,
-        key=lambda geometry: _distance_to_geometry(
-            application_anchor_x,
-            application_anchor_y,
-            geometry,
-        ),
-    )
-    left = round((monitor.x + padding) * scale)
-    top = round((monitor.y + padding) * scale)
-    right = round((monitor.x + monitor.width - padding) * scale)
-    bottom = round((monitor.y + monitor.height - padding) * scale)
+    if device_work_area is not None:
+        work_left, work_top, work_right, work_bottom = device_work_area
+        inset = round(padding * scale)
+        left, top = work_left + inset, work_top + inset
+        right, bottom = work_right - inset, work_bottom - inset
+    else:
+        if not geometries:
+            return (anchor_x + round(gap * scale), anchor_y)
+        monitor = min(
+            geometries,
+            key=lambda geometry: _distance_to_geometry(
+                anchor_x / scale, anchor_y / scale, geometry,
+            ),
+        )
+        left = round((monitor.x + padding) * scale)
+        top = round((monitor.y + padding) * scale)
+        right = round((monitor.x + monitor.width - padding) * scale)
+        bottom = round((monitor.y + monitor.height - padding) * scale)
 
     device_menu_width = max(1, round(menu_width * scale))
     device_menu_height = max(1, round(menu_height * scale))
@@ -203,8 +206,11 @@ class MenuWindow:
         self.window.present()
         # Mapping/size allocation can settle after present(). Position twice
         # for this one request instead of requiring another user click.
-        GLib.idle_add(self._position_if_current, serial)
-        GLib.timeout_add(24, self._position_if_current, serial)
+        if sys.platform == "win32":
+            GLib.timeout_add(30, self._position_windows_popup, serial, 20)
+        else:
+            GLib.idle_add(self._position_if_current, serial)
+            GLib.timeout_add(24, self._position_if_current, serial)
         if self._follow_owner and self._follow_source_id is None:
             self._follow_source_id = GLib.timeout_add(33, self._follow_owner_tick)
         if self._dismiss_on_focus_loss:
@@ -301,9 +307,21 @@ class MenuWindow:
         return GLib.SOURCE_REMOVE
 
     def _on_map(self, _window: Gtk.Window) -> None:
+        if sys.platform == "win32":
+            return  # Position and raise after the initial GTK allocation.
         request_keep_above(self.window)
         serial = self._position_serial
         GLib.idle_add(self._position_if_current, serial)
+
+    def _position_windows_popup(self, serial: int, retries: int) -> bool:
+        if serial != self._position_serial or not self.window.get_visible():
+            return GLib.SOURCE_REMOVE
+        if self.window.get_width() <= 1 or self.window.get_height() <= 1:
+            if retries:
+                GLib.timeout_add(30, self._position_windows_popup, serial, retries - 1)
+            return GLib.SOURCE_REMOVE
+        request_keep_above(self.window)
+        return self._position_if_current(serial)
 
     def _on_close_request(self, _window: Gtk.Window) -> bool:
         self.popdown()
@@ -339,16 +357,24 @@ class MenuWindow:
 
         width = self.window.get_width()
         height = self.window.get_height()
+        if sys.platform == "win32" and (width <= 1 or height <= 1):
+            return GLib.SOURCE_REMOVE
         if width <= 1:
             width = self._preferred_width
         if height <= 1:
             height = self._preferred_height
 
-        monitor_list = self._owner.get_display().get_monitors()
-        geometries = [
-            monitor_list.get_item(index).get_geometry()
-            for index in range(monitor_list.get_n_items())
-        ]
+        work_area = None
+        if sys.platform == "win32":
+            from mochi.windows.native import desktop
+            work_area = desktop().work_area(anchor_x, anchor_y)
+        geometries = []
+        if work_area is None:
+            monitor_list = self._owner.get_display().get_monitors()
+            geometries = [
+                monitor_list.get_item(index).get_geometry()
+                for index in range(monitor_list.get_n_items())
+            ]
         x, y = menu_position_for_anchor(
             anchor_x,
             anchor_y,
@@ -357,6 +383,7 @@ class MenuWindow:
             geometries,
             coordinate_scale=scale,
             anchor_width=self._anchor_width,
+            device_work_area=work_area,
         )
         moved = move_window(self.window, x, y)
         if not quiet:

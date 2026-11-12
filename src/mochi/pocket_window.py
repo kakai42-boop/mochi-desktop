@@ -5,7 +5,9 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
+import os
 from pathlib import Path
+import sys
 from urllib.parse import urlsplit
 
 import gi
@@ -88,6 +90,15 @@ def row_model(item: PocketItem) -> PocketRowModel:
 
 
 def _launch_default(uri: str) -> None:
+    if sys.platform == "win32":
+        if urlsplit(uri).scheme == "file":
+            path = Gio.File.new_for_uri(uri).get_path()
+            if path is None:
+                raise ValueError("That file has no Windows path.")
+            os.startfile(path)
+        else:
+            os.startfile(uri)
+        return
     Gio.AppInfo.launch_default_for_uri(uri, None)
 
 

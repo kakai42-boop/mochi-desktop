@@ -148,6 +148,27 @@ def can_transition(current: MochiState, requested: MochiState) -> bool:
 
 
 @dataclass
+class ClickPair:
+    """Pair completed clicks on backends that reset the GTK gesture count."""
+
+    previous: tuple[float, float, float] | None = None
+
+    def release(self, x, y, now, *, count, interval, distance) -> bool:
+        previous = self.previous
+        paired = count == 2 or (
+            previous is not None
+            and 0 <= now - previous[0] <= interval
+            and abs(x - previous[1]) <= distance
+            and abs(y - previous[2]) <= distance
+        )
+        self.previous = None if paired else (now, x, y)
+        return paired
+
+    def clear(self) -> None:
+        self.previous = None
+
+
+@dataclass
 class ClickReactionBuffer:
     queued: bool = False
 

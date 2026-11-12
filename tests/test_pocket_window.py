@@ -286,3 +286,16 @@ def test_clear_all_avoids_duplicate_refresh_when_change_callback_already_synced(
 
     assert window.refresh.call_count == 1
     assert window.rows == {}
+
+
+def test_windows_folder_launch_uses_a_native_path(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    from mochi import pocket_window
+
+    folder = tmp_path / "dossier été & projets"
+    folder.mkdir()
+    launched = []
+    monkeypatch.setattr(pocket_window, 'sys', SimpleNamespace(platform='win32'))
+    monkeypatch.setattr(pocket_window.os, 'startfile', launched.append, raising=False)
+    pocket_window._launch_default(folder.as_uri())
+    assert launched == [str(folder)]

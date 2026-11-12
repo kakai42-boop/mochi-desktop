@@ -18,6 +18,15 @@ from .phrases import INTRO_MARKUP
 from .signals import AppCategorySignalAdapter, SystemSignalMonitor
 from .session import SessionSignalMonitor
 
+import sys
+if sys.platform == "win32":
+    from mochi.windows.activity import (
+        WindowsAppCategoryMonitor as AppCategorySignalAdapter,
+        WindowsSystemMonitor as SystemSignalMonitor,
+        WindowsSessionMonitor as SessionSignalMonitor,
+    )
+
+
 
 class PresenceBuddyMixin:
     """Add AmbiSense without changing Buddy's proven interaction code."""
@@ -608,10 +617,18 @@ class PresenceBuddyMixin:
             self._schedule_vscode_coworking()
 
     def _on_pressed(self, *args) -> None:
+        if sys.platform == "win32":
+            application = self._window.get_application()
+            if application is not None:
+                application.note_windows_attention()
         self._dismiss_presence_bubble(user_initiated=True)
         super()._on_pressed(*args)
 
     def _show_context_menu(self, *args) -> None:
+        if sys.platform == "win32":
+            application = self._window.get_application()
+            if application is not None:
+                application.note_windows_attention()
         self._dismiss_presence_bubble(user_initiated=True)
         super()._show_context_menu(*args)
 

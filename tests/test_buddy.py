@@ -10,6 +10,33 @@ from mochi.sound import SoundEvent
 from mochi.state import MochiState
 
 
+class BuddyDoubleClickTests(unittest.TestCase):
+    def test_double_click_replaces_the_first_bounce_with_a_heart(self):
+        buddy = SimpleNamespace(
+            _preview_mode=False, _on_click=None, _double_click_release=True,
+            state=SimpleNamespace(current=MochiState.BOUNCING),
+            _transition_to=Mock(return_value=True), _play_animation=Mock(),
+            _start_heart_emote=Mock(return_value=True),
+            _click_reactions=Mock(),
+        )
+        Buddy.react_to_click(buddy)
+        buddy._transition_to.assert_called_once_with(MochiState.IDLE)
+        buddy._play_animation.assert_called_once_with("idle")
+        buddy._start_heart_emote.assert_called_once_with(ignore_cooldown=True)
+        buddy._click_reactions.clear.assert_called_once_with()
+        buddy._click_reactions.request.assert_not_called()
+
+    def test_double_click_while_sleeping_still_wakes_mochi(self):
+        buddy = SimpleNamespace(
+            _preview_mode=False, _on_click=None, _double_click_release=True,
+            state=SimpleNamespace(current=MochiState.SLEEPING),
+            _wake_up=Mock(), _start_heart_emote=Mock(),
+        )
+        Buddy.react_to_click(buddy)
+        buddy._wake_up.assert_called_once_with()
+        buddy._start_heart_emote.assert_not_called()
+
+
 class BuddyDragReleaseTests(unittest.TestCase):
     def test_drag_release_plays_authored_drop_animation(self) -> None:
         buddy = SimpleNamespace(

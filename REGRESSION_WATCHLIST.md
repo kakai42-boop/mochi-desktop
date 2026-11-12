@@ -257,3 +257,50 @@ Fresh Fedora GNOME/Wayland/XWayland QA:
 - [ ] README, changelog, wiki, and regression docs match shipped behavior
 - [ ] Live Fedora/GNOME/Wayland/XWayland smoke/torture test passes
 - [ ] Known issues are documented rather than silently claimed fixed
+
+## Windows 11 x64 preview release gate
+
+- [ ] Clean Windows 11 install, no Python/MSYS2/GTK on PATH: install and launch by double-click
+- [ ] Transparency, no focus stealing, right-click menus, drag/drop and recovery
+- [ ] 100/125/150/200% scale, mixed DPI, negative monitor origin, taskbar work area, unplug/reconnect display
+- [ ] All emotes, feeding, Bond, unlocks, Focus rounds/pause/resume and independent audio volumes
+- [ ] Explorer drag/drop into Pocket; Unicode paths and unavailable files; persistence after restart
+- [ ] Anonymous typing, shortcut conflict, lock/unlock, suspend/resume, battery and network edges
+- [ ] Supported Windows media players: music/video start, pause, stop and missing playback type
+- [ ] Play and pause Spotify for Windows with YouTube paused, then play both and verify that each playback signal clears independently.
+- [ ] Agent events through Mochi.exe --agent-signal; malformed/oversized events ignored
+- [ ] Stop releases timers, hooks, mailslot, theme and media helper; relaunch does not duplicate instances
+- [ ] Installer upgrade refuses a running copy; uninstall retains Bond/Pocket/config
+- [ ] Native packaged smoke test passes and Windows diagnostics are archived
+- [ ] Remaining parity gaps are documented before any stable/full-compatibility claim
+
+- [ ] Fresh smoke identity verified for portable, installed and reinstalled builds
+- [ ] Silent uninstall removes program and registration while retaining preference/Pocket sentinel files
+- [ ] Windows 11 interactive checks performed separately from Windows Server CI
+
+- [ ] Browser tab/navigation pulses require the focused browser and recent input; no title/text reads
+- [ ] Native normal-mode test opens context/developer menus and Focus/Pocket/help/emote windows
+- [ ] Browsers: test keyboard and mouse tab switches, background updates and idle suppression
+
+- [ ] Windows native input opens the right-click menu, starts a left-click reaction and plays the double-click heart.
+- [ ] A native drag moves the HWND and clears the held state on release.
+- [ ] Focus starts, pauses, resumes and cancels from the normal Windows application.
+- [ ] Switch Windows virtual desktops with a foreground window, then switch to an empty desktop.
+
+- [ ] Grow and shrink Mochi while Mochi Lab is open; check mixed display scaling separately.
+- [ ] After a topmost demotion, restore the Windows companion above other windows without taking focus.
+- [ ] From Pocket, open a file's folder in Explorer, including spaces and accents in the path.
+
+- [ ] Check the stable and preview Windows release channels with matching, verified Windows assets.
+- [ ] Apply a Windows update, then force a startup failure and verify rollback and relaunch.
+- [ ] Preserve preferences, Pocket, uninstaller and unrelated install-folder entries across the swap.
+
+- [ ] Windows settings toggles active-screen following, respects Stay put and ignores the mouse crossing by itself.
+- [ ] With two physical monitors, switch foreground apps, drag Mochi and test mixed scaling without focus theft.
+- [ ] Chrome/Edge mood warns for ten seconds, targets the same tab and cancels on switch, fullscreen, attention or disconnect.
+- [ ] Enable and disable mood in Windows settings and verify the native host only connects while enabled.
+
+- [ ] Move the Windows companion outside the desktop and verify recovery with follow mode off.
+- [ ] Invoke both global shortcuts through Win32 input and open their expected windows.
+- [ ] Start and end an Agent Companion session through the installed Windows launcher with redirected stdin.
+- [ ] Drop file, text, link and image payloads through the installed GTK targets. Reopen the text, show the folder and remove the saved image.

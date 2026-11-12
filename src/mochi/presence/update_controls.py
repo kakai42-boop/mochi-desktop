@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
+import json
 import os
+from pathlib import Path
+import shutil
+import sys
 import threading
 
 from gi.repository import GLib, Gtk
@@ -32,17 +36,25 @@ class UpdateControlsMixin:
         self._update_startup_source_id: int | None = None
         self._update_callback_generation = 0
         self._update_shutting_down = False
+        self._windows_update_cancel = None
         self._update_announced_commits: set[str] = set()
         super().__init__(*args, **kwargs)
 
         if self._preview_mode:
             return
 
-        self._update_install_store = InstallMetadataStore()
+        if sys.platform == "win32":
+            from mochi.windows.updates import WindowsInstallMetadata, WindowsUpdateSource
+
+            self._update_install_store = WindowsInstallMetadata()
+            source = WindowsUpdateSource()
+        else:
+            self._update_install_store = InstallMetadataStore()
+            source = GitHubUpdateSource()
         self._update_checker = UpdateChecker(
             config=self._config,
             install_store=self._update_install_store,
-            source=GitHubUpdateSource(),
+            source=source,
         )
         self._schedule_update_startup_check()
 
@@ -71,7 +83,8 @@ class UpdateControlsMixin:
 
     def _run_scheduled_update_check(self) -> bool:
         self._update_startup_source_id = None
-        self._start_update_check(manual=False)
+        if sys.platform != "win32" or not self._report_windows_update_failure():
+            self._start_update_check(manual=False)
         return False
 
     def _start_update_check(self, *, manual: bool) -> None:
@@ -227,6 +240,9 @@ class UpdateControlsMixin:
         self._destroy_update_window()
 
     def _destroy_update_window(self) -> None:
+        cancel = getattr(self, "_windows_update_cancel", None)
+        if cancel is not None:
+            cancel.set()
         if self._update_window is not None:
             self._update_window.destroy()
             self._update_window = None
@@ -240,6 +256,10 @@ class UpdateControlsMixin:
             self._start_update_check(manual=True)
             return
 
+        if sys.platform == "win32":
+            self._begin_windows_update(target)
+            return
+
         bootstrap_updater(
             target,
             gui=True,
@@ -249,8 +269,83 @@ class UpdateControlsMixin:
         if application is not None:
             application.quit()
 
+    def _report_windows_update_failure(self) -> bool:
+        local = os.environ.get("LOCALAPPDATA")
+        if not local:
+            return False
+        path = Path(local) / "mochi-desktop" / "update-result.json"
+        try:
+            result = json.loads(path.read_text(encoding="utf-8-sig"))
+            path.unlink()
+        except (OSError, ValueError):
+            return False
+        if not isinstance(result, dict) or result.get("status") != "failed":
+            return False
+        message = (
+            "The update failed. Your previous Mochi was restored."
+            if result.get("restored") is True else "The Windows update could not finish."
+        )
+        window = self._get_update_window()
+        window.show_failure(message, str(result.get("error", "")))
+        window.present()
+        return True
+
+    def _begin_windows_update(self, target: UpdateTarget) -> None:
+        from mochi.update.worker import UpdateProgress, UpdateStage
+        from mochi.windows.updates import launch_update, prepare_update
+
+        if self._windows_update_cancel is not None:
+            return
+        cancel = threading.Event()
+        self._windows_update_cancel = cancel
+        self._get_update_window().show_progress(UpdateProgress(
+            UpdateStage.DOWNLOADING, "Downloading and verifying the Windows package…",
+        ))
+
+        def finish(workspace, error) -> bool:
+            self._windows_update_cancel = None
+            if cancel.is_set():
+                if workspace is not None:
+                    shutil.rmtree(workspace, ignore_errors=True)
+                return False
+            if error is None and self._config.load_update_channel() != target.metadata.channel:
+                shutil.rmtree(workspace, ignore_errors=True)
+                error = "The update channel changed. Check for updates again."
+            if error is None:
+                try:
+                    launch_update(workspace)
+                except OSError as exc:
+                    shutil.rmtree(workspace, ignore_errors=True)
+                    error = str(exc)
+            if error is not None:
+                window = self._get_update_window()
+                window.show_failure("Couldn’t prepare the Windows update.", error)
+                window.present()
+                return False
+            application = Gtk.Application.get_default()
+            if application is not None:
+                application.quit()
+            return False
+
+        def prepare() -> None:
+            try:
+                workspace = prepare_update(target, cancel)
+            except Exception as exc:
+                if not cancel.is_set():
+                    GLib.idle_add(finish, None, str(exc))
+                return
+            if cancel.is_set():
+                shutil.rmtree(workspace, ignore_errors=True)
+                return
+            GLib.idle_add(finish, workspace, None)
+
+        threading.Thread(target=prepare, name="mochi-windows-update", daemon=True).start()
+
     def shutdown_presence(self) -> None:
         self._update_shutting_down = True
+        cancel = getattr(self, "_windows_update_cancel", None)
+        if cancel is not None:
+            cancel.set()
         self._update_callback_generation += 1
 
         source_id = self._update_startup_source_id

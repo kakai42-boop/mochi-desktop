@@ -352,6 +352,13 @@ class SoundManager:
 
     @staticmethod
     def _detect_backend() -> AudioBackend | None:
+        if sys.platform == "win32":
+            from mochi.windows.audio import GStreamerCueBackend
+            try:
+                return GStreamerCueBackend()
+            except (ImportError, ValueError, OSError):
+                logging.getLogger(__name__).exception("Windows audio runtime unavailable")
+                return None
         for executable, kind in (
             ("pw-play", "pw-play"),
             ("paplay", "paplay"),

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import logging
+import sys
 
 from mochi.helper_connection import HelperConnection
 
@@ -101,6 +102,9 @@ class PresenceActivityMonitor:
         self._on_user_idle = on_user_idle
         self._on_user_active = on_user_active
         self._logger = logger or logging.getLogger(__name__)
+        if backend is None and sys.platform == "win32":
+            from mochi.windows.activity import WindowsPresenceBackend
+            backend = WindowsPresenceBackend()
         self._backend = backend or GnomeShellPresenceBackend()
         self.available = False
 

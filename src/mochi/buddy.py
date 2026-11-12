@@ -19,6 +19,8 @@ from gi.repository import Gdk, GLib, Gtk  # noqa: E402
 from mochi.animation import AnimationPlayer
 from mochi.autonomous_sleep import AutonomousSleepController
 from mochi.behavior import (
+    CLICK_REACTION_STATES,
+    ClickPair,
     ClickReactionBuffer,
     WalkMotion,
     can_begin_sleep,
@@ -154,6 +156,8 @@ class Buddy(Gtk.DrawingArea):
         self._active_animation = initial_idle
         self._pending_animation: str | None = None
         self._click_reactions = ClickReactionBuffer()
+        self._double_click_release = False
+        self._click_pair = ClickPair()
         self._idle_resume_position: tuple[int, int] | None = None
         self._recent_click_reactions: tuple[str, ...] = ()
         self._last_interaction = time.monotonic()
@@ -634,9 +638,24 @@ class Buddy(Gtk.DrawingArea):
     ) -> None:
         self._press = None
         self._update_pointer_cursor()
+        click_pair = getattr(self, "_click_pair", None)
         if self._finish_drag_interaction() or self._drag_release_handled:
+            if click_pair is not None:
+                click_pair.clear()
             return
-        self.react_to_click()
+        if click_pair is None:
+            self._double_click_release = _presses == 2
+        else:
+            settings = Gtk.Settings.get_default()
+            self._double_click_release = click_pair.release(
+                _x, _y, time.monotonic(), count=_presses,
+                interval=settings.get_property("gtk-double-click-time") / 1000,
+                distance=settings.get_property("gtk-double-click-distance"),
+            )
+        try:
+            self.react_to_click()
+        finally:
+            self._double_click_release = False
 
     def _finish_drag_interaction(self) -> bool:
         if not self._drag_started:
@@ -665,6 +684,13 @@ class Buddy(Gtk.DrawingArea):
         if self.state.current is MochiState.WALKING:
             self._cancel_walk()
             self._transition_to(MochiState.IDLE)
+        if getattr(self, "_double_click_release", False):
+            if self.state.current in CLICK_REACTION_STATES:
+                if self._transition_to(MochiState.IDLE):
+                    self._play_animation("idle")
+            if self._start_heart_emote(ignore_cooldown=True):
+                self._click_reactions.clear()
+                return
         if not self._click_reactions.request(self.state.current):
             if self.state.current in (MochiState.BOUNCING, MochiState.SQUISHING):
                 self._logger.debug("Click reaction queued")
